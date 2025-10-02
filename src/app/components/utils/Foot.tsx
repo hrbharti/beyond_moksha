@@ -40,7 +40,7 @@ export default function Foot(){
 
                 {/* rights */}
                 <div>
-                    <div className="font-[20px] ">© 2024 Beyond Moksha. All Rights Reserved.</div>
+                    <div className="text-[20px] ">© 2024 Beyond Moksha. All Rights Reserved.</div>
                 </div>
             </div>
     </div>
