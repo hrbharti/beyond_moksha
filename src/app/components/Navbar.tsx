@@ -11,7 +11,7 @@ import Logo from "@/app/components/utils/Logo"
 const navList = ["Home", "About Us", "Our Services", "Special Services", "Blogs"];
 
 
-export const Navbar = ()=>{
+export const Navbar = () => {
 
     const [activepage, setActivePage] = useState("Home");
 
@@ -25,11 +25,11 @@ export const Navbar = ()=>{
             </div>
             <div className="flex gap-4 text-black">
 
-                <Icon icon={FaFacebook} />
-                <Icon icon={RiTwitterXLine}/>
-                <Icon icon={BsInstagram}/>
-                <Icon icon={ImLinkedin}/>
-                <Icon icon={IoLogoYoutube}/>
+                <Icon icon={FaFacebook} onClick={() => window.open('https://facebook.com', '_blank')} />
+                <Icon icon={RiTwitterXLine} onClick={() => window.open('https://twitter.com', '_blank')} />
+                <Icon icon={BsInstagram} onClick={() => window.open('https://instagram.com', '_blank')} />
+                <Icon icon={ImLinkedin} onClick={() => window.open('https://linkedin.com', '_blank')} />
+                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com', '_blank')} />
 
 
             </div>
@@ -41,26 +41,27 @@ export const Navbar = ()=>{
         <div className="h-[86px] bg-white flex items-center justify-between px-[141px]">
 
             {/* logo */}
-            <Logo isNav={true}/>
+            <Logo isNav={true} />
 
             {/* nav list */}
 
             <div className="flex items-center gap-4">
-                {navList.map((item, key)=>{
+                {navList.map((item, key) => {
                     return <div
-                     className={`cursor-pointer ${item == activepage ? "text-[#1867AE]" : "text-black"} `} 
-                     key={key} 
-                     onClick={()=>setActivePage(item)}
+                        className={`cursor-pointer ${item == activepage ? "text-[#1867AE]" : "text-black"} `}
+                        key={key}
+                        onClick={() => setActivePage(item)}
 
-                     >
+                    >
                         {item}
                     </div>
                 })}
 
 
-                <Icon icon={BiSolidDonateHeart} className="text-2xl text-[red]"/>
+                <Icon icon={BiSolidDonateHeart} className="text-2xl text-[red]" />
             </div>
 
         </div>
     </div>
 }
+

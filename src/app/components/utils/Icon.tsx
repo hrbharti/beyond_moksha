@@ -1,16 +1,16 @@
 import { ReactEventHandler } from "react"
 
-interface IconProps{
+interface IconProps {
 
     icon: React.ElementType,
     onClick?: ReactEventHandler,
-    className?: string 
+    className?: string
 }
-export default  function Icon({icon: IconComponent, onClick, className}:IconProps){
+export default function Icon({ icon: IconComponent, onClick, className }: IconProps) {
 
-    return <div onClick={onClick} className="cursor-pointer">    
+    return <div onClick={onClick} className="cursor-pointer">
 
-        <IconComponent className={className}/>
+        <IconComponent className={className} />
 
     </div>
 }
