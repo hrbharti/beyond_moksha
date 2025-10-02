@@ -31,7 +31,7 @@ export default function GetInTouch(){
                             <div><Input type='text' title='Services' required={true}/></div>
                         </div>
                         <div className='h-[25%] '>
-                            <div><Input type='text' title='Messages' required={true}/></div>
+                            <div><Input type='textarea' title='Messages' required={true}/></div>
                         </div>
                         <div className='h-[25%]  flex items-center justify-items-start pt-3'>
                             <Button variantType='primary' size="lg" text='Send Message' onClick={()=>console.log('message clicked')}/>
