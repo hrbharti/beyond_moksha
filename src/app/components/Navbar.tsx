@@ -15,7 +15,7 @@ export const Navbar = ()=>{
 
     const [activepage, setActivePage] = useState("Home");
 
-    return <div className="h-[138px] w-full bg-red-300 ">
+    return <div className="h-[138px] w-full bg-white ">
 
         {/* contact info */}
         <div className="h-[52px]  flex items-center justify-between  bg-[#F4F6F8] px-[141px]">
