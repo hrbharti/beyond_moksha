@@ -15,7 +15,7 @@ export const Navbar = () => {
 
     const [activepage, setActivePage] = useState("Home");
 
-    return <div className="h-30 w-full bg-red-500 ">
+    return <div className="h-30 w-full bg-red-500 sticky top-0 z-10">
 
         {/* contact info */}
         <div className="h-10  flex items-center justify-between  bg-[#F4F6F8] px-34">
@@ -38,7 +38,7 @@ export const Navbar = () => {
 
         {/* navbar */}
 
-        <div className="h-20 bg-white flex items-center justify-between px-34">
+        <div className="h-20 bg-white flex items-center justify-between px-34 shadow">
 
             {/* logo */}
             <Logo isNav={true} />
