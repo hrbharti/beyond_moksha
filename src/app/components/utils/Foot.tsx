@@ -9,7 +9,7 @@ import { IoLogoYoutube } from "react-icons/io";
 
 export default function Foot() {
 
-    return <div className="h-full w-full px-[141px]  flex flex-col items-center">
+    return <div className="h-full w-full px-34  flex flex-col items-center">
 
         <div className="flex flex-col h-full justify-between items-center p-2">
             {/* logo */}

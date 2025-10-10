@@ -7,7 +7,7 @@ export default function Footer() {
 
         {/* mail */}
 
-        <div className="h-2/3 bg-white px-[141px]">
+        <div className="h-2/3 bg-white px-34">
             <GetInTouch />
         </div>
 
