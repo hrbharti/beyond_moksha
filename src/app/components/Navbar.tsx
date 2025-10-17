@@ -1,3 +1,4 @@
+"use client"
 import { FaFacebook } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 import { BsInstagram } from "react-icons/bs";
@@ -9,7 +10,6 @@ import { useState } from "react";
 import Logo from "@/app/components/utils/Logo"
 
 const navList = ["Home", "About Us", "Our Services", "Special Services", "Blogs"];
-
 
 export const Navbar = () => {
 

@@ -1,7 +1,8 @@
-
+"use client"
 import Image from 'next/image'
 import { Button } from './Button'
 import { Input } from './Input'
+
 export default function GetInTouch() {
 
     return <div className=" h-full text-black flex flex-col justify-center items-center">

@@ -11,7 +11,7 @@ interface propType {
 
 export default function PriceCard({ logo, price, title, description, motto, isSelected }: propType) {
   return (
-    <div className={`px-6 py-8 border-2  max-w-56 rounded-lg flex flex-col gap-2.5 duration-500 
+    <div className={`px-6 py-8 border-2  max-w-56 rounded-lg flex flex-col gap-2.5 duration-500 cursor-pointer 
     ${isSelected ? "scale-110 shadow-2xl bg-[#f4ac5a]/10 border-[#f4ac5a]" : "bg-white border-gray-300"} 
     hover:scale-110 hover:shadow-2xl`}>
       {logo}
