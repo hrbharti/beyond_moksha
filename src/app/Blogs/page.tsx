@@ -31,8 +31,8 @@ export default function page() {
           </div>
         </div>
         <div className='w-2/5 h-[200vh]'>
-          <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-4'>
-            <h1>Browse Blogs</h1>
+          <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-3'>
+            <h1 className='mb-2 text-2xl'>Browse Blogs</h1>
             <SideSearch />
           </div>
           <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center gap-6 px-5 py-6 mt-6'>
