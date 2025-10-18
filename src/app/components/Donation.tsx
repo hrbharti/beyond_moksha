@@ -5,6 +5,8 @@ import { Heart } from "@deemlol/next-icons";
 import { Star } from "@deemlol/next-icons";
 import { Book } from "@deemlol/next-icons"
 import { Users } from "@deemlol/next-icons";
+import { Perks } from '../donation/components/Perks';
+import { Cards } from '../donation/components/Cards';
 
 export default function ContactUs() {
   const [selected, setSelected] = useState<number>(1);
@@ -45,8 +47,29 @@ export default function ContactUs() {
   ];
 
   return (
-    <div className='border border-slate-300 px-10 pb-6'>
-      <h1 className='text-center font-semibold text-4xl mt-4'>Choose how you want to help</h1>
+    <div className='border border-slate-300 px-34 pb-6'>
+      <div className=' flex flex-col items-center justify-center px-44'>
+        <div>
+          <h1 className='text-4xl text-[#1867AE]'>Your Heart Can Heal Hearts</h1> 
+        </div>
+        <div className='text-center'>
+          When families face their darkest hours, your support becomes a beacon of hope. Together, we're not just building services - we're crafting moments of peace, dignity, and love that will be remembered forever.
+        </div>
+      </div>
+      {/* Perks */}
+      <div className='mt-20'>
+        <div className=' flex items-center justify-between'>
+          <Perks heading='24x7' subHeading='Seamless Service'/>
+          <Perks heading='₹26K Cr' subHeading='Market Impact'/>
+          <Perks heading='Delhi First' subHeading='Tech Platform'/>
+        </div>
+      </div>
+      {/* cards */}
+      <div className='mt-20 '>
+        <Cards/>
+      </div>
+
+      <h1 className='text-center font-semibold text-4xl mt-24'>Choose how you want to help</h1>
       <div className="flex gap-8 items-center justify-center mt-10">
         {cards.map((card) => (
           <div

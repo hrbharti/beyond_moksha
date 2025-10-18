@@ -1,13 +1,10 @@
 'use client'
-import { Navbar } from "./components/Navbar"
-import Footer from "./components/Footer"
-import Donation from "./components/Donation"
+import Home from "./Home/page"
 
-export default function Home() {
+export default function Page() {
   return (
     <div>
-      <Navbar />
-      <Footer />
+      <Home/>
     </div>
   )
 }

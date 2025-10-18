@@ -1,6 +1,4 @@
 'use client'
-import { Navbar } from "../components/Navbar"
-import Footer from "../components/Footer"
 import { Pledge } from "../components/Pledge"
 import { Section } from "../components/utils/Section"
 import { Services } from "../components/Services"
@@ -10,7 +8,6 @@ import { Testimonials } from "../components/Testimonial"
 export default function Home() {
 
   return <div className="bg-white">
-    <Navbar />
     <Pledge/>
 
     {/* services */}
@@ -34,8 +31,5 @@ export default function Home() {
       subHeading="Real testimonials from families who trusted us during their most difficult times"
       content={<Testimonials/>}
     />
-
-    <Footer />
-
   </div>
 }

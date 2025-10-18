@@ -1,7 +1,5 @@
 "use client"
 import React, { useState } from 'react'
-import { Navbar } from '../components/Navbar'
-import Footer from '../components/Footer'
 import BlogCard from './Components/BlogCard'
 import SideCard from './Components/SideCard'
 import SideSearch from './Components/SideSearch'
@@ -11,7 +9,6 @@ export default function page() {
 
   return (
     <div>
-      <Navbar />
       <div className='px-25 flex h-[200vh] gap-6 mt-6'>
         <div className='w-3/5 outline-2 outline-slate-600 rounded-2xl'>
           <h1 className='text-5xl text-center font-bold mt-5'>Blogs</h1>
@@ -49,7 +46,6 @@ export default function page() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   )
 }
