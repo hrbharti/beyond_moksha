@@ -15,10 +15,10 @@ export const Navbar = () => {
 
     const [activepage, setActivePage] = useState("Home");
 
-    return <div className="h-[138px] w-full bg-white ">
+    return <div className="h-30 w-full bg-red-500 sticky top-0 z-10">
 
         {/* contact info */}
-        <div className="h-[52px]  flex items-center justify-between  bg-[#F4F6F8] px-[141px]">
+        <div className="h-10  flex items-center justify-between  bg-[#F4F6F8] px-34">
             <div className="flex gap-5 text-[#1F3A52] font-[16px]">
                 <div className="cursor-pointer">+91-8142884149</div>
                 <div className="cursor-pointer">ajdio@gmail.com</div>
@@ -38,7 +38,7 @@ export const Navbar = () => {
 
         {/* navbar */}
 
-        <div className="h-[86px] bg-white flex items-center justify-between px-[141px]">
+        <div className="h-20 bg-white flex items-center justify-between px-34 shadow">
 
             {/* logo */}
             <Logo isNav={true} />
