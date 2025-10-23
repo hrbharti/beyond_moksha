@@ -6,7 +6,7 @@ import BlogCard from './Components/BlogCard'
 import SideCard from './Components/SideCard'
 import SideSearch from './Components/SideSearch'
 
-export default function page() {
+export default function Page() {
   const [selected, setSelected] = useState(1);
 
   return (

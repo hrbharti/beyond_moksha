@@ -46,7 +46,7 @@ export default function Carousel() {
       {/* Text Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white bg-black/40 px-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-          Honouring Life’s Journey with Grace
+          Honouring Life's Journey with Grace
         </h1>
         <p className="max-w-2xl text-sm sm:text-base md:text-lg mb-6">
           Managed independently to serve all. Beyond Moksha is here to assist and
