@@ -42,7 +42,7 @@ export default function GetInTouch() {
                             <Image src="/getInTouch.png" alt="message us" height={200} width={200} />
                         </div>
                         <div className='text-center pt-3'>
-                            ”Effortlessly reach out to us using our contact form. We're committed to responding within minutes, ensuring your queries are addressed swiftly and efficiently.”
+                            Effortlessly reach out to us using our contact form. We are committed to responding within minutes, ensuring your queries are addressed swiftly and efficiently.
                         </div>
                     </div>
                 </div>
