@@ -6,14 +6,35 @@ import { ImLinkedin } from "react-icons/im";
 import { IoLogoYoutube } from "react-icons/io";
 import { BiSolidDonateHeart } from "react-icons/bi";
 import Icon from "./utils/Icon";
-import { useState } from "react";
+import { use, useState } from "react";
 import Logo from "@/app/components/utils/Logo"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const navList = ["Home", "About Us", "Our Services", "Special Services", "Blogs"];
+const navList = ["Home", "About Us", "Our Services", "Pandit Booking", "Blogs"];
 
-export const Navbar = () => {
+interface navProps{
+
+    onNavigate?:(section: string) => void
+}
+
+export const Navbar = ({onNavigate}:navProps) => {
 
     const [activepage, setActivePage] = useState("Home");
+    const router = useRouter();
+    const [donationFlag, setDonationFlag] = useState(false); 
+
+    const onClickHandler = (item: string)=>{
+        
+        setActivePage(item);
+        if(onNavigate && item != 'About Us' && item != 'Pandit Booking'){
+            onNavigate(item)
+        }
+
+        if(item == 'Home'){
+            router.push('/')
+        }
+    }
 
     return <div className="h-30 w-full bg-red-500 sticky top-0 z-10">
 
@@ -48,17 +69,19 @@ export const Navbar = () => {
             <div className="flex items-center gap-4">
                 {navList.map((item, key) => {
                     return <div
-                        className={`cursor-pointer ${item == activepage ? "text-[#1867AE]" : "text-black"} `}
+                        className={`cursor-pointer ${item == activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} `}
                         key={key}
-                        onClick={() => setActivePage(item)}
+                        onClick={() => onClickHandler(item)}
 
                     >
                         {item}
                     </div>
                 })}
 
-
-                <Icon icon={BiSolidDonateHeart} className="text-2xl text-[red]" />
+                <Link href='/donation' onClick={()=> setDonationFlag(true)}>
+                    <Icon icon={BiSolidDonateHeart} className="text-2xl text-[red]" />
+                </Link>
+                
             </div>
 
         </div>

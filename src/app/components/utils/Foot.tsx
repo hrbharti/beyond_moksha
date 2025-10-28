@@ -7,12 +7,16 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { BsInstagram } from "react-icons/bs";
 import { ImLinkedin } from "react-icons/im";
 import { IoLogoYoutube } from "react-icons/io";
+import { useRouter } from "next/navigation";
+
 
 export default function Foot() {
 
-    return <div className="h-full w-full px-34  flex flex-col items-center">
+    const router = useRouter();
 
-        <div className="flex flex-col h-full justify-between items-center p-2">
+    return <div className="h-full w-full   flex flex-col justify-end items-center ">
+
+        <div className="flex flex-col h-2/3 justify-between items-center p-2 w-full bg-[#1F3A52] ">
             {/* logo */}
             <div>
                 <Logo isNav={false} />
@@ -20,11 +24,11 @@ export default function Foot() {
 
             {/* services */}
             <div className="flex gap-14">
-                <div className="cursor-pointer">Home</div>
-                <div className="cursor-pointer">About Us</div>
-                <div className="cursor-pointer">Services</div>
-                <div className="cursor-pointer">Special Services</div>
-                <div className="cursor-pointer">Blogs</div>
+                <div className="cursor-pointer" onClick={()=>router.push('/')}>Home</div>
+                <div className="cursor-pointer" onClick={()=>router.push('/aboutus')}>About Us</div>
+                <div className="cursor-pointer" onClick={()=>router.push('/')}>Services</div>
+                <div className="cursor-pointer" onClick={()=>router.push('/')}>Special Services</div>
+                <div className="cursor-pointer" onClick={()=>router.push('/Blogs')}>Blogs</div>
             </div>
 
             {/* links */}
@@ -41,7 +45,7 @@ export default function Foot() {
 
             {/* rights */}
             <div>
-                <div className="text-[20px] ">© 2024 Beyond Moksha. All Rights Reserved.</div>
+                <div className="text-sm ">© 2025 Beyond Moksha. All Rights Reserved.</div>
             </div>
         </div>
     </div>

@@ -2,12 +2,68 @@
 import { Navbar } from "./components/Navbar"
 import Footer from "./components/Footer"
 import Corousal from "./components/Corousal"
+import { Pledge } from "./components/Pledge"
+import { Section } from "./components/utils/Section"
+import { Services } from "./components/Services"
+import { Blogs } from "./components/Blog"
+import { Testimonials } from "./components/Testimonial"
+import { useRef } from "react"
 
 export default function Home() {
+
+  const servicesRef = useRef<HTMLHeadingElement>(null);
+  const homeRef = useRef<HTMLHeadingElement>(null);
+  const blogRef = useRef<HTMLHeadingElement>(null);
+
+  const scrollToSection = (section: string) => {
+    switch (section) {
+      case "Home":
+        homeRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      case "Our Services":
+        servicesRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      case "Blogs":
+        blogRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      default:
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   return (
     <div>
-      <Navbar />
-      <Corousal />
+      <Navbar onNavigate={scrollToSection}/>
+      <div ref={homeRef}>
+        <Corousal />
+      </div>
+      <Pledge/>
+
+          {/* services */}
+          <div ref={servicesRef}>
+            <Section 
+              heading="Our Services" 
+              subHeading="We provide comprehensive services to support you through every step of your journey"
+              content={<Services/>}
+            />
+          </div>
+      
+          {/* blogs section */}
+          <div ref={blogRef}>
+              <Section 
+              heading="Latest From the Blogs" 
+              subHeading="Insights, guidance, and support to help you navigate difficult times"
+              content={<Blogs/>}
+            />
+          </div>
+      
+          {/* testimonials */}
+          
+          <Section 
+            heading="Hear from Families we’ve helped" 
+            subHeading="Real testimonials from families who trusted us during their most difficult times"
+            content={<Testimonials/>}
+          />
+      
       <Footer />
     </div>
   )

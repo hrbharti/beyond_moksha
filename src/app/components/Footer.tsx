@@ -13,7 +13,7 @@ export default function Footer() {
 
         {/* Absolute footer */}
 
-        <div className=" bg-[#1F3A52] h-1/3">
+        <div className=" h-1/3">
 
             <Foot />
 

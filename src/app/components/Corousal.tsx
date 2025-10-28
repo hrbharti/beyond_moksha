@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 const images = [
   "https://c4.wallpaperflare.com/wallpaper/880/962/445/one-piece-anime-wallpaper-preview.jpg",
@@ -34,10 +35,12 @@ export default function Carousel() {
             key={index}
             className="flex-shrink-0 w-full h-[80vh] relative"
           >
-            <img
+            <Image
               src={src}
               alt={`Slide ${index}`}
               className="object-cover w-full h-full"
+              width={100}
+              height={100}
             />
           </div>
         ))}
