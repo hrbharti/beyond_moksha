@@ -2,14 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import banner1 from '../../../public/banner1.png'
-import banner2 from '../../../public/banner2.jpg'
-import banner3 from '../../../public/banner3.jpg'
-
 const images = [
-  banner1,
-  banner2,
-  banner3,
+  '/banner1.png',
+  '/banner2.jpg',
+  '/banner3.jpg',
 ];
 
 export default function Carousel() {

@@ -6,7 +6,7 @@ export default function BlogCard({tag, title} : {tag : string, title : string}) 
     <div className='w-36 h-52 rounded-lg outline p-0.5'>
       <Image 
         className='h-28 bg-slate-500 rounded-t-lg' 
-        src={"https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740&q=80"} 
+        src={"/blog.jpg"} 
         alt='placeholder' 
         width={150}
         height={100}/>
