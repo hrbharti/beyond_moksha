@@ -27,12 +27,18 @@ export const Navbar = ({onNavigate}:navProps) => {
     const onClickHandler = (item: string)=>{
         
         setActivePage(item);
-        if(onNavigate && item != 'About Us' && item != 'Pandit Booking'){
+        if(onNavigate && item != 'About Us' && item != 'Pandit Booking' && item != 'Blogs'){
             onNavigate(item)
         }
 
         if(item == 'Home'){
             router.push('/')
+        }
+        if(item == 'Blogs'){
+            router.push('/Blogs')
+        }
+        if(item == 'About Us'){
+            router.push('/aboutus')
         }
     }
 
@@ -47,10 +53,10 @@ export const Navbar = ({onNavigate}:navProps) => {
             <div className="flex gap-4 text-black">
 
                 <Icon icon={FaFacebook} onClick={() => window.open('https://facebook.com', '_blank')} />
-                <Icon icon={RiTwitterXLine} onClick={() => window.open('https://twitter.com', '_blank')} />
-                <Icon icon={BsInstagram} onClick={() => window.open('https://instagram.com', '_blank')} />
-                <Icon icon={ImLinkedin} onClick={() => window.open('https://linkedin.com', '_blank')} />
-                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com', '_blank')} />
+                <Icon icon={RiTwitterXLine} onClick={() => window.open(' https://x.com/beyondmoksha360?t=D9sL0243Mb32RhXAy-vZ2A&s=09', '_blank')} />
+                <Icon icon={BsInstagram} onClick={() => window.open('https://www.instagram.com/beyondmoksha360?igsh=MWNhMHdhYzlnbzRhaw==', '_blank')} />
+                <Icon icon={ImLinkedin} onClick={() => window.open('https://www.linkedin.com/company/beyondmoksha360/', '_blank')} />
+                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com/@beyondmoksha360?si=s5YThsuU4FPCRwz4', '_blank')} />
 
 
             </div>

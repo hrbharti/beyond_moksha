@@ -39,7 +39,7 @@ export default function Home() {
       <Pledge/>
 
           {/* services */}
-          <div ref={servicesRef}>
+          <div ref={servicesRef} className="-mt-10">
             <Section 
               heading="Our Services" 
               subHeading="We provide comprehensive services to support you through every step of your journey"
@@ -48,7 +48,7 @@ export default function Home() {
           </div>
       
           {/* blogs section */}
-          <div ref={blogRef}>
+          <div ref={blogRef} className="mt-18">
               <Section 
               heading="Latest From the Blogs" 
               subHeading="Insights, guidance, and support to help you navigate difficult times"

@@ -1,22 +1,35 @@
 import Image, { StaticImageData } from "next/image";
 import { MdArrowRightAlt } from "react-icons/md";
 
-interface BlogCardProps{
-    image: StaticImageData,
-    content: string
+interface BlogCardProps {
+  image: StaticImageData;
+  content: string;
 }
 
-export const BlogCard = ({image,content}:BlogCardProps)=>{
+export const BlogCard = ({ image, content }: BlogCardProps) => {
+  return (
+    <div className="flex flex-col bg-white border border-gray-300 rounded-md overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+      {/* Blog image */}
+      <div className="w-full h-48 overflow-hidden">
+        <Image
+          src={image}
+          alt="blog image"
+          className="object-cover w-full h-full"
+        />
+      </div>
 
-    return <div className=" h-full w-full rounded-2xl shadow-2xl hover:scale-105 transition-all duration-100 overflow-hidden border border-black "> 
-        
-        <div className="h-[70%] w-full  ">
-            <Image src={image} alt="image"/>
-        </div>
-        <div className="flex flex-col justify-center py-2 px-2">
+      {/* Blog content */}
+      <div className="flex flex-col items-center justify-between text-center p-4 min-h-[130px]">
+        <h3 className="text-[15px] font-medium text-[#1F3A52] leading-snug">
+          {content}
+        </h3>
 
-            <div className="text-[13px] text-black">{content}</div>
-            <div className="mt-4 flex items-center justify-start text-[#BC911B] cursor-pointer hover:underline" >LearnMore <MdArrowRightAlt/></div>
+        {/* Learn More Button */}
+        <div className="mt-4 flex items-center justify-center text-[#BC911B] font-medium cursor-pointer group">
+          <span className="group-hover:underline">Learn more</span>
+          <MdArrowRightAlt className="ml-1 group-hover:translate-x-1 transition-transform duration-200" />
         </div>
+      </div>
     </div>
-}
+  );
+};

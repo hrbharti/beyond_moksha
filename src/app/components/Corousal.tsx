@@ -2,10 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+import banner1 from '../../../public/banner1.png'
+import banner2 from '../../../public/banner2.jpg'
+import banner3 from '../../../public/banner3.jpg'
+
 const images = [
-  "https://c4.wallpaperflare.com/wallpaper/880/962/445/one-piece-anime-wallpaper-preview.jpg",
-  "https://wallpapers.com/images/hd/naruto-scenery-zgc6bcnorfwy3hxu.jpg",
-  "https://m.media-amazon.com/images/M/MV5BODU3ZTA0NTItZjVmOC00ZDc5LWI3MDEtYzA4M2UxZWQ5ODQ5XkEyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg",
+  banner1,
+  banner2,
+  banner3,
 ];
 
 export default function Carousel() {
@@ -39,8 +43,8 @@ export default function Carousel() {
               src={src}
               alt={`Slide ${index}`}
               className="object-cover w-full h-full"
-              width={100}
-              height={100}
+              fill
+              priority={index === 0}
             />
           </div>
         ))}
@@ -70,7 +74,7 @@ export default function Carousel() {
           ].map((label, i) => (
             <button
               key={i}
-              className="bg-white/90 text-black font-medium px-4 py-2 hover:bg-white transition"
+              className="bg-white/90 text-black font-medium px-4 py-2 hover:bg-white transition rounded-md"
             >
               {label}
             </button>

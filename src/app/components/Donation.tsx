@@ -5,6 +5,10 @@ import { Heart } from "@deemlol/next-icons";
 import { Star } from "@deemlol/next-icons";
 import { Book } from "@deemlol/next-icons"
 import { Users } from "@deemlol/next-icons";
+import { Perks } from '../donation/Components/Perks';
+import {Cards} from '../donation/Components/Card';
+import Carousel from './Corousal'
+import { HeroSection } from '../donation/hero';
 
 export default function ContactUs() {
   const [selected, setSelected] = useState<number>(1);
@@ -45,9 +49,30 @@ export default function ContactUs() {
   ];
 
   return (
-    <div className='border border-slate-300 px-10 pb-6'>
+    <div className='border border-slate-300  pb-6'>
+      <HeroSection/>
+      <div className=' flex flex-col items-center justify-center px-84 mt-20'>
+        <div>
+          <h1 className='text-4xl text-[#1867AE] font-semibold'>Your Heart Can Heal Hearts</h1> 
+        </div>
+        <div className='text-center'>
+          When families face their darkest hours, your support becomes a beacon of hope. Together, we're not just building services - we're crafting moments of peace, dignity, and love that will be remembered forever.
+        </div>
+      </div>
+      {/* Perks */}
+      <div className='mt-20 px-34 flex items-center justify-center'>
+        <div className=' flex items-center justify-between w-275.75'>
+          <Perks heading='24x7' subHeading='Seamless Service'/>
+          <Perks heading='₹26K Cr' subHeading='Market Impact'/>
+          <Perks heading='Delhi First' subHeading='Tech Platform'/>
+        </div>
+      </div>
+      {/* cards */}
+      <div className='mt-20 px-34'>
+        <Cards/>
+      </div>
       <h1 className='text-center font-semibold text-4xl mt-4'>Choose how you want to help</h1>
-      <div className="flex gap-8 items-center justify-center mt-10">
+      <div className="flex gap-8 items-center justify-center mt-10 px-34">
         {cards.map((card) => (
           <div
             key={card.id}
@@ -57,8 +82,8 @@ export default function ContactUs() {
         ))}
       </div>
       <h1 className='px-14 py-1.5 border-2 border-slate-500 bg-slate-200 w-fit rounded-md mx-auto mt-10 mb-6 font-semibold text-slate-600'>Custom Amoount (₹)</h1>
-      <form>
-        <div className='flex justify-between'>
+      <form className='px-34'>
+        <div className='flex justify-between '>
           <div className='w-[48%]'>
             <p className='text-lg font-bold mb-1.5'>Full name *</p>
             <input type='text' placeholder='Your Full Name' required className='px-3 py-1.5 outline-none text-lg rounded-sm font-normal bg-slate-200 text-slate-600 border border-slate-500 w-full' />

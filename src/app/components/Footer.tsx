@@ -3,7 +3,7 @@ import GetInTouch from "./utils/GetInTouch";
 
 export default function Footer() {
 
-    return <div className="h-[130vh] w-full" >
+    return <div className="h-[150vh] w-full mt-20" >
 
         {/* mail */}
 

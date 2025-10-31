@@ -8,10 +8,10 @@ interface SecionProps{
 }
 export const Section = ({heading,subHeading, content}:SecionProps)=>{
 
-    return <div className="h-170 w-full ">
+    return <div className="w-full ">
         
             <div className="flex flex-col ">
-                <div className="h-40 flex flex-col items-center justify-end gap-5   p-3">
+                <div className="h-40 flex flex-col items-center justify-end gap-5 p-3 mb-5">
                         <div className="text-4xl font-semibold tracking-wider bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent">
                             {heading}
                         </div>

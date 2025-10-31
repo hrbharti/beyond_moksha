@@ -35,10 +35,10 @@ export default function Foot() {
             <div className="flex gap-4 justify-between items-center">
 
                 <Icon icon={FaFacebook} onClick={() => window.open('https://facebook.com', '_blank')} />
-                <Icon icon={RiTwitterXLine} onClick={() => window.open('https://twitter.com', '_blank')} />
-                <Icon icon={BsInstagram} onClick={() => window.open('https://instagram.com', '_blank')} />
-                <Icon icon={ImLinkedin} onClick={() => window.open('https://linkedin.com', '_blank')} />
-                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com', '_blank')} />
+                <Icon icon={RiTwitterXLine} onClick={() => window.open(' https://x.com/beyondmoksha360?t=D9sL0243Mb32RhXAy-vZ2A&s=09', '_blank')} />
+                <Icon icon={BsInstagram} onClick={() => window.open('https://www.instagram.com/beyondmoksha360?igsh=MWNhMHdhYzlnbzRhaw==', '_blank')} />
+                <Icon icon={ImLinkedin} onClick={() => window.open('https://www.linkedin.com/company/beyondmoksha360/', '_blank')} />
+                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com/@beyondmoksha360?si=s5YThsuU4FPCRwz4', '_blank')} />
 
 
             </div>
