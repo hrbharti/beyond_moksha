@@ -56,7 +56,7 @@ export default function ContactUs() {
           <h1 className='text-4xl text-[#1867AE] font-semibold'>Your Heart Can Heal Hearts</h1> 
         </div>
         <div className='text-center'>
-          When families face their darkest hours, your support becomes a beacon of hope. Together, we're not just building services - we're crafting moments of peace, dignity, and love that will be remembered forever.
+          When families face their darkest hours, your support becomes a beacon of hope. Together, we&apos;re not just building services - we&apos;re crafting moments of peace, dignity, and love that will be remembered forever.
         </div>
       </div>
       {/* Perks */}
@@ -81,7 +81,7 @@ export default function ContactUs() {
           </div>
         ))}
       </div>
-      <h1 className='px-14 py-1.5 border-2 border-slate-500 bg-slate-200 w-fit rounded-md mx-auto mt-10 mb-6 font-semibold text-slate-600'>Custom Amoount (₹)</h1>
+      <h1 className='px-14 py-1.5 border-2 border-slate-500 bg-slate-200 w-fit rounded-md mx-auto mt-10 mb-6 font-semibold text-slate-600'>Custom Amount (₹)</h1>
       <form className='px-34'>
         <div className='flex justify-between '>
           <div className='w-[48%]'>
