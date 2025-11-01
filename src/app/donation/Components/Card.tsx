@@ -22,7 +22,7 @@ export const Cards = ()=>{
             <OneCard 
             heading="Tech-Enabled Compassion" 
             content1="Simplifying bookings and documentation so families can focus on what matters most - being together and saying goodbye with peace."
-            content2="Bringing comfort through technology when words aren't enough."
+            content2="Bringing comfort through technology when words aren&apos;t enough."
             className="bg-[#25CCC0]"
             />
             <OneCard 
@@ -42,10 +42,10 @@ export const Cards = ()=>{
             <div className="bg-[#DFAA16] bg-[linear-gradient(181deg,rgba(223,170,22,1)_0%,rgba(188,145,27,1)_55%)] h-70 px-88 text-center flex flex-col items-center justify-around rounded-md shadow-xl text-white">
                 <div className="text-4xl font-semibold">Every Gift Becomes a Blessing</div>
                 <div>
-                    Your generosity doesn't just support our services - it wraps grieving families in love, brings comfort to their hearts, and honors the memory of those they've lost.
+                    Your generosity doesn&apos;t just support our services - it wraps grieving families in love, brings comfort to their hearts, and honors the memory of those they&apos;ve lost.
                 </div>
                 <div>
-                    Bringing comfort through technology when words aren't enough.
+                    Bringing comfort through technology when words aren&apos;t enough.
                 </div>
             </div>
         </div>
