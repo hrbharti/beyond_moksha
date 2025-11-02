@@ -1,14 +1,6 @@
-"use client"
-import React, { useState } from 'react'
-import PriceCard from './PriceCard'
-import { Heart } from "@deemlol/next-icons";
-import { Star } from "@deemlol/next-icons";
-import { Book } from "@deemlol/next-icons"
-import { Users } from "@deemlol/next-icons";
-import { Perks } from '../donation/Components/Perks';
-import {Cards} from '../donation/Components/Card';
-import Carousel from './Corousal'
-import { HeroSection } from '../donation/hero';
+"use client";
+import React, { useState } from "react";
+import { Heart, Star, Book, Users } from "@deemlol/next-icons";
 
 export default function ContactUs() {
   const [selected, setSelected] = useState<number>(1);
@@ -49,67 +41,99 @@ export default function ContactUs() {
   ];
 
   return (
-    <div className='border border-slate-300  pb-6'>
-      <HeroSection/>
-      <div className=' flex flex-col items-center justify-center px-84 mt-20'>
-        <div>
-          <h1 className='text-4xl text-[#1867AE] font-semibold'>Your Heart Can Heal Hearts</h1> 
-        </div>
-        <div className='text-center'>
-          When families face their darkest hours, your support becomes a beacon of hope. Together, we&apos;re not just building services - we&apos;re crafting moments of peace, dignity, and love that will be remembered forever.
-        </div>
-      </div>
-      {/* Perks */}
-      <div className='mt-20 px-34 flex items-center justify-center'>
-        <div className=' flex items-center justify-between w-275.75'>
-          <Perks heading='24x7' subHeading='Seamless Service'/>
-          <Perks heading='₹26K Cr' subHeading='Market Impact'/>
-          <Perks heading='Delhi First' subHeading='Tech Platform'/>
-        </div>
-      </div>
-      {/* cards */}
-      <div className='mt-20 px-34'>
-        <Cards/>
-      </div>
-      <h1 className='text-center font-semibold text-4xl mt-4'>Choose how you want to help</h1>
-      <div className="flex gap-8 items-center justify-center mt-10 px-34">
+    <div className="border-2 rounded-xl pb-10 px-4 md:px-8 lg:px-16 ">
+      {/* Header */}
+      <h1 className="text-center font-semibold text-2xl md:text-3xl mt-10 text-[#1a1a1a]">
+        Choose How You Want to Help
+      </h1>
+
+      {/* Cards */}
+      <div className="flex flex-wrap gap-5 justify-center mt-8">
         {cards.map((card) => (
           <div
             key={card.id}
-            onClick={() => setSelected(card.id)} >
-            <PriceCard {...card} isSelected={selected === card.id}/>
+            onClick={() => setSelected(card.id)}
+            className={`cursor-pointer border rounded-xl px-6 py-5 w-52 text-center transition-all duration-300 ${
+              selected === card.id
+                ? "border-[#f4ac5a] bg-[#fffaf4] shadow-md ring-1 ring-[#f4ac5a]/50 scale-[1.03]"
+                : "border-slate-300 hover:border-[#f4ac5a]/60 hover:bg-[#fffaf4]/30"
+            }`}
+          >
+            <div className="mb-2 flex justify-center">{card.logo}</div>
+            <p className="text-2xl font-bold text-[#1a1a1a]">₹{card.price}</p>
+            <p className="text-sm font-semibold mt-1 text-[#1a1a1a]/90">
+              {card.title}
+            </p>
+            <p className="text-[13px] mt-2 text-slate-600 leading-snug">
+              {card.description}
+            </p>
+            <p className="italic text-[#f4ac5a] text-[13px] mt-2">
+              {card.motto}
+            </p>
           </div>
         ))}
       </div>
-      <h1 className='px-14 py-1.5 border-2 border-slate-500 bg-slate-200 w-fit rounded-md mx-auto mt-10 mb-6 font-semibold text-slate-600'>Custom Amount (₹)</h1>
-      <form className='px-34'>
-        <div className='flex justify-between '>
-          <div className='w-[48%]'>
-            <p className='text-lg font-bold mb-1.5'>Full name *</p>
-            <input type='text' placeholder='Your Full Name' required className='px-3 py-1.5 outline-none text-lg rounded-sm font-normal bg-slate-200 text-slate-600 border border-slate-500 w-full' />
-          </div>
-          <div className='w-[48%]'>
-            <p className='text-lg font-bold mb-1.5'>Email Address</p>
-            <input type='email' placeholder='your.email@example.com' className='px-3 py-1.5 outline-none text-lg rounded-sm font-normal bg-slate-200 text-slate-600 border border-slate-500 w-full' />
-          </div>
+
+      {/* Custom Amount */}
+      <button
+        className="border border-slate-400 rounded-md px-6 py-2 mt-10 mx-auto block text-sm font-medium 
+        hover:border-[#f4ac5a] hover:text-[#f4ac5a] transition-all duration-300 text-slate-600"
+      >
+        Custom amount
+      </button>
+
+      {/* Form */}
+      <form className="max-w-4xl mx-auto mt-8 px-2 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <input
+            type="text"
+            placeholder="Name*"
+            required
+            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Name*"
+            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Name*"
+            required
+            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Name*"
+            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
+          />
         </div>
 
-        <div className='flex mt-4 justify-between'>
-          <div className='w-[48%]'>
-            <p className='text-lg font-bold mb-1.5'>Phone Number *</p>
-            <input type='text' placeholder='Your Full Name' required className='px-3 py-1.5 outline-none text-lg rounded-sm font-normal bg-slate-200 text-slate-600 border border-slate-500 w-full' />
-          </div>
-          <div className='w-[48%]'>
-            <p className='text-lg font-bold mb-1.5'>Message</p>
-            <textarea placeholder='Your message' className='px-3 py-1.5 outline-none text-lg rounded-sm font-normal bg-slate-200 text-slate-600 border border-slate-500 w-full' />
-          </div>
+        {/* Donation Summary */}
+        <div className="bg-[#f4ac5a] text-white text-center rounded-xl py-6 mt-10 shadow-md">
+          <p className="text-base font-medium">Your Gift of Compassion</p>
+          <p className="text-4xl md:text-5xl font-bold my-2">
+            ₹{cards[selected].price.toLocaleString()}
+          </p>
+          <p className="text-sm md:text-base">
+            Honoring life while protecting our earth
+          </p>
         </div>
-        <button type='submit' className='py-8 bg-[#f4ac5a] w-full rounded-xl mt-4'>
-          <p className='text-md text-white font-medium'>Your Gift of Compassion</p>
-          <p className='text-5xl font-bold text-white my-3'>₹ {cards[selected].price}</p>
-          <p className='text-md text-white font-medium'>{cards[selected].motto}</p>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="bg-[#d89a4f] hover:bg-[#f4ac5a] text-white font-semibold rounded-xl py-3 mt-6 w-full transition-all duration-300"
+        >
+          Share Your Love Securely
         </button>
+
+        {/* Footer Note */}
+        <p className="text-center text-slate-600 text-xs md:text-sm mt-4">
+          🔒 Your generosity is protected with secure payment • Tax receipts
+          provided • 100% of donations directly serve families
+        </p>
       </form>
     </div>
-  )
+  );
 }
