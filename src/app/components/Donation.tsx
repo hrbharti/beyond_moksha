@@ -85,28 +85,50 @@ export default function ContactUs() {
       {/* Form */}
       <form className="max-w-4xl mx-auto mt-8 px-2 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <input
-            type="text"
-            placeholder="Name*"
-            required
-            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Name*"
-            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Name*"
-            required
-            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Name*"
-            className="border border-slate-300 px-3 py-2 rounded-md text-sm focus:border-[#f4ac5a] outline-none"
-          />
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Name*
+            </label>
+            <input
+              type="text"
+              required
+              className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:border-[#f4ac5a] outline-none transition-all duration-200"
+              placeholder="Enter your Name"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              email*
+            </label>
+            <input
+              type="text"
+              required
+              className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:border-[#f4ac5a] outline-none transition-all duration-200"
+              placeholder="Enter your Email"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Phone Number*
+            </label>
+            <input
+              type="text"
+              required
+              className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:border-[#f4ac5a] outline-none transition-all duration-200"
+              placeholder="Enter your Phone Number"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Message*
+            </label>
+            <textarea
+              // type="text"
+              required
+              className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:border-[#f4ac5a] outline-none"
+              placeholder="Enter your message"
+            />
+          </div>
         </div>
 
         {/* Donation Summary */}
