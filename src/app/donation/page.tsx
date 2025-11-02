@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar } from '../components/Navbar'
 import Footer from '../components/Footer'
-import Donation from '../components/Donation'
+import Donation from './Components/Donation'
 import { Perks } from '../donation/Components/Perks';
 import { Cards } from '../donation/Components/Card';
 import { HeroSection } from '../donation/hero';

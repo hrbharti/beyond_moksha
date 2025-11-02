@@ -32,38 +32,38 @@ export default function Home() {
   };
   return (
     <div>
-      <Navbar onNavigate={scrollToSection}/>
+      <Navbar onNavigate={scrollToSection} />
       <div ref={homeRef}>
         <Corousal />
       </div>
-      <Pledge/>
+      <Pledge />
 
-          {/* services */}
-          <div ref={servicesRef} className="-mt-10">
-            <Section 
-              heading="Our Services" 
-              subHeading="We provide comprehensive services to support you through every step of your journey"
-              content={<Services/>}
-            />
-          </div>
-      
-          {/* blogs section */}
-          <div ref={blogRef} className="mt-18">
-              <Section 
-              heading="Latest From the Blogs" 
-              subHeading="Insights, guidance, and support to help you navigate difficult times"
-              content={<Blogs/>}
-            />
-          </div>
-      
-          {/* testimonials */}
-          
-          <Section 
-            heading="Hear from Families we’ve helped" 
-            subHeading="Real testimonials from families who trusted us during their most difficult times"
-            content={<Testimonials/>}
-          />
-      
+      {/* services */}
+      <div ref={servicesRef} className="-mt-10">
+        <Section
+          heading="Our Services"
+          subHeading="We provide comprehensive services to support you through every step of your journey"
+          content={<Services />}
+        />
+      </div>
+
+      {/* blogs section */}
+      <div ref={blogRef} className="mt-18">
+        <Section
+          heading="Latest From the Blogs"
+          subHeading="Insights, guidance, and support to help you navigate difficult times"
+          content={<Blogs />}
+        />
+      </div>
+
+      {/* testimonials */}
+
+      <Section
+        heading="Hear from Families we’ve helped"
+        subHeading="Real testimonials from families who trusted us during their most difficult times"
+        content={<Testimonials />}
+      />
+
       <Footer />
     </div>
   )

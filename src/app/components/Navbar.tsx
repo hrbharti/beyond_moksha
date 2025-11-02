@@ -43,7 +43,7 @@ export const Navbar = ({onNavigate}:navProps) => {
         }
     }
 
-    return <div className="h-30 w-full bg-red-500 sticky top-0 z-10">
+    return <div className="h-30 w-full bg-red-500 sticky top-0 z-50">
 
         {/* contact info */}
         <div className="h-10  flex items-center justify-between  bg-[#F4F6F8] px-34">
