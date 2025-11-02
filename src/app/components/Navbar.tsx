@@ -10,6 +10,7 @@ import { use, useState } from "react";
 import Logo from "@/app/components/utils/Logo"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import GmailLink from "./GmailLink";
 
 const navList = ["Home", "About Us", "Our Services", "Pandit Booking", "Blogs"];
 
@@ -47,8 +48,9 @@ export const Navbar = ({onNavigate}:navProps) => {
         {/* contact info */}
         <div className="h-10  flex items-center justify-between  bg-[#F4F6F8] px-34">
             <div className="flex gap-5 text-[#1F3A52] font-[16px]">
-                <div className="cursor-pointer">+91-8142884149</div>
-                <div className="cursor-pointer">ajdio@gmail.com</div>
+                <div className="cursor-pointer">+91-7050966971</div>
+                {/* <div className="cursor-pointer">beyondmoksha360@gmail.com</div> */}
+                <GmailLink email="beyondmoksha360@gmail.com" >beyondmoksha360@gmail.com</GmailLink>
             </div>
             <div className="flex gap-4 text-black">
 
