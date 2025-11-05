@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import founder from "../../../../../public/founder.jpeg"
 
 interface SidebarProps {
   isOpen: boolean;
@@ -40,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {/* Profile section */}
           <div className="w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] flex items-center justify-center">
             <Image
-              src="/placeholder-profile.png"
+              src={founder}
               alt="Profile"
               width={100}
               height={100}
