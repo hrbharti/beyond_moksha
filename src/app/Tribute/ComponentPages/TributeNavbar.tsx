@@ -33,7 +33,7 @@ export default function TributeNavbar() {
                     </Link>
                     <Link
                         href="#"
-                        className="bg-[#D4A043] text-white px-2 py-2 rounded-md hover:bg-[#C18E33] transition font-thin"
+                        className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white px-2 py-2 rounded-md hover:bg-[#C18E33] transition font-thin"
                     >
                         Create memorial
                     </Link>

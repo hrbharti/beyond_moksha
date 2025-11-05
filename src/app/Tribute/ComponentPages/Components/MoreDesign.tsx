@@ -9,7 +9,7 @@ export default function MoreDesign() {
                 You can browse more designs on our dedicated page:
             </p>
 
-            <button className="bg-[#D4A043] text-white font-medium px-8 py-3 rounded-md hover:bg-[#C18E33] transition">
+            <button className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white font-medium px-8 py-3 rounded-md hover:bg-[#C18E33] transition">
                 More Designs
             </button>
 

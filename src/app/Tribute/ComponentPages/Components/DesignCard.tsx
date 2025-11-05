@@ -59,7 +59,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
             size={20}
             className="text-[#1F3A4B] cursor-pointer hover:fill-[#D4A043] hover:text-[#D4A043] transition"
           />
-          <button className="bg-[#D4A043] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition">
+          <button className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition">
             View Memorial
           </button>
         </div>
