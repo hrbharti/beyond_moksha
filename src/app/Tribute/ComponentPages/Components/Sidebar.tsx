@@ -16,9 +16,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       {/* Overlay for mobile */}
       <div
         onClick={toggleSidebar}
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-[30] transition-opacity duration-300 md:hidden ${
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-[30] transition-opacity duration-300 md:hidden ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
       ></div>
 
       {/* Sidebar */}
@@ -39,15 +38,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         {/* Sidebar content */}
         <div className="flex flex-col items-center px-6 py-6 space-y-4 overflow-y-auto">
           {/* Profile section */}
-          <div className="w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] flex items-center justify-center">
+          <div className="relative w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] overflow-hidden">
             <Image
               src={founder}
               alt="Profile"
-              width={100}
-              height={100}
-              className="object-cover rounded-[24px]"
+              fill
+              className="object-cover"
             />
           </div>
+
           <h2 className="text-xl font-serif font-semibold text-[#1F3A4B] mt-2">
             Name
           </h2>
