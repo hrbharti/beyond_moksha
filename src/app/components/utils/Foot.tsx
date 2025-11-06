@@ -16,13 +16,13 @@ export default function Foot() {
 
     return <div className="h-full w-full   flex flex-col justify-end items-center ">
 
-        <div className="flex flex-col h-2/3 justify-between items-center p-2 w-full bg-[#1F3A52] ">
+        <div className="flex flex-col h-2/3 justify-between gap-[3rem] items-center p-2 w-full bg-[#1F3A52] py-4">
             {/* logo */}
             <div>
                 <Logo isNav={false} />
             </div>
 
-            {/* services */}
+            {/* pages */}
             <div className="flex gap-14">
                 <div className="cursor-pointer" onClick={()=>router.push('/')}>Home</div>
                 <div className="cursor-pointer" onClick={()=>router.push('/aboutus')}>About Us</div>

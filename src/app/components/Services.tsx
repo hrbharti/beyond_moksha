@@ -6,7 +6,7 @@ import petServices from "../../../public/Pet services.png";
 
 export const Services = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 w-full px-6 py-12 place-items-center mt-38">
+    <div  className="flex flex-wrap h-full items-center justify-center content-center gap-x-20 gap-y-15 mx-auto py-12">
       <ServicesCard
         heading="Human Services"
         subHeading="Comprehensive funeral services for individuals and family with dignity and respect."
