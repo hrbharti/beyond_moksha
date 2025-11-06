@@ -1,9 +1,15 @@
 import { Navbar } from "../components/Navbar";
+import Blog from "./component/Blog";
 import FeaturedPoojaServices from "./component/FeaturedPooja";
 import Hero from "./component/Hero";
 import HowItWorks from "./component/Howitworks";
 import SacredServices from "./component/SacredServices";
+import Testimonials from "./component/Testimonial";
 import TrendingPoojas from "./component/TrendingPooja";
+import WhyChooseUs from "./component/WhyChooseUs";
+import FormPage from "./component/FormPage";
+import JoinPanditSection from "./component/Req";
+import Footer from "./component/Footer";
 
 export default function PanditBookingPage() {
   return (
@@ -26,6 +32,26 @@ export default function PanditBookingPage() {
       <div>
         <HowItWorks/>
       </div>
+      <div>
+        <Blog/>
+      </div>
+
+        {/* <div>
+          <WhyChooseUs/>
+        </div> */}
+
+        <div>
+          <Testimonials/>
+        </div>
+        <FormPage />
+
+        <div>
+          <JoinPanditSection />
+        </div>
+
+        <div>
+          <Footer/>
+        </div>
     </div>
   );
 }
