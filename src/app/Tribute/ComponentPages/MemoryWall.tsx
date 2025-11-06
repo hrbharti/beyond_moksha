@@ -33,7 +33,7 @@ Her kindness and generosity touched everyone she met.`,
             Memory Wall
           </h1>
           <p className="text-gray-700 italic mb-2">
-            "To live in the hearts we leave behind is not to die."
+            &quot;To live in the hearts we leave behind is not to die.&quot;
           </p>
           <p className="text-gray-700">
             Please share your Photos and Memories about Shannon.
