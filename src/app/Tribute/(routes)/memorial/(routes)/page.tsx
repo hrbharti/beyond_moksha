@@ -1,10 +1,10 @@
 import Memorial from "@/app/tribute/ComponentPages/Components/Memorial";
-import HeroSection from "../../../ComponentPages/Components/MemorialHero";
 import Gallery from "@/app/tribute/ComponentPages/Gallery";
 import MemoryWall from "@/app/tribute/ComponentPages/MemoryWall";
 import TimelineSection from "@/app/tribute/ComponentPages/TimelineSection";
 import EventsSection from "@/app/tribute/ComponentPages/EventSection";
 import FamilyTree from "@/app/tribute/ComponentPages/FamilyTree";
+import HeroSection from "@/app/aboutus/components/hero";
 
 export default function Page() {
   return <div>
