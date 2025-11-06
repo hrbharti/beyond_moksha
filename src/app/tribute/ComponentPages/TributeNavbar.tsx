@@ -8,7 +8,7 @@ export default function TributeNavbar() {
 
     return (
         <nav className="w-full bg-[#1F3A4B] text-white py-4">
-            <div className="container mx-auto px-24 flex items-center justify-between">
+            <div className="container mx-auto px-10 md:px-24 flex items-center justify-between">
                 {/* Logo */}
                 <h1 className="text-4xl font-serif text-[#D4A043] tracking-wide">
                     Tribute

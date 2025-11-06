@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { X } from "lucide-react"; // ✅ cross icon
 import bird from "../../../../../public/bird.png";
+import Link from "next/link";
 
 interface MemorialSidebarProps {
   isOpen?: boolean;
@@ -15,11 +16,11 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
   toggleSidebar,
 }) => {
   const navItems = [
-    "Memorial",
-    "Timeline",
-    "Gallery",
-    "Memory Wall",
-    "Family Tree",
+    {name : "Memorial", href: "#memorial"},
+    {name : "Timeline", href: "#timeline"},
+    {name : "Gallery", href: "#gallery"},
+    {name : "Memory Wall", href: "#memory-wall"},
+    {name : "Family Tree", href: "#family-tree"},
   ];
 
   return (
@@ -53,7 +54,7 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
         </div>
 
         {/* Logo Section */}
-        <div className="flex flex-col items-center space-y-1 mb-12">
+        <Link href={"/"} className="flex flex-col items-center space-y-1 mb-12">
           <div className="flex items-center space-x-2">
             <Image src={bird} alt="Logo" width={36} height={36} />
             <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
@@ -63,18 +64,18 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
           <p className="text-xs text-[#1F3A4B]/60">
             Tag line for beyond moksha
           </p>
-        </div>
+        </Link>
 
         {/* Navigation Links */}
         <nav className="flex flex-col items-start space-y-8 pl-8 font-serif text-[#1F3A4B] w-full">
           {navItems.map((item) => (
             <a
-              key={item}
-              href="#"
+              key={item.name}
+              href={item.href}
               onClick={toggleSidebar}
               className="hover:text-[#D4A043] text-lg transition-colors"
             >
-              {item}
+              {item.name}
             </a>
           ))}
         </nav>
