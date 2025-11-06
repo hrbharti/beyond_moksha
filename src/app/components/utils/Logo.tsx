@@ -8,8 +8,8 @@ interface NavProps {
 export default function Logo({ isNav }: NavProps) {
 
     const beyondClassName = isNav
-        ? "bg-gradient-to-b from-[#4682B8] to-[#1F3A52] bg-clip-text text-transparent"
-        : "bg-[linear-gradient(90deg,#68553D_0%,#000_32.21%)] bg-clip-text text-transparent";
+        ? "text-[#1F3A52] text-gradient-to-t from-[#1F3A52] to-[#4682B8]"
+        : "text-[rgba(104,85,61,1)] text-gradient-to-r from-[rgba(104,85,61,1)] to-[rgba(0,0,0,1)] to-[55%]";
 
     const router = useRouter();
 

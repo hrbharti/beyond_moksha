@@ -8,9 +8,6 @@ import { Services } from "./components/Services"
 import { Blogs } from "./components/Blog"
 import { Testimonials } from "./components/Testimonial"
 import { useRef } from "react"
-import Partner from "./components/Partner"
-import GetInTouch from "./components/utils/GetInTouch"
-import Foot from "./components/utils/Foot"
 
 export default function Home() {
 
@@ -67,54 +64,7 @@ export default function Home() {
         content={<Testimonials />}
       />
 
-          {/* services */}
-          <div ref={servicesRef} >
-            <Section 
-              heading="Our Services" 
-              subHeading="We provide comprehensive services to support you through every step of your journey"
-              content={<Services/>}
-            />
-          </div>
-      
-          {/* blogs section */}
-          <div ref={blogRef} >
-              <Section 
-              heading="Latest From the Blogs" 
-              subHeading="Insights, guidance, and support to help you navigate difficult times"
-              content={<Blogs/>}
-            />
-          </div>
-      
-          {/* testimonials */}
-          
-          <Section 
-            heading="Hear from Families we’ve helped" 
-            subHeading="Real testimonials from families who trusted us during their most difficult times"
-            content={<Testimonials/>}
-          />
-          {/* Parterner */}
-
-          
-      
-          {/* Footer */}
-          <div className="h-auto w-full mt-10 text-white" >
-          
-                  {/* mail */}
-          
-                  <div className="h-2/3 pb-30 px-34 ">
-                      <GetInTouch />
-                  </div>
-          
-                 
-                  
-                  <Partner/>
-                   {/* Absolute footer */}
-                  <div className=" h-1/3 ">
-          
-                      <Foot />
-          
-                  </div>
-              </div>
+      <Footer />
     </div>
   )
 }
