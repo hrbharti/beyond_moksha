@@ -12,10 +12,10 @@ export default function Page() {
   return (
     <div>
       <Navbar />
-      <div className='px-25 flex h-[200vh] gap-6 mt-6'>
-        <div className='w-3/5 outline-2 outline-slate-600 rounded-2xl'>
+      <div className='px-25 flex h-[300vh] gap-6 mt-6 pb-2'>
+        <div className='w-3/4 outline-2 outline-slate-600 rounded-2xl'>
           <h1 className='text-5xl text-center font-bold mt-5'>Blogs</h1>
-          <div className='mt-10 flex gap-6 flex-wrap items-center justify-center'>
+          <div className='w-full flex flex-wrap justify-center gap-18 pt-10'>
             <BlogCard tag={"Card tag"} title='Your title' />
             <BlogCard tag={"Card tag"} title='Your title' />
             <BlogCard tag={"Card tag"} title='Your title' />
@@ -30,7 +30,7 @@ export default function Page() {
             <BlogCard tag={"Card tag"} title='Your title' />
           </div>
         </div>
-        <div className='w-2/5 h-[200vh]'>
+        <div className='w-1/4 h-[300vh] '>
           <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-3'>
             <h1 className='mb-2 text-2xl'>Browse Blogs</h1>
             <SideSearch />
@@ -44,7 +44,7 @@ export default function Page() {
             <SideCard />
             <SideCard />
           </div>
-          <div className='outline-2 outline-slate-500 rounded-lg h-screen mt-6'>
+          <div className='outline-2 h-[211vh] outline-slate-500 rounded-lg  mt-6'>
             <h1 className='text-3xl text-center '>Explore Topics</h1>
           </div>
         </div>
