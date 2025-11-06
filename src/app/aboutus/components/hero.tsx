@@ -8,7 +8,7 @@ export default function HeroSection() {
     <section className="relative w-full h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <Image
-        src={'/banner3.jpg'}
+        src={'/banner2.jpg'}
         alt="Beyond Moksha Background"
         fill
         priority
