@@ -8,7 +8,7 @@ const EventsSection: React.FC = () => {
 
   if (!mounted) return null;
   return (
-    <div className="w-5/6 bg-white text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20">
+    <div className="w-full md:w-5/6 bg-white text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20">
       <h1 className="text-3xl sm:text-5xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-10">Events</h1>
 
       {/* Main Event Card */}

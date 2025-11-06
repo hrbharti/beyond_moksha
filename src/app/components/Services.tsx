@@ -23,6 +23,7 @@ export const Services = () => {
         heading="Tribute"
         subHeading="Personalised tribute service to celebrate and honor a life well-lived."
         icon={nama}
+        route="\tribute"
       />
 
       <ServicesCard
