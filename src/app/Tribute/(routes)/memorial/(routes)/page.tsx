@@ -1,16 +1,21 @@
-import React from "react";
-import Memorial from "../../../ComponentPages/Components/MemorialHeroSection";
-import Gallery from "@/app/Tribute/ComponentPages/Gallery";
-import MemoryWall from "@/app/Tribute/ComponentPages/MemoryWall";
+import Memorial from "@/app/tribute/ComponentPages/Components/Memorial";
+import HeroSection from "../../../ComponentPages/Components/MemorialHero";
+import Gallery from "@/app/tribute/ComponentPages/Gallery";
+import MemoryWall from "@/app/tribute/ComponentPages/MemoryWall";
+import TimelineSection from "@/app/tribute/ComponentPages/TimelineSection";
+import EventsSection from "@/app/tribute/ComponentPages/EventSection";
+import FamilyTree from "@/app/tribute/ComponentPages/FamilyTree";
 
-const MemorialPage = () => {
-    return (
-        <div className="flex flex-col justify-center px-4 sm:px-6 md:px-10 lg:px-20 py-10">
-            <Memorial />
-            <Gallery />
-            <MemoryWall />
-        </div>
-    );
-};
-
-export default MemorialPage;
+export default function Page() {
+  return <div>
+    <HeroSection />
+    <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
+      <Memorial />
+      <TimelineSection />
+      <Gallery />
+      <MemoryWall />
+      <FamilyTree />
+      <EventsSection />
+    </div>
+  </div>;
+}

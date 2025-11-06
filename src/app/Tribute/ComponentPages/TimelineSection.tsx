@@ -1,0 +1,51 @@
+import React from "react";
+import TimelineCard from "./Components/TimelineCard";
+
+const timelineData = [
+  {
+    year: "1973",
+    date: "March 16th",
+    title: "Title",
+    description: "Description of this event.",
+    location: "Location (optional)",
+  },
+  {
+    year: "1980",
+    date: "April 12th",
+    title: "Started Career",
+    description: "Worked as a financial analyst and mentor.",
+    location: "New York, USA",
+  },
+  {
+    year: "1995",
+    date: "June 8th",
+    title: "Family Milestone",
+    description: "Welcomed their first child.",
+  },
+];
+
+const TimelineSection: React.FC = () => {
+  return (
+    <div className="w-full bg-white text-[#1F3A4B] py-12 sm:py-16 lg:py-20 font-serif">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-12">
+        Timeline
+      </h1>
+
+      <div className="flex flex-col gap-10">
+        {timelineData.map((item, index) => (
+          <TimelineCard
+            key={index}
+            year={item.year}
+            date={item.date}
+            title={item.title}
+            description={item.description}
+            location={item.location}
+            isLast={index === timelineData.length - 1}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default TimelineSection;

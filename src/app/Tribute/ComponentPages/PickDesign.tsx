@@ -22,6 +22,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="1"
           />
           <DesignCard
             imageSrc={design2}
@@ -30,6 +31,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="2"
           />
           <DesignCard
             imageSrc={design3}
@@ -38,6 +40,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="3"
           />
           <DesignCard
             imageSrc={design1}
@@ -46,6 +49,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="1"
           />
           <DesignCard
             imageSrc={design2}
@@ -54,6 +58,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="2"
           />
           <DesignCard
             imageSrc={design3}
@@ -62,6 +67,7 @@ const PickDesign: React.FC = () => {
             dob="DOB"
             dod="DOD"
             location="Location"
+            theme="3"
           />
         </div>
 

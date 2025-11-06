@@ -1,6 +1,7 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import { Heart } from "lucide-react";
+import Link from "next/link";
 
 interface DesignCardProps {
   imageSrc: StaticImageData;
@@ -10,6 +11,7 @@ interface DesignCardProps {
   dob?: string;
   dod?: string;
   location?: string;
+  theme ?: string;
 }
 
 const DesignCard: React.FC<DesignCardProps> = ({
@@ -20,6 +22,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
   dob = "DOB",
   dod = "DOD",
   location = "Location",
+  theme = '1'
 }) => {
   return (
     <div className="w-full max-w-[340px] border border-gray-300 rounded-xl overflow-hidden bg-white">
@@ -59,9 +62,9 @@ const DesignCard: React.FC<DesignCardProps> = ({
             size={20}
             className="text-[#1F3A4B] cursor-pointer hover:fill-[#D4A043] hover:text-[#D4A043] transition"
           />
-          <button className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition">
+          <Link href={`/tribute/memorial?theme=${theme}`} className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition">
             View Memorial
-          </button>
+          </Link>
         </div>
       </div>
     </div>
