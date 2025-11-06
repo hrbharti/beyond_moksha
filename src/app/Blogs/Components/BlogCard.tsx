@@ -3,7 +3,7 @@ import React from "react"
 
 export default function BlogCard({ tag, title }: { tag: string, title: string }) {
   return (
-    <div className="bg-white border rounded-lg shadow hover:shadow-lg transition p-1 max-w-[220px] w-[13.5rem] h-[18.25rem]">
+    <div className="bg-white border rounded-lg shadow hover:shadow-lg transition p-1 w-[13.5rem] h-[18.25rem]">
       <div className="w-full h-1/2 overflow-hidden rounded-md">
         <Image
           src="/blog.jpg"

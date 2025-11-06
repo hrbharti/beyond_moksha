@@ -28,14 +28,14 @@ export const Navbar = ({onNavigate}:navProps) => {
         setActivePage(item);
         setMobileMenuOpen(false);
 
-        if(onNavigate && item != 'About Us' && item != 'Pandit Booking' && item != 'Blogs'){
+        if(onNavigate && item !== 'About Us' && item !== 'Pandit Booking' && item !== 'Blogs'){
             onNavigate(item)
         }
 
-        if(item == 'Home') router.push('/');
-        if(item == 'Blogs') router.push('/Blogs')
-        if(item == 'About Us') router.push('/aboutus')
-        if(item == 'Pandit Booking') router.push('/panditbooking')
+        if(item === 'Home') router.push('/');
+        if(item === 'Blogs') router.push('/Blogs')
+        if(item === 'About Us') router.push('/aboutus')
+        if(item === 'Pandit Booking') router.push('/panditbooking')
     }
 
     return (
@@ -73,7 +73,7 @@ export const Navbar = ({onNavigate}:navProps) => {
                     {navList.map((item, key) => (
                         <div
                             key={key}
-                            className={`cursor-pointer ${item == activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} hover:text-[#1867AE] transition`}
+                            className={`cursor-pointer ${item === activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} hover:text-[#1867AE] transition`}
                             onClick={() => onClickHandler(item)}
                         >
                             {item}

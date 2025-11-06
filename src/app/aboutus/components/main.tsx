@@ -66,7 +66,7 @@ export default function AboutUsPage() {
     {/* Our Pledge and Promise */}
     <section className="mt-20">
       <div className="h-[80vh] w-full flex items-center justify-center px-4">
-        <div className="flex px-10 p-[10vh] items-center justify-between">
+        <div className="flex px-10 py-[10vh] items-center justify-between">
           <div className="h-70 mr-8 flex flex-col items-start justify-around w-3/5">
             <div className="text-[2.5rem] font-semibold pl-50 text-[#1867AE]">Our Pledge and Promise</div>
             <div className="p-6 flex item-center justify-end mt-4">
@@ -112,7 +112,7 @@ export default function AboutUsPage() {
             <div className="bg-white rounded-2xl shadow-md px-8 py-10 text-[#222] border border-[#ececec]">
               <div className="text-2xl font-semibold mb-2 text-center ">Vision:</div>
               <div className="text-lg text-center  leading-relaxed">
-                To be India’s most trusted name in end-of-life care, known for integrity, warmth, and reliability in life’s hardest moments.
+                To be India&apos;s most trusted name in end-of-life care, known for integrity, warmth, and reliability in life’s hardest moments.
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function AboutUsPage() {
         {/* Heading */}
         <div className="flex items-center justify-center pb-12">
           <h1 className="text-[2.5rem] md:text-[2.8rem] font-semibold text-[#1867AE] text-center">
-            Our Core Principals
+            Our Core Principles
           </h1>
         </div>
         {/* Grid Layout */}
