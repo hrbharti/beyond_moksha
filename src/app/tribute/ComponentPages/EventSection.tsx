@@ -27,8 +27,7 @@ const EventsSection: React.FC = () => {
             individual.
           </p>
           <p>
-            Please join us in commemorating Shannon's life and the positive
-            impact she had on all of us.
+            Please join us in commemorating Shannon&apos;s life and the positive impact she had on all of us.
           </p>
         </div>
 
