@@ -1,7 +1,12 @@
-import React from "react";
+"use client"
+import { useEffect, useState } from "react";
 import { MapPin, CalendarDays, Video } from "lucide-react";
 
 const EventsSection: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
   return (
     <div className="w-5/6 bg-white text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20">
       <h1 className="text-3xl sm:text-5xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-10">Events</h1>

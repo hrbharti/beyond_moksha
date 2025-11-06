@@ -4,7 +4,7 @@ import MemoryWall from "@/app/tribute/ComponentPages/MemoryWall";
 import TimelineSection from "@/app/tribute/ComponentPages/TimelineSection";
 import EventsSection from "@/app/tribute/ComponentPages/EventSection";
 import FamilyTree from "@/app/tribute/ComponentPages/FamilyTree";
-import HeroSection from "@/app/aboutus/components/hero";
+import HeroSection from "@/app/tribute/ComponentPages/Components/MemorialHero";
 
 export default function Page() {
   return <div>
