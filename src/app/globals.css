@@ -4,6 +4,12 @@
   @apply w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#D29D39];
 }
 
+.stroke-text {
+  -webkit-text-stroke: 2px #3B82F6;
+  color: transparent; /* ensures outline only */
+}
+
+
 
 @custom-variant dark (&:is(.dark *));
 
