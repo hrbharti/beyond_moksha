@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import GmailLink from "./GmailLink";
 
-const navList = ["Home", "About Us", "Our Services", "Pandit Booking", "Blogs"];
+const navList = ["Home", "About Us", "Legacy Vault", "Pandit Booking", "Blogs"];
 
 interface navProps{
     onNavigate?:(section: string) => void
@@ -36,6 +36,7 @@ export const Navbar = ({onNavigate}:navProps) => {
         if(item === 'Blogs') router.push('/Blogs')
         if(item === 'About Us') router.push('/aboutus')
         if(item === 'Pandit Booking') router.push('/panditbooking')
+        if(item === 'Legacy Vault') router.push('/legacy-vault')
     }
 
     return (
