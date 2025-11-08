@@ -25,7 +25,7 @@ Her kindness and generosity touched everyone she met.`,
   ];
 
   return (
-    <section className="w-full max-w-5xl text-[#1F3A4B] mt-24">
+    <div id="memory-wall" className="w-full max-w-5xl text-[#1F3A4B] mt-24">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10 space-y-6 md:space-y-0">
         <div>
@@ -56,7 +56,7 @@ Her kindness and generosity touched everyone she met.`,
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 

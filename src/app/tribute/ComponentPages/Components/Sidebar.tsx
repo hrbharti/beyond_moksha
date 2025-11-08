@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import founder from "../../../../../public/founder.jpeg"
+import { useSearchParams } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,6 +12,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const searchParams = useSearchParams();
+  const theme = searchParams.get("theme");
   return (
     <>
       {/* Overlay for mobile */}
@@ -24,6 +27,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <aside
         className={`fixed right-0 top-[72px] h-[calc(100vh-72px)] w-72 bg-white border-l border-gray-200 shadow-lg z-[40] transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "translate-x-full"} md:translate-x-0`}
+        style={{
+          backgroundImage: `url(/${theme}.jpg)`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
       >
         {/* Close button for mobile */}
         <div className="md:hidden flex justify-end p-4">
@@ -36,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         </div>
 
         {/* Sidebar content */}
-        <div className="flex flex-col items-center px-6 py-6 space-y-4 overflow-y-auto">
+        <div className="flex flex-col items-center px-6 py-6 space-y-4 overflow-y-auto" >
           {/* Profile section */}
           <div className="relative w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] overflow-hidden">
             <Image

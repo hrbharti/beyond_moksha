@@ -26,7 +26,7 @@ const timelineData = [
 
 const TimelineSection: React.FC = () => {
   return (
-    <div className="w-full bg-white text-[#1F3A4B] py-12 sm:py-16 lg:py-20 font-serif">
+    <div id="timeline" className="w-full bg-white text-[#1F3A4B] py-12 sm:py-16 lg:py-20 font-serif">
       <h1 className="text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-12">
         Timeline
       </h1>

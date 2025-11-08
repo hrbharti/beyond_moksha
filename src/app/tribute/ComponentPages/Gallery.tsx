@@ -21,7 +21,7 @@ const Gallery: React.FC = () => {
   ];
 
   return (
-    <section className="w-full max-w-6xl mt-24">
+    <div id="gallery" className="w-full max-w-6xl mt-24">
       {/* Title */}
       <h1 className="text-3xl md:text-5xl font-serif mb-8 text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950">
         Gallery
@@ -64,7 +64,7 @@ const Gallery: React.FC = () => {
           </p>
         </div>
       )}
-    </section>
+    </div>
   );
 };
 

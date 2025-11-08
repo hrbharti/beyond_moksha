@@ -2,7 +2,7 @@
 
 const Memorial: React.FC = () => {
   return (
-    <section className="w-full max-w-4xl ">
+    <section className="w-full max-w-4xl" id="memorial">
       {/* Heading */}
       <h1 className="text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 text-3xl md:text-5xl font-serif mb-8">
         Memorial

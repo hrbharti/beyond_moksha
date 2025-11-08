@@ -7,6 +7,7 @@ import HonorYour from '../ComponentPages/HonorYour'
 import HowItWorks from '../ComponentPages/HowItWorks'
 import PickDesign from '../ComponentPages/PickDesign'
 import FurryFriends from '../ComponentPages/FurryFriends'
+import FurryFriendsSection from '../ComponentPages/FurryFriendSection'
 
 export default function page() {
   return (
@@ -18,7 +19,8 @@ export default function page() {
             <HonorYour />
             <HowItWorks />
             <PickDesign />
-            <FurryFriends />
+            {/* <FurryFriends /> */}
+            <FurryFriendsSection />
         </div>
       <Footer />
     </div>
