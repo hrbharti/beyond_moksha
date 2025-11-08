@@ -16,7 +16,7 @@ export default function BookPujaForm() {
   const [time, setTime] = useState("");
   const [requirements, setRequirements] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("clicked");
 
