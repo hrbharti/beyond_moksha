@@ -66,35 +66,6 @@ export default function Home() {
         subHeading="Real testimonials from families who trusted us during their most difficult times"
         content={<Testimonials />}
       />
-
-          {/* services */}
-          <div ref={servicesRef} >
-            <Section 
-              heading="Our Services" 
-              subHeading="We provide comprehensive services to support you through every step of your journey"
-              content={<Services/>}
-            />
-          </div>
-      
-          {/* blogs section */}
-          <div ref={blogRef} >
-              <Section 
-              heading="Latest From the Blogs" 
-              subHeading="Insights, guidance, and support to help you navigate difficult times"
-              content={<Blogs/>}
-            />
-          </div>
-      
-          {/* testimonials */}
-          
-          <Section 
-            heading="Hear from Families we’ve helped" 
-            subHeading="Real testimonials from families who trusted us during their most difficult times"
-            content={<Testimonials/>}
-          />
-          {/* Parterner */}
-
-          
       
           {/* Footer */}
           <div className="h-auto w-full mt-10 text-white" >
