@@ -30,6 +30,7 @@ export const Services = () => {
         heading="Legacy Vault"
         subHeading="Preserve memories and create lasting legacies for future generations."
         icon={legacy}
+        route="/legacy-vault"
       />
     </div>
   );
