@@ -16,19 +16,19 @@ export default function GetInTouch() {
             <div className="px-2 text-xl py-[2.75rem]">Send us an Email</div>
             <div className="h-[90%] w-full border border-[#1F3A52]  rounded-md">
                 {/* form */}
-                <div className="h-full w-full  rounded-md border flex items-center justify-between p-10">
-                    <div className=' h-full w-1/2 '>
+                <div className="h-full w-full  rounded-md border flex items-center justify-between p-10 ">
+                    <div className=' h-full w-2/3 '>
                         {/* inputs */}
 
 
 
-                        <div className='h-[25%] flex gap-2 '>
-                            <div><Input type='text' title='Name' required={true} /></div>
-                            <div><Input type='text' title='Email Address' required={true} /></div>
+                        <div className='h-[25%] flex gap-2 w-full '>
+                            <div className='w-2/5'><Input type='text' title='Name' required={true} /></div>
+                            <div className='w-3/5'><Input type='text' title='Email Address' required={true} /></div>
                         </div>
-                        <div className='h-[25%] flex gap-2'>
-                            <div><Input type='number' title='Phone' required={false} /></div>
-                            <div><Input type='text' title='Services' required={true} /></div>
+                        <div className='h-[25%] flex gap-2 w-full'>
+                            <div className='w-2/5'><Input type='number' title='Phone' required={false} /></div>
+                            <div className='w-3/5'><Input type='text' title='Services' required={true} /></div>
                         </div>
                         <div className='h-[25%] '>
                             <div><Input type='textarea' title='Messages' required={true} /></div>

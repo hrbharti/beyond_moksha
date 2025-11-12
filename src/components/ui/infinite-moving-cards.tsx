@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export const InfiniteMovingCards = ({
@@ -14,6 +15,8 @@ export const InfiniteMovingCards = ({
     quote: string;
     name: string;
     title?: string;
+    image: string;
+    profession: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -87,10 +90,34 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item) => (
           <li
-            className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-b-0 border-zinc-200  px-8 py-6 md:w-[450px] dark:border-zinc-700 shadow-xl"
+            className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-black px-8 py-6 md:w-[450px] dark:border-zinc-700 shadow-xl"
             key={item.name}
           >
             <blockquote>
+              <div className="flex">
+                <div>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={40}
+                    height={40}
+                    className="rounded-full shadow-md"
+                  />
+                </div>
+
+              <div>
+                <div className="relative z-20 ml-6 flex flex-row items-center ">
+                <span className="flex flex-col gap-1">
+                  <span className="text-lg font-semibold leading-[1.2] text-neutral-500 dark:text-gray-400">
+                    {item.name}
+                  </span>
+                  <span className="text-sm leading-[1.6] font-normal text-neutral-500 dark:text-gray-400">
+                    {item.profession}
+                  </span>
+                </span>
+              </div>
+              </div>
+              </div>
               <div
                 aria-hidden="true"
                 className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
@@ -98,16 +125,7 @@ export const InfiniteMovingCards = ({
               <span className="relative z-20 text-sm leading-[1.6] font-normal text-neutral-800 dark:text-gray-100">
                 {item.quote}
               </span>
-              <div className="relative z-20 mt-6 flex flex-row items-center">
-                <span className="flex flex-col gap-1">
-                  <span className="text-sm leading-[1.6] font-normal text-neutral-500 dark:text-gray-400">
-                    {item.name}
-                  </span>
-                  <span className="text-sm leading-[1.6] font-normal text-neutral-500 dark:text-gray-400">
-                    {item.title}
-                  </span>
-                </span>
-              </div>
+              
             </blockquote>
           </li>
         ))}
