@@ -4,7 +4,7 @@ export default function WhyChooseLegacyVault() {
       <div className="max-w-7xl mx-auto">
 
         {/* Heading */}
-        <h2 className="text-center text-3xl md:text-5xl font-semibold text-[#1A2E46]">
+        <h2 className="text-center text-3xl md:text-5xl font-lora font-bold text-[#1A2E46]">
           Why Choose{" "}
           <span className="text-[#0A66FF]">Legacy Vault?</span>
         </h2>
@@ -16,7 +16,7 @@ export default function WhyChooseLegacyVault() {
                 <div className="flex h-70 gap-10">
                     {/* Card 1 */}
                     <div className="bg-[#0b2248] text-white rounded-[24px] p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] w-75">
-                        <h3 className="text-xl font-semibold">One Secure Vault</h3>
+                        <h3 className="text-xl font-lora font-normal">One Secure Vault</h3>
                         <p className="mt-4 text-sm leading-relaxed text-[#CDD6E3]">
                         Store all financial records, IDs,
                         policies, and legal papers in
@@ -27,7 +27,7 @@ export default function WhyChooseLegacyVault() {
 
                     {/* Card 2 */}
                     <div className="bg-white rounded-[24px] p-8 border border-[#3B82F6]/40 shadow-[0_4px_12px_rgba(0,0,0,0.05)] w-75">
-                        <h3 className="text-xl font-semibold text-[#1A2E46]">Your Memories Preserved</h3>
+                        <h3 className="text-xl font-lora font-normal text-[#1A2E46]">Your Memories Preserved</h3>
                         <p className="mt-4 text-sm leading-relaxed text-[#4E5A6C]">
                         Save photos, videos, voice
                         notes, and final messages so
@@ -40,7 +40,7 @@ export default function WhyChooseLegacyVault() {
 
                 {/* Bottom Wide Card */}
                 <div className="mt-10 h-50 w-160 bg-[#0b2248] text-white rounded-[24px] p-10 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
-                <h3 className="text-xl font-semibold">Your Wishes, Honored</h3>
+                <h3 className="text-xl font-lora font-normal">Your Wishes, Honored</h3>
                 <p className="mt-4 text-sm max-w-2xl leading-relaxed text-[#CDD6E3]">
                     Keep wills, nominees, and instructions ready. No confusion for your
                     family when it matters most.
@@ -51,7 +51,7 @@ export default function WhyChooseLegacyVault() {
           {/* Card 3 - Tall Card */}
           <div className="bg-[#0b2248] text-white rounded-[24px] p-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] flex flex-col justify-between min-h-[280px]">
             <div>
-              <h3 className="text-xl font-semibold">Controlled Sharing</h3>
+              <h3 className="text-xl font-lora font-normal">Controlled Sharing</h3>
               <p className="mt-4 text-sm leading-relaxed text-[#CDD6E3]">
                 Choose who sees what and
                 when. You control every

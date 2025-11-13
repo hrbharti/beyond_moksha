@@ -8,7 +8,7 @@ export default function GetInTouch() {
     return <div className=" h-full text-black flex flex-col justify-center items-center ">
 
         <div className="flex flex-col items-center justify-center  gap-3 ">
-            <div className="text-4xl font-semibold tracking-wider bg-gradient-to-t from-[#1F3A52] to-[#4682B8]  bg-clip-text text-transparent">Get in touch with us</div>
+            <div className="text-4xl tracking-wider bg-gradient-to-t from-[#1F3A52] to-[#4682B8]  bg-clip-text text-transparent font-lora font-normal">Get in touch with us</div>
             <div className='mt-6'>We are here to help you through this difficult time. Reach out to us anytime</div>
 
         </div>

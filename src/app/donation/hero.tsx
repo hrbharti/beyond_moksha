@@ -15,7 +15,7 @@ export const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-3xl text-white">
-        <h1 className="text-4xl sm:text-5xl font-semibold leading-tight mb-6">
+        <h1 className="text-4xl sm:text-5xl leading-tight mb-6 font-lora font-normal">
           Bringing Comfort in Life&apos;s Hardest Moments
         </h1>
         <p className="text-lg sm:text-xl mb-8">

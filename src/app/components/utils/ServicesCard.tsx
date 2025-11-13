@@ -19,7 +19,7 @@ export const ServicesCard = ({ heading, subHeading, icon, route }: ServicesCardP
       </div>
 
       {/* Heading */}
-      <h2 className="text-[#1F3A52] text-xl font-semibold mb-2">
+      <h2 className="text-[#1F3A52] text-xl font-lora font-normal mb-2">
         {heading}
       </h2>
 

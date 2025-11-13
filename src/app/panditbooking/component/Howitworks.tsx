@@ -11,7 +11,7 @@ export default function HowItWorks() {
 
         {/* Title */}
         <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F3A52]">
+          <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
             How it Works
           </h2>
 

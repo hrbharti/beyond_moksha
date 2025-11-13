@@ -52,7 +52,7 @@ export default function TrendingPoojas() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6 text-center">
         {/* Title */}
-        <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F3A52]">
+        <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
           This Months Trending <span className="text-[#D29D39]">Pooja</span>
         </h2>
 
@@ -74,7 +74,7 @@ export default function TrendingPoojas() {
           {poojas.map((p, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 border border-gray-100 h-[20.5625rem] w-[15rem]"
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 border border-[#979797] h-[20.5625rem] w-[15rem]"
             >
               <div className="w-full h-44 rounded-lg overflow-hidden">
                 <Image

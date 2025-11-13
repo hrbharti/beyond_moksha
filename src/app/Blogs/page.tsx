@@ -14,7 +14,7 @@ export default function Page() {
       <Navbar />
       <div className='px-25 flex h-[300vh] gap-6 mt-6 pb-2'>
         <div className='w-3/4 outline-2 outline-slate-600 rounded-2xl'>
-          <h1 className='text-5xl text-center font-bold mt-5'>Blogs</h1>
+          <h1 className='text-5xl text-center mt-5 font-lora font-normal'>Blogs</h1>
           <div className='w-full flex flex-wrap justify-center gap-18 pt-10'>
             <BlogCard tag={"Card tag"} title='Your title' />
             <BlogCard tag={"Card tag"} title='Your title' />

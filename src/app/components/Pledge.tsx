@@ -10,7 +10,7 @@ export const Pledge = () => {
         <div className="flex flex-wrap justify-center gap-10 w-full max-w-6xl  h-full">
           {/* Card 1 */}
           <div className="border-2 border-[#1F3A52] p-6 w-[300px] md:w-[320px] h-[80%] shadow-sm ">
-            <h2 className="text-[#C89C2E] font-semibold text-xl mb-3">
+            <h2 className="text-[#C89C2E]  text-xl mb-3 font-lora font-normal">
               Our Pledge & Promise
             </h2>
             <p className="text-[#1F3A52] text-sm leading-relaxed">
@@ -25,7 +25,7 @@ export const Pledge = () => {
           {/* Card 2 */}
           <div className="flex flex-col justify-end">
             <div className="border-2 border-[#1F3A52] p-6 w-[300px] md:w-[320px] h-[80%] shadow-sm">
-            <h2 className="text-[#C89C2E] font-semibold text-xl mb-3 text-center">
+            <h2 className="text-[#C89C2E]  text-xl mb-3 text-center font-lora font-normal">
               Mission Statement & Principles
             </h2>
             <p className="text-[#1F3A52] text-sm leading-relaxed">
@@ -48,7 +48,7 @@ export const Pledge = () => {
               className="w-50 h-50 mb-4 object-contain"
             />
             <div className="border-2 border-[#1F3A52] p-6 w-[300px] md:w-[320px] min-h-[260px] shadow-sm ">
-              <h2 className="text-[#C89C2E] font-semibold text-xl mb-3">
+              <h2 className="text-[#C89C2E]  text-xl mb-3 font-lora font-normal">
                 Our Core Principles
               </h2>
               <ul className="list-disc pl-5 text-[#1F3A52] text-sm leading-relaxed">

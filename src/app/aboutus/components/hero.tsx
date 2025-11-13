@@ -20,7 +20,7 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">
+        <h1 className="text-4xl sm:text-5xl mb-4 drop-shadow-lg font-lora font-bold">
           Hi we’re Beyond Moksha
         </h1>
 

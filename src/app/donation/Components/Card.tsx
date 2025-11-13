@@ -8,7 +8,7 @@ interface OneCardProps{
 const OneCard = ({heading, content1, content2 , className}:OneCardProps)=>{
 
     return <div className={`h-90 w-1/3 flex flex-col items-center justify-around shadow-xl rounded-md border-2 ${className} text-white`}>
-            <div className="h-3/10 w-full flex items-center justify-center text-2xl font-semibold">{heading}</div>
+            <div className="h-3/10 w-full flex items-center justify-center text-2xl font-lora font-normal">{heading}</div>
             <div className="h-9/12 w-full flex flex-col items-center justify-center text-center gap-6 px-4 -mt-16 ">
                 <div className="text-xl">{content1}</div>
                 <div className="text-xl">{content2}</div>
@@ -40,7 +40,7 @@ export const Cards = ()=>{
         </div>
         <div className="mt-20">
             <div className="bg-[#DFAA16] bg-[linear-gradient(181deg,rgba(223,170,22,1)_0%,rgba(188,145,27,1)_55%)] h-70 px-88 text-center flex flex-col items-center justify-around rounded-md shadow-xl text-white">
-                <div className="text-4xl font-semibold">Every Gift Becomes a Blessing</div>
+                <div className="text-4xl font-lora font-normal">Every Gift Becomes a Blessing</div>
                 <div>
                     Your generosity doesn&apos;t just support our services - it wraps grieving families in love, brings comfort to their hearts, and honors the memory of those they&apos;ve lost.
                 </div>
@@ -52,7 +52,7 @@ export const Cards = ()=>{
         <div className="mt-20">
             <div className=' flex flex-col items-center justify-center px-84'>
                 <div>
-                <h1 className='text-4xl text-[#1867AE] font-semibold'>Your Kindness Creates Miracles</h1> 
+                <h1 className='text-4xl text-[#1867AE] font-lora font-normal'>Your Kindness Creates Miracles</h1> 
                 </div>
                 <div className='text-center'>
                 In moments when families feel most alone, your generosity becomes their strength. Every contribution is a hand extended in love, a promise that they are not forgotten.
