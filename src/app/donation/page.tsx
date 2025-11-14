@@ -14,7 +14,7 @@ export default function page() {
       <HeroSection />
       <div className='flex flex-col items-center justify-center px-84 mt-20'>
         <div>
-          <h1 className='text-4xl text-[#1867AE] font-semibold'>Your Heart Can Heal Hearts</h1>
+          <h1 className='text-4xl text-[#1867AE] font-lora font-normal'>Your Heart Can Heal Hearts</h1>
         </div>
         <div className='text-center'>
           When families face their darkest hours, your support becomes a beacon of hope. Together, we&apos;re not just building services - we&apos;re crafting moments of peace, dignity, and love that will be remembered forever.

@@ -5,7 +5,7 @@ export default function HowToCreateEmotionalWill() {
     <section className="w-full bg-[#F1F8FC] py-20 px-6">
       <div className="max-w-6xl mx-auto">
         
-        <h2 className="text-center text-3xl md:text-4xl font-semibold text-[#1A2E46]">
+        <h2 className="text-center text-3xl md:text-4xl font-lora font-bold text-[#1A2E46]">
           How to create{" "}
           <span className="text-[#0866FF] cursor-pointer">
             Emotional will

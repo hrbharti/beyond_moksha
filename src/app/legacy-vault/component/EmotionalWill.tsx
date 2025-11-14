@@ -7,7 +7,7 @@ export default function EmotionalWill() {
 
         {/* LEFT SIDE */}
         <div>
-          <h2 className="text-[48px] md:text-[64px] font-semibold text-[#1A2E46]">
+          <h2 className="text-[48px] md:text-[64px] font-lora font-normal text-[#1A2E46]">
             Emotional Will
           </h2>
 

@@ -29,7 +29,7 @@ export default function AboutUsPage() {
           <div aria-hidden className="absolute inset-0 rounded-[150px] ring-1 ring-[#D7D7D7] -translate-x-[8px] -translate-y-[8px] h-125" />
           <div aria-hidden className="absolute inset-0 rounded-[150px] ring-1 ring-[#D1B26F] translate-x-[8px] translate-y-[8px] h-125" />
           <div className="relative bg-white rounded-[150px] p-8 md:p-10 max-w-[600px] shadow-sm h-125">
-            <h2 className="text-[28px] md:text-[30px] font-semibold text-center ">
+            <h2 className="text-[28px] md:text-[30px] font-lora font-normal text-center">
               A Note from Our Founder
             </h2>
 
@@ -68,7 +68,7 @@ export default function AboutUsPage() {
       <div className="h-[80vh] w-full flex items-center justify-center px-4">
         <div className="flex px-10 py-[10vh] items-center justify-between">
           <div className="h-70 mr-8 flex flex-col items-start justify-around w-3/5">
-            <div className="text-[2.5rem] font-semibold pl-50 text-[#1867AE]">Our Pledge and Promise</div>
+            <div className="text-[2.5rem] pl-50 text-[#1867AE] font-lora font-normal">Our Pledge and Promise</div>
             <div className="p-6 flex item-center justify-end mt-4">
               <div className="h-60 bg-[#D8EDFF] w-[85%] flex items-center justify-center p-8 text-xl rounded-3xl inset-shadow-sm">
                 <span className="text-center">
@@ -94,7 +94,7 @@ export default function AboutUsPage() {
     <section className="w-full bg-white py-12 mt-20">
       <div>
         <div className="flex items-center justify-center pt-6 pb-10">
-          <h1 className="text-[2.5rem] md:text-[2.8rem] font-semibold text-[#2471B6] text-center">
+          <h1 className="text-[2.5rem] md:text-[2.8rem] text-[#2471B6] text-center font-lora font-normal">
             Mission Statement & Principals
           </h1>
         </div>
@@ -129,7 +129,7 @@ export default function AboutUsPage() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <div className="flex items-center justify-center pb-12">
-          <h1 className="text-[2.5rem] md:text-[2.8rem] font-semibold text-[#1867AE] text-center">
+          <h1 className="text-[2.5rem] md:text-[2.8rem] text-[#1867AE] text-center font-lora font-normal">
             Our Core Principles
           </h1>
         </div>

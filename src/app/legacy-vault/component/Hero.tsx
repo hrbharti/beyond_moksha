@@ -7,11 +7,11 @@ export default function HeroSection() {
 
         {/* LEFT SIDE */}
         <div>
-          <h1 className="text-[64px] font-bold leading-tight text-[#3C609B]">
+          <h1 className="text-[64px] font-lora font-normal leading-tight text-[#3C609B]">
             Legacy Vault
           </h1>
 
-          <h2 className="mt-2 text-[48px] font-semibold leading-snug text-black">
+          <h2 className="mt-2 text-[48px] font-lora font-normal leading-snug text-black">
             dedicated to securing your<br/>legacy.
           </h2>
 

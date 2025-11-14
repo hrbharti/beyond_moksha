@@ -7,7 +7,7 @@ const services = [
   {
     title: "जन्मोत्सव पूजा",
     desc: "आपके जीवन के खुशियों का पर्व! नवजात का स्वागत जीवन के उल्लास, विधियों, आशीर्वाद एवं परिवार के संग...",
-    img: "/featuredPooja1.png",
+    img: "/featuredPooja3.png",
   },
   {
     title: "सत्यनारायण पूजा",
@@ -17,7 +17,7 @@ const services = [
   {
     title: "भूमि पूजन एवं शिला स्थापना",
     desc: "भूमिपूजन एक शुभारंभ सिद्ध संस्कार है, जिसमें ईश्वर विज्ञान तत्व की दृष्टि समाहित रहती है. यह भवन निर्माण क...",
-    img: "/featuredPooja3.png",
+    img: "/featuredPooja1.png",
   },
 ];
 
@@ -30,7 +30,7 @@ export default function FeaturedPoojaServices() {
       <div className="max-w-7xl mx-auto px-6 text-center">
         
         {/* Heading */}
-        <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F3A52]">
+        <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
           Featured <span className="text-[#D29D39]">Pooja</span> Services
         </h2>
 

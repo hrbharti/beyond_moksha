@@ -30,7 +30,7 @@ export default function BookPujaForm() {
 
         {/* LEFT SIDE */}
         <div className="w-1/2 h-auto flex flex-col items-start justify-end ">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F3A52]">
+          <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
             Book a <span className="text-[#D29D39]">Pooja</span> Online
           </h2>
 

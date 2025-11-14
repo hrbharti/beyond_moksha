@@ -20,7 +20,7 @@ export default function JoinPanditSection() {
       {/* Content */}
       <div className="relative h-full flex items-center px-6 md:px-16 lg:px-24">
         <div className="text-white w-full">
-          <h2 className="text-2xl md:text-4xl font-semibold leading-snug">
+          <h2 className="text-2xl md:text-4xl font-lora font-normal leading-snug">
             Are you a qualified Pandit/Astrologer?
           </h2>
 

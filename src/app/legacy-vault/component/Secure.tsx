@@ -12,7 +12,7 @@ export default function SecureSection() {
           {/* Left Wide Card */}
           <div className=" w-2/3 flex flex-col justify-between rounded-[22px] ">
                 {/* Heading */}
-                <h2 className="text-start text-3xl md:text-5xl font-semibold text-[#1A2E46] leading-snug">
+                <h2 className="text-start text-3xl md:text-5xl font-lora font-normal text-[#1A2E46] leading-snug">
                 What makes <br />
                 Legacy vault <span className="text-[#0A66FF]">Secure?</span>
                 </h2>

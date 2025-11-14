@@ -29,7 +29,7 @@ export default function AssetVaultSection() {
 
         {/* RIGHT CONTENT */}
         <div className="text-center md:text-right flex flex-col items-end h-90 justify-evenly">
-          <h2 className="text-[64px] md:text-[48px] font-semibold text-[#1A2E46]">
+          <h2 className="text-[64px] md:text-[48px] font-lora font-normal text-[#1A2E46]">
             Asset Vault
           </h2>
           <p className="mt-4 text-[#4E5A6C] leading-relaxed   text-right text-[20px]">

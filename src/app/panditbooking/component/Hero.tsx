@@ -20,7 +20,7 @@ export default function Hero(){
         {/* Content */}
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-6 sm:px-8">
           <div className="max-w-2xl text-white">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl/tight font-semibold tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl/tight font-normal tracking-tight font-lora">
               Book Pandit Ji Online for
               <br />
               all kinds of Pooja

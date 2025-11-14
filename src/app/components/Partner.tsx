@@ -7,7 +7,7 @@ export default function Partner() {
 
         {/* Left Content */}
         <div className="flex flex-col text-white max-w-[39rem]">
-          <h2 className="text-3xl font-semibold leading-snug">
+          <h2 className="text-3xl leading-snug font-lora font-normal">
             Join Beyond Moksha as a Verified Partner
           </h2>
 
