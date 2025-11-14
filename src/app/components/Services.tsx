@@ -8,13 +8,13 @@ export const Services = () => {
   return (
     <div  className="flex flex-wrap h-full items-center justify-center content-center gap-x-20 gap-y-15 mx-auto py-12">
       <ServicesCard
-        heading="Human Services"
+        heading="Human Funeral"
         subHeading="Comprehensive funeral services for individuals and family with dignity and respect."
         icon={people}
       />
 
       <ServicesCard
-        heading="Pet Services"
+        heading="Pet Funeral"
         subHeading="Compassionate memorial services for your beloved animal companions."
         icon={petServices}
       />
