@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Partner() {
   return (
@@ -20,9 +21,9 @@ export default function Partner() {
             Expand your reach and support families in their time of need.
           </p>
 
-          <button className="mt-6 px-5 py-2 w-[10.8125rem] border bg-white border-white rounded-full text-[#004551] text-sm hover:bg-[#004551] hover:text-white transition-all cursor-pointer">
+          <Link href={"/form/partner-form"} className="mt-6 px-5 py-2 w-[10.8125rem] border bg-white border-white rounded-full text-[#004551] text-sm hover:bg-[#004551] hover:text-white transition-all cursor-pointer">
             Register as Partner →
-          </button>
+          </Link>
         </div>
 
         {/* Right Side Image */}

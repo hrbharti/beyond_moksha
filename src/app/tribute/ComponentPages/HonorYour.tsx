@@ -6,7 +6,7 @@ import flower from "../../../../public/flower.png"; // your image path
 export default function MemorialSection() {
   return (
     <section className="bg-white py-16 px-6 md:px-20 lg:px-28">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+      <div className="max-w-max mx-auto flex flex-col md:flex-row items-center gap-16">
         {/* Left Text Section */}
         <div className="flex-1 text-left">
           <h2 className="text-[#1F3A4B] text-2xl md:text-3xl font-semibold mb-4 leading-snug">
@@ -50,7 +50,7 @@ export default function MemorialSection() {
           <Image
             src={flower}
             alt="Flower wreath"
-            className="w-[320px] md:w-[400px] lg:w-[480px] object-contain"
+            className="w-[320px] md:w-[450px] lg:w-[520px] object-contain"
             priority
           />
         </div>
