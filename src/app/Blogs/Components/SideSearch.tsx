@@ -2,13 +2,18 @@ import React from 'react'
 
 export default function SideSearch() {
     return (
-        <div className='w-72 relative '>
-            <div className='absolute top-0 bottom-0 -right-8'>
-                <button type='submit' className='pl-10 text-right bg-blue-500 text-white px-2 py-1.5 rounded-full cursor-pointer bg-gradient-to-t from-blue-700 to-sky-500 hover:from-blue-800 hover:to-sky-600 -translate-x-6'>
-                    Submit
-                </button>
-            </div>        
-            <input type='text' placeholder='Search' className='w-58 px-3.5 py-1.5 outline outline-slate-300 rounded-full translate-z-1 bg-white'/>    
+        <div className='w-full flex justify-center relative p-4'>
+            <input
+                type='text'
+                placeholder='Search'
+                className='w-[70%] px-3.5 py-2 shadow-2xl outline-none shadow-gray-400 bg-white rounded-full z-20'
+            />
+            <button
+                type='submit'
+                className='flex-1 ml-[-32px] text-right bg-linear-to-t from-[#1F3A52] to-[#4682B8] text-white px-6 py-2 rounded-full cursor-pointer'
+            >
+                Submit
+            </button>
         </div>
     )
 }
