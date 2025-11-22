@@ -19,17 +19,17 @@ export default function BlogCard({ id, title, image }: IProps) {
       onClick={handleClick}
       className="bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
     >
-      <div className="w-full h-[75%] overflow-hidden rounded-md">
+      <div className="w-full overflow-hidden rounded-md">
         <Image
           src={image || "/blog.jpg"}
           alt="Blog image"
           width={400}
-          height={300}
+          height={280}
           className="w-full h-full object-cover"
         />
       </div>
 
-      <p className="m-4 h-[70%] mx-8">
+      <p className="m-4 mx-8">
         {title}
       </p>
     </div>
