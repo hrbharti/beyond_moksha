@@ -15,7 +15,12 @@ export default function FileUpload() {
       <div className="text-sm text-gray-600 mb-1">Upload ID Proof (PDF/Image)</div>
       <div {...getRootProps()} className="border border-dashed border-gray-300 rounded-md p-4 text-center cursor-pointer">
         <input {...getInputProps()} />
-        <p className="text-sm text-gray-500">{isDragActive ? 'Drop files here...' : 'Drag & drop files here, or click to select'}</p>
+        <p className="text-sm text-gray-500">
+          {isDragActive
+            ? "Drop files here..."
+            : "Drag & drop files here, or click to select"}
+        </p>
+
       </div>
     </div>
   )
