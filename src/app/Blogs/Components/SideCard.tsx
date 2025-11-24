@@ -1,16 +1,31 @@
 import Image from 'next/image'
-import React from 'react'
+import React from 'react';
 
-export default function SideCard() {
+interface IProps {
+  id: string;
+  title: string;
+  image: string;
+  date: string;
+  needDivider?: boolean;
+}
+
+export default function SideCard(props: IProps) {
   return (
-    <div className='w-full h-28 flex rounded-sm outline-2 outline-slate-600'>
-      <Image 
-      className='w-2/5 h-full rounded-l-lg' 
-      src={"/blog.jpg"} 
-      alt='Blog_image'
-      width={100}
-      height={100}/>
-      <p className='text-center my-auto'>Understanding funeral attire in India</p>
+    <div>
+      <div className='w-full p-2 flex items-center'>
+        <Image
+          className='w-[60px] h-[60px] rounded-full'
+          src={props.image || "/blog.jpg"}
+          alt='Blog_image'
+          width={100}
+          height={100}
+        />
+        <div className='ml-2'>
+          <p className=''>{props.title}</p>
+          <span className='text-gray-500 text-sm'>{props.date}</span>
+        </div>
+      </div>
+      {props.needDivider && <hr />}
     </div>
   )
 }

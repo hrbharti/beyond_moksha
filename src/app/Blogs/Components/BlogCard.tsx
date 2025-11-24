@@ -1,26 +1,37 @@
 import Image from "next/image"
-import React from "react"
+import React from "react";
+import { useRouter } from "next/navigation";
 
-export default function BlogCard({ tag, title }: { tag: string, title: string }) {
+interface IProps {
+  id: string;
+  title: string;
+  image: string;
+}
+
+export default function BlogCard({ id, title, image }: IProps) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/Blogs/${id}`);
+  }
+
   return (
-    <div className="bg-white border rounded-lg shadow hover:shadow-lg transition p-1 w-[13.5rem] h-[18.25rem]">
-      <div className="w-full h-1/2 overflow-hidden rounded-md">
+    <div
+      onClick={handleClick}
+      className="bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+    >
+      <div className="w-full overflow-hidden rounded-md">
         <Image
-          src="/blog.jpg"
+          src={image || "/blog.jpg"}
           alt="Blog image"
           width={400}
-          height={300}
+          height={280}
           className="w-full h-full object-cover"
         />
       </div>
 
-      <p className="text-xs text-white bg-slate-700 inline-block px-4 py-1 mt-3">
-        {tag}
-      </p>
-
-      <h1 className="text-2xl font-medium text-gray-800 mt-4 leading-tight flex items-center justify-center">
+      <p className="m-4 mx-8">
         {title}
-      </h1>
+      </p>
     </div>
   )
 }
