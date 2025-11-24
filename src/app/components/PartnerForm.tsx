@@ -97,7 +97,7 @@ export default function PartnerForm() {
 
       {/* Location */}
       <div className="flex items-center gap-2 mt-6 mb-3">
-        <h2 className="font-medium text-gray-800">Location & Coverage Area</h2>
+        <h2 className="font-medium text-gray-800">Location &amp; Coverage Area</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -146,13 +146,14 @@ export default function PartnerForm() {
 
       <label className="block mt-4">
         <div className="text-sm text-gray-600 mb-1">Tell us more about your services (optional)</div>
-        <textarea {...register('about')} placeholder="Any additional information you'd like to share..."
+        <textarea {...register('about')} placeholder="Any additional information you&apos;d like to share..."
           className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm h-28" />
       </label>
 
       <div className="flex items-start gap-3">
         <input type="checkbox" {...register('agree', { required: true })} className="mt-1" />
-        <div className="text-sm text-gray-700">I agree to Beyond Moksha's partner terms and conditions, and confirm that all information provided is accurate. *</div>
+        <div className="text-sm text-gray-700">I agree to Beyond Moksha&apos;s partner terms and conditions, and
+          confirm that all information provided is accurate. *</div>
       </div>
       {(errors as any).agree && <div className="text-xs text-red-500">You must agree before submitting.</div>}
 
