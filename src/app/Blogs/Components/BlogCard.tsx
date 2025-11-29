@@ -25,7 +25,7 @@ export default function BlogCard({ id, title, image }: IProps) {
           alt="Blog image"
           width={400}
           height={280}
-          className="w-full h-full object-cover"
+          className="w-full h-[280px] object-cover"
         />
       </div>
 
