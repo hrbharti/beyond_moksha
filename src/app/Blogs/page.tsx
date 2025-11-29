@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Navbar } from '../components/Navbar'
 import Footer from '../components/Footer'
 import BlogCard from './Components/BlogCard'
@@ -27,6 +27,12 @@ interface ApiResponse {
   };
 }
 
+interface IQueryParam {
+  page: number;
+  limit: number;
+  query?: string;
+}
+
 export default function Page() {
   const [selected, setSelected] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,23 +40,34 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchString, setSearchString] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const blogsPerPage = 6;
 
   // Fetch blogs from API
   useEffect(() => {
-    fetchBlogs(currentPage);
-  }, [currentPage]);
+    fetchBlogs(currentPage, searchString);
+  }, [currentPage, searchString]);
 
-  const fetchBlogs = async (pageNumber: number) => {
+  const fetchBlogs = async (pageNumber: number, query: string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axiosInstance.get<ApiResponse>('/blogs', {
-        params: {
-          page: pageNumber,
-          limit: blogsPerPage,
-        },
+      // Determine endpoint based on search string
+      const endpoint = query.trim() ? '/blogs/search' : '/blogs';
+      const params: IQueryParam = {
+        page: pageNumber,
+        limit: blogsPerPage,
+      };
+
+      // Add search query if searching
+      if (query.trim()) {
+        params.query = query;
+      }
+      const response = await axiosInstance.get<ApiResponse>(endpoint, {
+        params,
       });
 
       if (response.data.success) {
@@ -68,6 +85,22 @@ export default function Page() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSearchChange = (query: string) => {
+    // Update input value immediately for instant feedback
+    setInputValue(query);
+
+    // Clear existing timer
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    // Set new timer for debounced search
+    debounceTimer.current = setTimeout(() => {
+      setSearchString(query);
+      setCurrentPage(1); // Reset to first page on new search
+    }, 500); // 500ms debounce delay
   };
 
   const getPaginationNumbers = () => {
@@ -106,7 +139,9 @@ export default function Page() {
       <Navbar />
       <div className='px-25 flex gap-6 mt-6 pb-2'>
         <div className='w-3/4 outline-2 outline-slate-600 rounded-2xl'>
-          <h1 className='text-4xl text-center mt-5 font-lora font-semibold text-[#BC911B]'>Blogs</h1>
+          <h1 className='text-4xl text-center mt-5 font-lora font-semibold text-[#BC911B]'>
+            {inputValue ? `Search Results for "${inputValue}"` : 'Blogs'}
+          </h1>
 
           {/* Loading State */}
           {loading && (
@@ -139,7 +174,9 @@ export default function Page() {
           {/* Empty State */}
           {!loading && blogs.length === 0 && !error && (
             <div className='flex justify-center items-center py-12'>
-              <p className='text-lg text-gray-500'>No blogs found</p>
+              <p className='text-lg text-gray-500'>
+                {inputValue ? 'No blogs found matching your search' : 'No blogs found'}
+              </p>
             </div>
           )}
 
@@ -191,7 +228,7 @@ export default function Page() {
         <div className='w-1/4 flex flex-col'>
           <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-3'>
             <h1 className='mb-2 text-2xl'>Browse Blogs</h1>
-            <SideSearch />
+            <SideSearch searchString={inputValue} handleSearchChange={handleSearchChange} />
           </div>
           <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center gap-6 px-4 py-6 mt-6'>
             <LatestPopularBlogs selected={selected} setSelected={setSelected} />
