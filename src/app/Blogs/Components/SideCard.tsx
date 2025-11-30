@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface IProps {
@@ -10,9 +11,13 @@ interface IProps {
 }
 
 export default function SideCard(props: IProps) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/Blogs/${props.id}`);
+  }
   return (
     <div>
-      <div className='w-full p-2 flex items-center'>
+      <div className='w-full p-2 flex items-center cursor-pointer' onClick={handleClick}>
         <Image
           className='w-[60px] h-[60px] rounded-full'
           src={props.coverImageUrl || "/blog.jpg"}
