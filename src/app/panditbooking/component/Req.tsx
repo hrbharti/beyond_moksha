@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function JoinPanditSection() {
   return (
@@ -32,7 +33,7 @@ export default function JoinPanditSection() {
           <button
             className="mt-6 px-6 py-2 bg-white text-[#1F3A52] rounded-md shadow hover:bg-gray-100 transition font-medium"
           >
-            Send a Request
+            <Link href={"/form/pandit-form"}>Send a Request</Link>
           </button>
         </div>
       </div>

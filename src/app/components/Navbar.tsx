@@ -46,8 +46,8 @@ export const Navbar = ({onNavigate}:navProps) => {
 
   {/* Contact Info */}
   <div className="flex items-center gap-3 text-[#1F3A52]">
-    <span className="cursor-pointer">+91-8142884149</span>
-    <span className="cursor-pointer">ajdio@gmail.com</span>
+    <span className="cursor-pointer">+91-7050966971</span>
+    <GmailLink email="beyondmoksha360@gmail.com"><span className="cursor-pointer">beyondmoksha360@gmail.com</span></GmailLink>
   </div>
 
   {/* Social Icons */}

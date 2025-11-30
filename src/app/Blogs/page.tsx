@@ -138,114 +138,118 @@ export default function Page() {
     <div>
       <Navbar />
       <div className='px-25 flex gap-6 mt-6 pb-2'>
-        <div className='w-3/4 outline-2 outline-slate-600 rounded-2xl'>
-          <h1 className='text-4xl text-center mt-5 font-lora font-semibold text-[#BC911B]'>
-            {inputValue ? `Search Results for "${inputValue}"` : 'Blogs'}
-          </h1>
+        <div className='px-25 flex gap-6 mt-6 pb-2'>
+          <div className='w-3/4 outline-2 outline-slate-600 rounded-2xl'>
+            <h1 className='text-4xl text-center mt-5 font-lora font-semibold text-[#BC911B]'>
+              {inputValue ? `Search Results for "${inputValue}"` : 'Blogs'}
+            </h1>
 
-          {/* Loading State */}
-          {loading && (
-            <div className='flex justify-center items-center py-12'>
-              <p className='text-lg text-gray-500'>Loading blogs...</p>
-            </div>
-          )}
+            {/* Loading State */}
+            {loading && (
+              <div className='flex justify-center items-center py-12'>
+                <p className='text-lg text-gray-500'>Loading blogs...</p>
+              </div>
+            )}
 
-          {/* Error State */}
-          {error && (
-            <div className='flex justify-center items-center py-12'>
-              <p className='text-lg text-red-500'>{error}</p>
-            </div>
-          )}
+            {/* Error State */}
+            {error && (
+              <div className='flex justify-center items-center py-12'>
+                <p className='text-lg text-red-500'>{error}</p>
+              </div>
+            )}
 
-          {/* Blogs Grid */}
-          {!loading && blogs.length > 0 && (
-            <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6'>
-              {blogs.map((blog) => (
-                <BlogCard
-                  key={blog.id}
-                  id={String(blog.id)}
-                  title={blog.title}
-                  image={blog.coverImageUrl}
-                />
-              ))}
-            </div>
-          )}
+            {/* Blogs Grid */}
+            {!loading && blogs.length > 0 && (
+              <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-6 p-6'>
+                {blogs.map((blog) => (
+                  <BlogCard
+                    key={blog.id}
+                    id={String(blog.id)}
+                    title={blog.title}
+                    image={blog.coverImageUrl}
+                  />
+                ))}
+              </div>
+            )}
 
-          {/* Empty State */}
-          {!loading && blogs.length === 0 && !error && (
-            <div className='flex justify-center items-center py-12'>
-              <p className='text-lg text-gray-500'>
-                {inputValue ? 'No blogs found matching your search' : 'No blogs found'}
-              </p>
-            </div>
-          )}
+            {/* Empty State */}
+            {!loading && blogs.length === 0 && !error && (
+              <div className='flex justify-center items-center py-12'>
+                <p className='text-lg text-gray-500'>
+                  {inputValue ? 'No blogs found matching your search' : 'No blogs found'}
+                </p>
+              </div>
+            )}
 
-          {/* Pagination */}
-          {!loading && totalPages > 1 && (
-            <div className='flex justify-center items-center gap-2 pb-8 mt-4'>
-              {/* Previous Button */}
-              <button
-                onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className='px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition'
-              >
-                &#8249;
-              </button>
-
-              {/* Page Numbers */}
-              {getPaginationNumbers().map((page, index) => (
+            {/* Pagination */}
+            {!loading && totalPages > 1 && (
+              <div className='flex justify-center items-center gap-2 pb-8 mt-4'>
+                {/* Previous Button */}
                 <button
-                  key={index}
-                  onClick={() => typeof page === 'number' && handlePageChange(page)}
-                  disabled={page === '...'}
-                  className={`
+                  onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className='px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition'
+                >
+                  &#8249;
+                </button>
+
+                {/* Page Numbers */}
+                {getPaginationNumbers().map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() => typeof page === 'number' && handlePageChange(page)}
+                    disabled={page === '...'}
+                    className={`
                     px-3 py-2 rounded-full font-medium transition
                     ${page === currentPage
-                      ? 'bg-gradient-to-t from-[#1F3A52] to-[#4682B8] text-white shadow-md'
-                      : page === '...'
-                        ? 'cursor-default'
-                        : 'border border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                    }
+                        ? 'bg-gradient-to-t from-[#1F3A52] to-[#4682B8] text-white shadow-md'
+                        : page === '...'
+                          ? 'cursor-default'
+                          : 'border border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                      }
                   `}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                {/* Next Button */}
+                <button
+                  onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className='px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition'
                 >
-                  {page}
+                  &#8250;
                 </button>
-              ))}
-
-              {/* Next Button */}
-              <button
-                onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className='px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition'
-              >
-                &#8250;
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* ...existing code... */}
-        <div className='w-1/4 flex flex-col'>
-          <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-3'>
-            <h1 className='mb-2 text-2xl'>Browse Blogs</h1>
-            <SideSearch searchString={inputValue} handleSearchChange={handleSearchChange} />
+              </div>
+            )}
           </div>
-          <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center gap-6 px-4 py-6 mt-6'>
-            <LatestPopularBlogs selected={selected} setSelected={setSelected} />
-          </div>
-          <div className='flex-1 outline-2 outline-slate-500 rounded-lg mt-6'>
-            <h1 className='text-3xl text-center'>Explore Topics</h1>
-            <div className='flex flex-col p-4 gap-y-2'>
-              {exploreTopicsData.map((topic, index) => (
-                <div key={index}>
-                  <Link className='' href={""}>{index + 1}. {topic}</Link>
+
+          {/* ...existing code... */}
+          <div className='w-1/4 flex flex-col'>
+
+            {/* ...existing code... */}
+            <div className='w-1/4 flex flex-col'>
+              <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center py-3'>
+                <h1 className='mb-2 text-2xl'>Browse Blogs</h1>
+                <SideSearch searchString={inputValue} handleSearchChange={handleSearchChange} />
+              </div>
+              <div className='outline-2 outline-slate-500 rounded-lg flex flex-col items-center justify-center gap-6 px-4 py-6 mt-6'>
+                <LatestPopularBlogs selected={selected} setSelected={setSelected} />
+              </div>
+              <div className='flex-1 outline-2 outline-slate-500 rounded-lg mt-6'>
+                <h1 className='text-3xl text-center'>Explore Topics</h1>
+                <div className='flex flex-col p-4 gap-y-2'>
+                  {exploreTopicsData.map((topic, index) => (
+                    <div key={index}>
+                      <Link className='' href={""}>{index + 1}. {topic}</Link>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
+          <Footer />
         </div>
-      </div>
-      <Footer />
-    </div>
-  )
+        )
 }
