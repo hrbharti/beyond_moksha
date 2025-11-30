@@ -3,8 +3,8 @@ import React from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
 type Props = {
-  name?: string
-  options: string[]
+  name?: string;
+  options: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
 }

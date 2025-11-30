@@ -1,11 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-export default function SideSearch() {
+interface IProps {
+    searchString: string;
+    handleSearchChange: (val: string) => void;
+}
+
+export default function SideSearch({ searchString, handleSearchChange }: IProps) {
     return (
         <div className='w-full flex justify-center relative p-4'>
             <input
                 type='text'
                 placeholder='Search'
+                value={searchString}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className='w-[70%] px-3.5 py-2 shadow-2xl outline-none shadow-gray-400 bg-white rounded-full z-20'
             />
             <button

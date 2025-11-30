@@ -141,6 +141,7 @@ export default function PartnerForm() {
         <label>
           <div className="text-sm text-gray-600 mb-1">Upload Sample Photos (Optional)</div>
           <input type="file" multiple {...register('samplePhotos')} className="w-full" />
+          <input type="file" multiple {...register('samplePhotos')} className="w-full" />
         </label>
       </div>
 
@@ -152,9 +153,9 @@ export default function PartnerForm() {
 
       <div className="flex items-start gap-3">
         <input type="checkbox" {...register('agree', { required: true })} className="mt-1" />
-        <div className="text-sm text-gray-700">I agree to Beyond Moksha&apos;s partner terms and conditions, and
-          confirm that all information provided is accurate. *</div>
+        <div className="text-sm text-gray-700">I agree to Beyond Moksha&#39s partner terms and conditions, and confirm that all information provided is accurate. *</div>
       </div>
+      {(errors).agree && <div className="text-xs text-red-500">You must agree before submitting.</div>}
       {(errors).agree && <div className="text-xs text-red-500">You must agree before submitting.</div>}
 
       <div className="pt-4">
