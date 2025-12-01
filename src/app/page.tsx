@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { Navbar } from "./components/Navbar"
 import Footer from "./components/Footer"
 import Corousal from "./components/Corousal"
@@ -14,78 +14,106 @@ import Foot from "./components/utils/Foot"
 
 export default function Home() {
 
-  const servicesRef = useRef<HTMLHeadingElement>(null);
-  const homeRef = useRef<HTMLHeadingElement>(null);
-  const blogRef = useRef<HTMLHeadingElement>(null);
+  // Use HTMLDivElement because you're attaching refs to divs in this component
+  const servicesRef = useRef<HTMLDivElement | null>(null);
+  const homeRef = useRef<HTMLDivElement | null>(null);
+  const blogRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToSection = (section: string) => {
     switch (section) {
       case "Home":
-        homeRef.current?.scrollIntoView({ behavior: "smooth" });
+        homeRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         break;
       case "Our Services":
-        servicesRef.current?.scrollIntoView({ behavior: "smooth" });
+        servicesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         break;
       case "Blogs":
-        blogRef.current?.scrollIntoView({ behavior: "smooth" });
+        blogRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         break;
       default:
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   return (
-    <div>
+    <div className="min-h-screen bg-white text-slate-900">
       <Navbar onNavigate={scrollToSection} />
-      <div ref={homeRef}>
-        <Corousal />
-      </div>
-      <Pledge />
 
-      {/* services */}
-      <div ref={servicesRef} className="-mt-10">
-        <Section
-          heading="Our Services"
-          subHeading="We provide comprehensive services to support you through every step of your journey"
-          content={<Services />}
-        />
+      {/* HERO / CAROUSAL */}
+      <div ref={homeRef} className="w-full">
+        <div className="w-full ">
+          <Corousal />
+        </div>
       </div>
 
-      {/* blogs section */}
-      <div ref={blogRef} className="mt-18">
-        <Section
-          heading="Latest From the Blogs"
-          subHeading="Insights, guidance, and support to help you navigate difficult times"
-          content={<Blogs />}
-        />
+      {/* PLEDGE */}
+      <div className="w-full">
+        <div className="w-full">
+          <Pledge />
+        </div>
       </div>
 
-      {/* testimonials */}
-
-      <Section
-        heading="Hear from Families we’ve helped"
-        subHeading="Real testimonials from families who trusted us during their most difficult times"
-        content={<Testimonials />}
-      />
-      
-          {/* Footer */}
-          <div className="h-auto w-full mt-10 text-white" >
-          
-                  {/* mail */}
-          
-                  <div className="h-2/3 pb-30 px-34 ">
-                      <GetInTouch />
-                  </div>
-          
-                 
-                  
-                  <Partner/>
-                   {/* Absolute footer */}
-                  <div className=" h-1/3 ">
-          
-                      <Foot />
-          
-                  </div>
+      {/* SERVICES */}
+      <div ref={servicesRef} className="-mt-10 w-full">
+        <div className="w-full">
+          <Section
+            heading="Our Services"
+            subHeading="We provide comprehensive services to support you through every step of your journey"
+            content={
+              <div className="py-6 sm:py-8">
+                <Services />
               </div>
+            }
+          />
+        </div>
+      </div>
+
+      {/* BLOGS */}
+      <div ref={blogRef} className="w-full mt-16 sm:mt-20">
+        <div className="w-full">
+          <Section
+            heading="Latest From the Blogs"
+            subHeading="Insights, guidance, and support to help you navigate difficult times"
+            content={
+              <div className="py-6 sm:py-8">
+                <Blogs />
+              </div>
+            }
+          />
+        </div>
+      </div>
+
+      {/* TESTIMONIALS */}
+      <div className="w-full mt-8">
+        <div className="w-full">
+          <Section
+            heading="Hear from Families we’ve helped"
+            subHeading="Real testimonials from families who trusted us during their most difficult times"
+            content={
+              <div className="py-6 sm:py-8">
+                <Testimonials />
+              </div>
+            }
+          />
+        </div>
+      </div>
+
+      {/* FOOTER AREA */}
+      <div className="w-full mt-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="pb-6 sm:pb-10">
+            <GetInTouch />
+          </div>
+
+          
+        </div>
+        <div className="mt-10">
+            <Partner />
+          </div>
+
+          <div className="">
+            <Foot />
+          </div>
+        </div>
     </div>
   )
 }

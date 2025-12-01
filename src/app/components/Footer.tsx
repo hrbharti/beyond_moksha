@@ -2,21 +2,19 @@ import Foot from "./utils/Foot";
 import GetInTouch from "./utils/GetInTouch";
 
 export default function Footer() {
+    return (
+        <div className="w-full mt-10 text-white">
+            
+            {/* Get In Touch Section */}
+            <div className="w-full px-4 sm:px-6 lg:px-12 pb-10">
+                <GetInTouch />
+            </div>
 
-    return <div className="h-auto w-full mt-10 text-white" >
-
-        {/* mail */}
-
-        <div className="h-2/3 pb-30 px-34 ">
-            <GetInTouch />
-        </div>
-
-        {/* Absolute footer */}
-
-        <div className=" h-1/3 ">
-
-            <Foot />
+            {/* Footer Bottom */}
+            <div className="w-full">
+                <Foot />
+            </div>
 
         </div>
-    </div>
+    );
 }

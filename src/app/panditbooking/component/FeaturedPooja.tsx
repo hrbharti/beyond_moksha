@@ -53,7 +53,7 @@ export default function FeaturedPoojaServices() {
 <div className="mt-20 relative flex justify-center items-center">
 
   {/* Splash Behind Cards */}
-  <div className="absolute -z-0 -mt-20 inset-0 flex justify-center overflow-visible pointer-events-none h-200 w-full top-0">
+  <div className="absolute -z-0 -mt-20 inset-0 justify-center overflow-visible pointer-events-none h-200 w-full top-0 hidden lg:flex">
     <Image
       src="/splash.png"
       alt="color splash"

@@ -24,7 +24,7 @@ export const Navbar = ({onNavigate}:navProps) => {
     const [donationFlag, setDonationFlag] = useState(false); 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const onClickHandler = (item: string)=>{
+    const onClickHandler = (item: string)=> {
         setActivePage(item);
         setMobileMenuOpen(false);
 
@@ -36,30 +36,46 @@ export const Navbar = ({onNavigate}:navProps) => {
         if(item === 'Blogs') router.push('/Blogs')
         if(item === 'About Us') router.push('/aboutus')
         if(item === 'Pandit Booking') router.push('/panditbooking')
+        // keep behavior for 'Our Services' unchanged (no route here)
+    }
+
+    // handlers for dropdown items
+    const handleLegacyVault = () => {
+      setMobileMenuOpen(false);
+      router.push('/legacy-vault');
+    }
+    const handleContactUs = () => {
+      setMobileMenuOpen(false);
+      router.push('/contact');
+    }
+    const handleMore = () => {
+      setMobileMenuOpen(false);
+      // fallback to services page or anchor — adjust if you have a different path
+      router.push('/services');
     }
 
     return (
         <div className="w-full sticky top-0 z-50 shadow bg-white">
 
             {/* contact bar */}
-<div className="h-10 bg-[#F4F6F8] px-3 sm:px-6 md:px-10 text-sm flex items-center justify-between overflow-x-auto whitespace-nowrap">
+            <div className="h-10 bg-[#F4F6F8] px-3 sm:px-6 md:px-10 text-sm flex items-center justify-between overflow-x-auto whitespace-nowrap">
+              {/* Contact Info: allow wrapping on very small screens */}
+              <div className="flex items-center gap-3 text-[#1F3A52] flex-shrink-0 min-w-0">
+                <span className="cursor-pointer truncate">+91-7050966971</span>
+                <GmailLink email="beyondmoksha360@gmail.com">
+                  <span className="cursor-pointer truncate">beyondmoksha360@gmail.com</span>
+                </GmailLink>
+              </div>
 
-  {/* Contact Info */}
-  <div className="flex items-center gap-3 text-[#1F3A52]">
-    <span className="cursor-pointer">+91-7050966971</span>
-    <GmailLink email="beyondmoksha360@gmail.com"><span className="cursor-pointer">beyondmoksha360@gmail.com</span></GmailLink>
-  </div>
-
-  {/* Social Icons */}
-  <div className="flex items-center gap-3 text-black text-lg sm:text-xl">
-    <Icon icon={FaFacebook} onClick={() => window.open('https://facebook.com', '_blank')} />
-    <Icon icon={RiTwitterXLine} onClick={() => window.open('https://x.com/beyondmoksha360', '_blank')} />
-    <Icon icon={BsInstagram} onClick={() => window.open('https://www.instagram.com/beyondmoksha360', '_blank')} />
-    <Icon icon={ImLinkedin} onClick={() => window.open('https://www.linkedin.com/company/beyondmoksha360/', '_blank')} />
-    <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com/@beyondmoksha360', '_blank')} />
-  </div>
-
-</div>
+              {/* Social Icons */}
+              <div className="flex items-center gap-3 text-black text-lg sm:text-xl flex-shrink-0">
+                <Icon icon={FaFacebook} onClick={() => window.open('https://facebook.com', '_blank')} />
+                <Icon icon={RiTwitterXLine} onClick={() => window.open('https://x.com/beyondmoksha360', '_blank')} />
+                <Icon icon={BsInstagram} onClick={() => window.open('https://www.instagram.com/beyondmoksha360', '_blank')} />
+                <Icon icon={ImLinkedin} onClick={() => window.open('https://www.linkedin.com/company/beyondmoksha360/', '_blank')} />
+                <Icon icon={IoLogoYoutube} onClick={() => window.open('https://youtube.com/@beyondmoksha360', '_blank')} />
+              </div>
+            </div>
 
 
             {/* main navbar */}
@@ -70,15 +86,66 @@ export const Navbar = ({onNavigate}:navProps) => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-6 lg:gap-8">
-                    {navList.map((item, key) => (
+                    {navList.map((item, key) => {
+                      // For "Our Services" we render a grouped element to support hover dropdown on desktop
+                      if (item === "Our Services") {
+                        return (
+                          <div key={key} className="relative group">
+                            <div
+                              // clicking still triggers same behavior
+                              className={`cursor-pointer ${item === activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} hover:text-[#1867AE] transition`}
+                              onClick={() => onClickHandler(item)}
+                              aria-haspopup="true"
+                              aria-expanded={false}
+                            >
+                              {item}
+                            </div>
+
+                            {/* dropdown — desktop only, appears on hover */}
+                            <div
+                              className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white rounded-md shadow-md ring-1 ring-black/5 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 z-50"
+                              role="menu"
+                              aria-label="Our Services dropdown"
+                            >
+                              <ul className="flex flex-col py-2">
+                                <li
+                                  className="px-4 py-2 text-sm text-[#1F3A52] hover:bg-gray-100 cursor-pointer"
+                                  role="menuitem"
+                                  onClick={handleLegacyVault}
+                                >
+                                  Legacy Vault
+                                </li>
+                                <li
+                                  className="px-4 py-2 text-sm text-[#1F3A52] hover:bg-gray-100 cursor-pointer"
+                                  role="menuitem"
+                                  onClick={handleContactUs}
+                                >
+                                  Contact Us
+                                </li>
+                                <li
+                                  className="px-4 py-2 text-sm text-[#1F3A52] hover:bg-gray-100 cursor-pointer"
+                                  role="menuitem"
+                                  onClick={handleMore}
+                                >
+                                  More..
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      // default nav item
+                      return (
                         <div
-                            key={key}
-                            className={`cursor-pointer ${item === activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} hover:text-[#1867AE] transition`}
-                            onClick={() => onClickHandler(item)}
+                          key={key}
+                          className={`cursor-pointer ${item === activepage && !donationFlag ? "text-[#1867AE]" : "text-black"} hover:text-[#1867AE] transition`}
+                          onClick={() => onClickHandler(item)}
                         >
-                            {item}
+                          {item}
                         </div>
-                    ))}
+                      );
+                    })}
 
                     <Link href='/donation' onClick={()=> setDonationFlag(true)}>
                         <Icon icon={BiSolidDonateHeart} className="text-2xl text-red-600" />
@@ -86,8 +153,12 @@ export const Navbar = ({onNavigate}:navProps) => {
                 </div>
 
                 {/* Hamburger button (mobile) */}
-                <button className="md:hidden text-3xl" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                    ☰
+                <button
+                  className="md:hidden text-3xl"
+                  aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                    {mobileMenuOpen ? "✕" : "☰"}
                 </button>
             </div>
 

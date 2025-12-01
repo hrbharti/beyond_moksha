@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const InfiniteMovingCards = ({
   items,
@@ -23,22 +23,39 @@ export const InfiniteMovingCards = ({
   pauseOnHover?: boolean;
   className?: string;
 }) => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const scrollerRef = React.useRef<HTMLUListElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const scrollerRef = useRef<HTMLUListElement | null>(null);
+  const originalCountRef = useRef(0);
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     addAnimation();
-  }, []);
-  const [start, setStart] = useState(false);
+    // cleanup duplicated nodes on unmount
+    return () => {
+      if (scrollerRef.current && originalCountRef.current) {
+        const cur = scrollerRef.current;
+        const total = cur.children.length;
+        const toRemove = total - originalCountRef.current;
+        for (let i = 0; i < toRemove; i++) {
+          const last = cur.lastElementChild;
+          if (last) cur.removeChild(last);
+        }
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once
+
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
-      const scrollerContent = Array.from(scrollerRef.current.children);
+      const scroller = scrollerRef.current;
+      // store original count so we can clean up later
+      originalCountRef.current = scroller.children.length;
+
+      const scrollerContent = Array.from(scroller.children);
 
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
-        if (scrollerRef.current) {
-          scrollerRef.current.appendChild(duplicatedItem);
-        }
+        scroller.appendChild(duplicatedItem);
       });
 
       getDirection();
@@ -46,21 +63,17 @@ export const InfiniteMovingCards = ({
       setStart(true);
     }
   }
+
   const getDirection = () => {
     if (containerRef.current) {
       if (direction === "left") {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "forwards",
-        );
+        containerRef.current.style.setProperty("--animation-direction", "forwards");
       } else {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "reverse",
-        );
+        containerRef.current.style.setProperty("--animation-direction", "reverse");
       }
     }
   };
+
   const getSpeed = () => {
     if (containerRef.current) {
       if (speed === "fast") {
@@ -72,13 +85,16 @@ export const InfiniteMovingCards = ({
       }
     }
   };
+
   return (
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 max-w-7xl mx-auto px-4 sm:px-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className,
       )}
+      role="region"
+      aria-label="Testimonials scroller"
     >
       <ul
         ref={scrollerRef}
@@ -90,42 +106,54 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item) => (
           <li
-            className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-black px-8 py-6 md:w-[450px] dark:border-zinc-700 shadow-xl"
+            className="
+              relative 
+              max-w-full 
+              shrink-0 
+              rounded-2xl 
+              border border-black 
+              px-6 py-5 
+              shadow-xl
+              /* responsive card widths: mobile -> tablet -> desktop */
+              w-[260px] sm:w-[320px] md:w-[350px] lg:w-[450px]
+            "
             key={item.name}
           >
             <blockquote>
-              <div className="flex">
-                <div>
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
                   <Image
                     src={item.image}
                     alt={item.name}
                     width={40}
                     height={40}
-                    className="rounded-full shadow-md"
+                    className="rounded-full shadow-md w-10 h-10 md:w-12 md:h-12"
                   />
                 </div>
 
-              <div>
-                <div className="relative z-20 ml-6 flex flex-row items-center ">
-                <span className="flex flex-col gap-1">
-                  <span className="text-lg font-semibold leading-[1.2] text-neutral-500 dark:text-gray-400">
-                    {item.name}
-                  </span>
-                  <span className="text-sm leading-[1.6] font-normal text-neutral-500 dark:text-gray-400">
-                    {item.profession}
-                  </span>
-                </span>
+                <div className="ml-4">
+                  <div className="flex items-center">
+                    <span className="flex flex-col gap-1">
+                      <span className="text-lg font-semibold leading-[1.2] text-neutral-500 dark:text-gray-400">
+                        {item.name}
+                      </span>
+                      <span className="text-sm leading-[1.6] font-normal text-neutral-500 dark:text-gray-400">
+                        {item.profession}
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
-              </div>
-              </div>
+
+              {/* background border/overlay (non-interactive) */}
               <div
                 aria-hidden="true"
-                className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
-              ></div>
-              <span className="relative z-20 text-sm leading-[1.6] font-normal text-neutral-800 dark:text-gray-100">
+                className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-10 h-[calc(100%+4px)] w-[calc(100%+4px)]"
+              />
+
+              <p className="relative z-20 mt-3 text-sm leading-[1.6] font-normal text-neutral-800 dark:text-gray-100">
                 {item.quote}
-              </span>
-              
+              </p>
             </blockquote>
           </li>
         ))}
