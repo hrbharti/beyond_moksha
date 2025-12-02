@@ -56,7 +56,7 @@ export default function Page() {
     setError(null);
     try {
       // Determine endpoint based on search string
-      const endpoint = query.trim() ? '/blogs/search' : '/blogs';
+      const endpoint = query.trim() ? '/api/blogs/search' : '/api/blogs';
       const params: IQueryParam = {
         page: pageNumber,
         limit: blogsPerPage,
