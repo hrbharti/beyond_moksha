@@ -74,21 +74,13 @@ export default function Page() {
         params.query = query;
       }
 
-      console.log('🚀 Fetching blogs from:', axiosInstance.defaults.baseURL + endpoint);
-      console.log('📊 Request params:', params);
-
       const response = await axiosInstance.get<ApiResponse>(endpoint, {
         params,
       });
 
-      console.log('✅ API Response:', response.data);
-      console.log('📝 Blogs received:', response.data.data.length);
-
       if (response.data.success) {
         setBlogs(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
-        console.log('🎯 Blogs set to state:', response.data.data.length);
-        console.log('🎨 Will render', response.data.data.length, 'blog cards');
       }
     } catch (err) {
       setError('Failed to fetch blogs');
