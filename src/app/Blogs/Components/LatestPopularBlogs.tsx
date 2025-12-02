@@ -35,7 +35,7 @@ const LatestPopularBlogs = ({ selected, setSelected }: IProps) => {
     }, [selected]);
 
     const fetchBlogs = async (selected: number) => {
-        const url = selected ? "/blogs/feed/latest" : "/blogs/feed/popular";
+        const url = selected ? "/api/blogs/feed/latest" : "/api/blogs/feed/popular";
         setLoading(true);
         setError(null);
         try {
