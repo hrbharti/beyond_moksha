@@ -88,6 +88,7 @@ export default function Page() {
         setBlogs(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
         console.log('🎯 Blogs set to state:', response.data.data.length);
+        console.log('🎨 Will render', response.data.data.length, 'blog cards');
       }
     } catch (err) {
       setError('Failed to fetch blogs');
@@ -175,7 +176,6 @@ export default function Page() {
               {/* Grid of blog cards (3 columns on md, 1 on small) */}
               {!loading && blogs.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                  {console.log('🎨 Rendering', blogs.length, 'blog cards')}
                   {blogs.map((blog) => (
                     <div key={blog.id} className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition">
                       <BlogCard
