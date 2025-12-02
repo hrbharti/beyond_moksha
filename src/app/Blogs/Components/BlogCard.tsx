@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 interface IProps {
   id: string;
   title: string;
-  image: string;
+  image: string | null;
 }
 
 
@@ -22,27 +22,19 @@ interface IProps {
         className="bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
       >
         <div className="w-full overflow-hidden rounded-md">
-          <div
-            onClick={handleClick}
-            className="bg-white border rounded-lg shadow hover:shadow-lg transition cursor-pointer"
-          >
-            <div className="w-full overflow-hidden rounded-md">
-              <Image
-                src={image || "/blog.jpg"}
-                alt="Blog image"
-                width={400}
-                height={280}
-                className="w-full h-[280px] object-cover"
-              />
-            </div>
-
-            <p className="m-4 mx-8">
-              <p className="m-4 mx-8">
-                {title}
-              </p>
-            </p>
-          </div>
+          <Image
+            src={image || "/blog.jpg"}
+            alt="Blog image"
+            width={400}
+            height={280}
+            className="w-full h-[280px] object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <p className="text-gray-800 font-medium line-clamp-2">
+            {title}
+          </p>
         </div>
       </div>
-          )
+    )
 }
