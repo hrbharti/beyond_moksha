@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 interface IProps {
   id: string;
   title: string;
-  image: string;
+  image: string | null;
 }
 
 

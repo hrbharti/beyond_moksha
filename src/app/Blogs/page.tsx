@@ -12,7 +12,14 @@ import LatestPopularBlogs from './Components/LatestPopularBlogs'
 interface Blog {
   id: number;
   title: string;
-  coverImageUrl: string;
+  tags: string[];
+  contentUrl: string;
+  coverImageUrl: string | null;
+  readTime: number;
+  views: number;
+  likes: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ApiResponse {
@@ -66,13 +73,21 @@ export default function Page() {
       if (query.trim()) {
         params.query = query;
       }
+
+      console.log('🚀 Fetching blogs from:', axiosInstance.defaults.baseURL + endpoint);
+      console.log('📊 Request params:', params);
+
       const response = await axiosInstance.get<ApiResponse>(endpoint, {
         params,
       });
 
+      console.log('✅ API Response:', response.data);
+      console.log('📝 Blogs received:', response.data.data.length);
+
       if (response.data.success) {
         setBlogs(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
+        console.log('🎯 Blogs set to state:', response.data.data.length);
       }
     } catch (err) {
       setError('Failed to fetch blogs');
@@ -160,6 +175,7 @@ export default function Page() {
               {/* Grid of blog cards (3 columns on md, 1 on small) */}
               {!loading && blogs.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {console.log('🎨 Rendering', blogs.length, 'blog cards')}
                   {blogs.map((blog) => (
                     <div key={blog.id} className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition">
                       <BlogCard
