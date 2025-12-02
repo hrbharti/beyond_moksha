@@ -12,14 +12,7 @@ import LatestPopularBlogs from './Components/LatestPopularBlogs'
 interface Blog {
   id: number;
   title: string;
-  tags: string[];
-  contentUrl: string;
-  coverImageUrl: string | null;
-  readTime: number;
-  views: number;
-  likes: number;
-  createdAt: string;
-  updatedAt: string;
+  coverImageUrl: string;
 }
 
 interface ApiResponse {
@@ -73,15 +66,9 @@ export default function Page() {
       if (query.trim()) {
         params.query = query;
       }
-
-      console.log('Fetching blogs with:', { endpoint, params });
-      console.log('Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
-
       const response = await axiosInstance.get<ApiResponse>(endpoint, {
         params,
       });
-
-      console.log('API Response:', response.data);
 
       if (response.data.success) {
         setBlogs(response.data.data);
@@ -179,7 +166,7 @@ export default function Page() {
                         key={blog.id}
                         id={String(blog.id)}
                         title={blog.title}
-                        image={blog.coverImageUrl || '/blog.jpg'}
+                        image={blog.coverImageUrl}
                       />
                     </div>
                   ))}
@@ -190,12 +177,6 @@ export default function Page() {
               {loading && (
                 <div className="flex justify-center items-center py-12">
                   <p className="text-lg text-gray-500">Loading blogs...</p>
-                </div>
-              )}
-
-              {error && (
-                <div className="flex justify-center items-center py-12">
-                  <p className="text-lg text-red-500">{error}</p>
                 </div>
               )}
 
