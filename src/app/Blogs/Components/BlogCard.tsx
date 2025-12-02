@@ -2,13 +2,6 @@ import Image from "next/image"
 import React from "react";
 import { useRouter } from "next/navigation";
 
-interface IProps {
-  id: string;
-  title: string;
-  image: string;
-}
-import React from "react";
-import { useRouter } from "next/navigation";
 
 interface IProps {
   id: string;
@@ -16,11 +9,6 @@ interface IProps {
   image: string;
 }
 
-export default function BlogCard({ id, title, image }: IProps) {
-  const router = useRouter();
-  const handleClick = () => {
-    router.push(`/Blogs/${id}`);
-  }
 
   export default function BlogCard({ id, title, image }: IProps) {
     const router = useRouter();
@@ -41,7 +29,6 @@ export default function BlogCard({ id, title, image }: IProps) {
             <div className="w-full overflow-hidden rounded-md">
               <Image
                 src={image || "/blog.jpg"}
-                src={image || "/blog.jpg"}
                 alt="Blog image"
                 width={400}
                 height={280}
@@ -55,5 +42,7 @@ export default function BlogCard({ id, title, image }: IProps) {
               </p>
             </p>
           </div>
+        </div>
+      </div>
           )
 }
