@@ -1,5 +1,5 @@
 export const exploreTopicsData = [
-    "uneral Services",
+    "Funeral Services",
     "Cremation & Last Rites",
     "Dead Body Transport",
     "Freezer & Mortuary Support",
@@ -12,3 +12,4 @@ export const exploreTopicsData = [
     "FAQ & Guidance",
     "Uncategorized"
 ];
+
