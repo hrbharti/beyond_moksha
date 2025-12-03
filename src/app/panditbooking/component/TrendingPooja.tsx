@@ -19,7 +19,7 @@ const poojas: Pooja[] = [
     price: "₹5701/-",
     oldPrice: "₹8001/-",
     discount: "29%",
-    img: "/trendingpooja1.jpg",
+    img: "/trendingpooja4.png",
   },
   {
     title: "Satya Narayan",
@@ -27,7 +27,7 @@ const poojas: Pooja[] = [
     price: "₹4401/-",
     oldPrice: "₹9100/-",
     discount: "52%",
-    img: "/trendingpooja2.jpg",
+    img: "/trendingpooja3.png",
   },
   {
     title: "Vaastu Shanti",
@@ -35,7 +35,7 @@ const poojas: Pooja[] = [
     price: "₹5701/-",
     oldPrice: "₹8001/-",
     discount: "29%",
-    img: "/trendingpooja3.png",
+    img: "/trendingpooja2.jpg",
   },
   {
     title: "Office Opening Pooja",
@@ -43,7 +43,7 @@ const poojas: Pooja[] = [
     price: "₹5701/-",
     oldPrice: "₹8001/-",
     discount: "29%",
-    img: "/trendingpooja4.png",
+    img: "/trendingpooja1.jpg",
   },
 ];
 
