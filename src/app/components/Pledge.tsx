@@ -28,7 +28,7 @@ export const Pledge = () => {
                 Why We Exist
               </h2>
               <p className="text-[#1F3A52] text-sm leading-relaxed">
-                Families need space to mourn, remember, and heal. We take care of everything so you can focus on what matters is being with family and honoring your loved one's memory. During this painful time, you shouldn't carry the burden of arrangements alone. We handle each detail with gentleness and care, guiding you at every step. Let us support you through this journey, so you can grieve, remember, and find comfort together.
+                Families need space to mourn, remember, and heal. We take care of everything so you can focus on what matters is being with family and honoring your loved one&apos;s memory. During this painful time, you shouldn&apos;t carry the burden of arrangements alone. We handle each detail with gentleness and care, guiding you at every step. Let us support you through this journey, so you can grieve, remember, and find comfort together.
               </p>
             </div>
           </div>
