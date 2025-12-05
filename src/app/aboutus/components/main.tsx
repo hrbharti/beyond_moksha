@@ -40,12 +40,12 @@ export default function AboutUsPage() {
 
               <div className="mt-5 flex items-center gap-3 text-[18px] font-semibold justify-center md:justify-start">
                 <span>Hrithik Bharti</span>
-                <a href="#" aria-label="LinkedIn" className="inline-flex">
+                <a href="https://www.linkedin.com/in/imhrbharti?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn" className="inline-flex">
                   <span>
                     <FaLinkedin />
                   </span>
                 </a>
-                <a href="#" aria-label="Website" className="text-current hover:opacity-80">
+                <a href=" https://x.com/imhrbharti?t=4iFzQAmYQGlMkduWkAH7Qw&s=09" aria-label="Website" className="text-current hover:opacity-80">
                   <span className="text-[20px] leading-none">
                     <FaXTwitter />
                   </span>

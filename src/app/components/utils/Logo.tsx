@@ -23,7 +23,7 @@ export default function Logo({ isNav }: NavProps) {
                     Beyond
                 </span>
                 <span className="text-[#BC911B] text-gradient-to-t from-[#BC911B] to-[#DFAA16]">Moksha</span></div>
-            <div className="text-red-500">Tagline for beyond-moksha</div>
+            <div className="text-red-500">सर्वसंस्कारसहायाः</div>
 
         </div>
     </div>

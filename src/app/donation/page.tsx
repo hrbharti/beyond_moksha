@@ -40,7 +40,7 @@ export default function page() {
               <Perks heading="₹26K Cr" subHeading="Market Impact" />
             </div>
             <div className="w-full md:w-1/3 flex justify-center">
-              <Perks heading="Delhi First" subHeading="Tech Platform" />
+              <Perks heading="Family First" subHeading="Tech Platform" />
             </div>
           </div>
         </div>

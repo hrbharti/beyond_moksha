@@ -85,7 +85,7 @@ export default function Carousel() {
             font-lora font-normal
           "
         >
-          Honouring the Journey with Grace
+          Even Goodbyes Deserve Dignity
         </h1>
 
         <p
@@ -98,9 +98,7 @@ export default function Carousel() {
             mb-6
           "
         >
-          Managed independently to serve all. Beyond Moksha is here to assist and
-          guide you during an already difficult time with the aim of supporting
-          you before, during, and after the funeral.
+          Losing someone is painful enough. Let us handle the arrangements so you can focus on family, prayers, and memories.
         </p>
 
         {/* Buttons */}

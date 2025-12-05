@@ -7,9 +7,10 @@ interface ServicesCardProps {
   subHeading: string;
   icon: StaticImageData;
   route ?: string;
+  link: string
 }
 
-export const ServicesCard = ({ heading, subHeading, icon, route }: ServicesCardProps) => {
+export const ServicesCard = ({ heading, subHeading, icon, route , link}: ServicesCardProps) => {
   return (
     <div className="flex flex-col items-center justify-center text-center bg-white rounded-lg shadow-md border border-gray-300 p-8 max-w-md w-full hover:shadow-xl transition-all duration-300">
       
@@ -30,7 +31,7 @@ export const ServicesCard = ({ heading, subHeading, icon, route }: ServicesCardP
 
       {/* Learn More */}
       <Link href={route || ""} ><div className="mt-4 flex items-center gap-1 text-[#BC911B] font-medium cursor-pointer hover:underline">
-        Learn more <MdArrowRightAlt />
+        {link} <MdArrowRightAlt />
       </div></Link>
     </div>
   );
