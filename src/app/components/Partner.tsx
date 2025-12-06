@@ -24,7 +24,7 @@ export default function Partner() {
 
             <div className="mt-6">
               <Link
-                href={"/form/partner-form"}
+                href={"https://docs.google.com/forms/d/e/1FAIpQLSe8v00Jmqw97l4lMEobeZqDmlxqhAl7IZF8u-jHYGpggOblnQ/viewform?usp=dialog"}
                 className="inline-block px-5 py-2 min-w-[10.8125rem] border bg-white border-white rounded-full text-[#004551] text-sm hover:bg-[#004551] hover:text-white transition-all"
               >
                 Register as Partner →

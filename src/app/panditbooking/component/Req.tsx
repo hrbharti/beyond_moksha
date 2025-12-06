@@ -33,7 +33,7 @@ export default function JoinPanditSection() {
           <button
             className="mt-6 px-6 py-2 bg-white text-[#1F3A52] rounded-md shadow hover:bg-gray-100 transition font-medium"
           >
-            <Link href={"/form/pandit-form"}>Send a Request</Link>
+            <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSfIOT5BpdiwLKUvZoH32E3uBHkwQ5GmA9fDZ2f1kaU5Q5Thqw/viewform?usp=publish-editor"}>Send a Request</Link>
           </button>
         </div>
       </div>
