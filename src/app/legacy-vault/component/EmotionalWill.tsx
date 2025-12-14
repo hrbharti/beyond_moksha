@@ -1,6 +1,10 @@
+'use client';
 import EmoCard from "./EmoCard";
+import  {useRouter}  from "next/navigation";
 
 export default function EmotionalWill() {
+  const router = useRouter();
+
   return (
     <section className="w-full bg-[#F1F8FC] py-24 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -17,8 +21,10 @@ export default function EmotionalWill() {
             the right time.
           </p>
 
-          <button className="mt-10 px-6 py-3 text-white rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)]
-            hover:opacity-90 transition">
+          <button 
+          className="mt-10 px-6 py-3 text-white rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)]
+            hover:opacity-90 transition"
+            onClick={() => router.push('/legacy-vault/dashboard')}>
             Explore Now
           </button>
         </div>

@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between w-full gap-6">
 
         {/* Left Logo + Subtitle */}
-        <Logo />
+        <Logo className="text-4xl"/>
 
         {/* Navigation */}
         <div className="flex gap-10 text-sm">

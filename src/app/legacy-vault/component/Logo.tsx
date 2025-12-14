@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation";
 
 
-export default function Logo({isNav}: {isNav?: boolean}) {
+export default function Logo({isNav, className}: {isNav?: boolean, className?: string}) {
 
     const beyondClassName = isNav ? "bg-gradient-to-b from-[#0866FF] to-[#0866FF] bg-clip-text text-transparent" : "white";
 
@@ -14,7 +14,7 @@ export default function Logo({isNav}: {isNav?: boolean}) {
 
         <div className="h-full w-17"><Image src="/bird.png" alt="Beyond-moksha image" width={68} height={58} /></div>
         <div className="h-full ">
-            <div className={`text-4xl mt-3  `}>
+            <div className={`${className} mt-3`}>
                 <span className={beyondClassName}>
                     Beyond
                 </span>
