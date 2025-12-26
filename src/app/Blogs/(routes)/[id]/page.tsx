@@ -41,7 +41,7 @@ export default function BlogDetail() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axiosInstance.get<IApiResponse>(`/blogs/${params.id}`);
+                const response = await axiosInstance.get<IApiResponse>(`api/blogs/${params.id}`);
                 if (response.data.success) {
                     setBlog(response.data.data);
                 } else {
