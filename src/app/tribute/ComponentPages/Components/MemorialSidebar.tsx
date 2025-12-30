@@ -55,15 +55,17 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
 
         {/* Logo Section */}
         <Link href={"/"} className="flex flex-col items-center space-y-1 mb-12">
+          <div>
           <div className="flex items-center space-x-2">
             <Image src={bird} alt="Logo" width={36} height={36} />
             <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
               Beyond <span className="text-[#D4A043]">Moksha</span>
             </h1>
           </div>
-          <p className="text-xs text-[#1F3A4B]/60">
-            Tag line for beyond moksha
-          </p>
+          <div className="text-xs text-[#1F3A4B]/60 text-right">
+            सर्वसंस्कारसहायाः
+          </div>
+          </div>
         </Link>
 
         {/* Navigation Links */}
