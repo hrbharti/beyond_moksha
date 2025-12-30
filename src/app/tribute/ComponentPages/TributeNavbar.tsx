@@ -10,9 +10,12 @@ export default function TributeNavbar() {
         <nav className="w-full bg-[#1F3A4B] text-white py-4">
             <div className="container mx-auto px-10 md:px-24 flex items-center justify-between">
                 {/* Logo */}
-                <h1 className="text-4xl font-serif text-[#D4A043] tracking-wide">
-                    Tribute
-                </h1>
+                <div>
+                    <h1 className="text-4xl font-serif text-[#D4A043] tracking-wide">
+                    Beyond Moksha
+                    </h1>
+                    <div className="text-md -mt-2 text-gray-300 text-right">Tribute</div>
+                </div>
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-8 text-xl">

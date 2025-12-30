@@ -7,7 +7,7 @@ import petServices from "../../../public/Pet services.png";
 export const Services = () => {
   return (
     <div  className="flex flex-wrap h-full items-center justify-center content-center gap-x-20 gap-y-15 mx-auto py-12">
-      <ServicesCard
+      {/* <ServicesCard
         heading="Human Funeral"
         subHeading="We organise everything for you, from rituals to arrangements, so you can focus on family and prayers."
         icon={people}
@@ -19,7 +19,7 @@ export const Services = () => {
         subHeading="Pets are family too. We help you say goodbye with care and dignity."
         icon={petServices}
         link="Get Support"
-      />
+      /> */}
 
       <ServicesCard
         heading="Tribute"

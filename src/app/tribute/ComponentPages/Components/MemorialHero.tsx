@@ -51,7 +51,7 @@ const HeroSection: React.FC = () => {
             overflow-hidden bg-white shadow-lg
           "
         >
-          <Image src={founder} alt="Profile" fill className="object-cover" />
+          <Image src='/flower.png' alt="Profile" fill className="object-cover" />
         </div>
 
         {/* Text Info */}

@@ -12,9 +12,8 @@ import FurryFriendsSection from '../ComponentPages/FurryFriendSection'
 export default function page() {
   return (
     <div>
-      <Navbar />
+      
         <div>
-            <TributeSection />
             <TributeNavbar />
             <HonorYour />
             <HowItWorks />

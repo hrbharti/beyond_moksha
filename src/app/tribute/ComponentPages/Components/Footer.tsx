@@ -23,7 +23,7 @@ const Footer = () => {
             </h2>
           </div>
           <p className="text-sm md:text-base text-gray-300 font-light">
-            Tag line for beyond moksha
+            सर्वसंस्कारसहायाः
           </p>
         </div>
 
