@@ -11,44 +11,44 @@ const FamilyTree: React.FC = () => {
 
       {/* Central Person */}
       <div className="flex justify-center mb-16">
-        <FamilyCard name="Mrs. Shanon Moore" />
+        <FamilyCard name="Mrs. Radha Devi Sharma" />
       </div>
 
       {/* Family Sections */}
       <FamilySection
         title="Grand Parents"
         members={[
-          { name: "Mr. John Moore" },
-          { name: "Mrs. Clara Moore" },
+          { name: "Late Mr. Ram Prasad Sharma" },
+          { name: "Late Mrs. Shanti Devi Sharma" },
         ]}
       />
 
       <FamilySection
         title="Parents"
         members={[
-          { name: "Mr. Adam Moore" },
-          { name: "Mrs. Susan Moore" },
+          { name: "Late Mr. Mohan Lal Sharma" },
+          { name: "Late Mrs. Kamla Devi Sharma" },
         ]}
       />
 
       <FamilySection
         title="Spouse"
-        members={[{ name: "Mr. Robert Moore" }]}
+        members={[{ name: "Mr. Ramesh Kumar Sharma" }]}
       />
 
       <FamilySection
         title="Children"
         members={[
-          { name: "Mrs. Julia Moore" },
-          { name: "Mr. Sam Moore" },
+          { name: "Mrs. Priya Sharma" },
+          { name: "Mr. Aditya Sharma" },
         ]}
       />
 
       <FamilySection
         title="Father / Mother in law"
         members={[
-          { name: "Mr. Peter Brown" },
-          { name: "Mrs. Olivia Brown" },
+          { name: "Late Mr. Hari Prasad Sharma" },
+          { name: "Late Mrs. Sushila Devi Sharma" },
         ]}
       />
     </div>

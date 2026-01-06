@@ -30,7 +30,8 @@ export const ServicesCard = ({ heading, subHeading, icon, route , link}: Service
       </p>
 
       {/* Learn More */}
-      <Link href={route || ""} ><div className="mt-4 flex items-center gap-1 text-[#BC911B] font-medium cursor-pointer hover:underline">
+      <Link href={route || ""} >
+      <div className="mt-4 flex items-center gap-1 text-white font-medium cursor-pointer py-2 px-4 bg-gray-700 rounded-full stroke-white hover:bg-gray-800 transition-colors duration-300">
         {link} <MdArrowRightAlt />
       </div></Link>
     </div>

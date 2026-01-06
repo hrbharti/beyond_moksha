@@ -32,14 +32,14 @@ export default function Foot() {
           <div className="cursor-pointer" onClick={() => router.push("/")}>
             Home
           </div>
+          <div className="cursor-pointer" onClick={() => router.push("/tribute")}>
+            Tribute
+          </div>
+          <div className="cursor-pointer" onClick={() => router.push("/legacy-vault")}>
+            Legacy Vault
+          </div>
           <div className="cursor-pointer" onClick={() => router.push("/aboutus")}>
-            About Us
-          </div>
-          <div className="cursor-pointer" onClick={() => router.push("/")}>
-            Services
-          </div>
-          <div className="cursor-pointer" onClick={() => router.push("/")}>
-            Special Services
+            About us
           </div>
           <div className="cursor-pointer" onClick={() => router.push("/Blogs")}>
             Blogs

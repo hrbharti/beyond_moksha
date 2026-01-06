@@ -11,10 +11,12 @@ export default function TributeNavbar() {
             <div className="container mx-auto px-10 md:px-24 flex items-center justify-between">
                 {/* Logo */}
                 <div>
-                    <h1 className="text-4xl font-serif text-[#D4A043] tracking-wide">
-                    Beyond Moksha
-                    </h1>
-                    <div className="text-md -mt-2 text-gray-300 text-right">Tribute</div>
+                    <Link href={"/"} className="cursor-pointer">
+                        <h1 className="text-4xl font-serif text-[#D4A043] tracking-wide">
+                        Beyond Moksha
+                        </h1>
+                        <div className="text-md -mt-2 text-gray-300 text-right">Tribute</div>
+                    </Link>
                 </div>
 
                 {/* Desktop Menu */}

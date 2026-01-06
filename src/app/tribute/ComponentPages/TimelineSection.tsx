@@ -5,22 +5,22 @@ const timelineData = [
   {
     year: "1973",
     date: "March 16th",
-    title: "Title",
-    description: "Description of this event.",
+    title: "Marriage",
+    description: "Entered a lifelong partnership rooted in family values and togetherness.",
     location: "Location (optional)",
   },
   {
     year: "1980",
     date: "April 12th",
-    title: "Started Career",
-    description: "Worked as a financial analyst and mentor.",
-    location: "New York, USA",
+    title: "Career Beginnings",
+    description: "Started professional service in the banking sector, known for sincerity and dedication.",
+    location: "Delhi, India",
   },
   {
     year: "1995",
     date: "June 8th",
     title: "Family Milestone",
-    description: "Welcomed their first child.",
+    description: "Blessed with the birth of their first child.",
   },
 ];
 

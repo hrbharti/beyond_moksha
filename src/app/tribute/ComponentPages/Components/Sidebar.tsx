@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {/* Profile section */}
           <div className="relative w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] overflow-hidden">
             <Image
-              src={founder}
+              src='/kitty.jpg'
               alt="Profile"
               fill
               className="object-cover"
@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           </div>
 
           <h2 className="text-xl font-serif font-semibold text-[#1F3A4B] mt-2">
-            Name
+            Tommy
           </h2>
           <p className="text-[#1F3A4B]/80 text-sm mb-6">DOB -- DOD</p>
 

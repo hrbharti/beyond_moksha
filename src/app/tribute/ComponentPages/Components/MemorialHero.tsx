@@ -57,10 +57,10 @@ const HeroSection: React.FC = () => {
         {/* Text Info */}
         <div className="w-full md:w-2/3 space-y-2 sm:space-y-3 text-center md:text-left mt-16 sm:mt-20 md:mt-0">
           <h1 className="text-2xl sm:text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 leading-tight">
-            Name Surname
+            Radha Devi
           </h1>
-          <p className="text-xs sm:text-sm text-[#1F3A4B]/80">DOB — DOD</p>
-          <p className="text-sm sm:text-base text-[#1F3A4B]/70">Location</p>
+          <p className="text-xs sm:text-sm text-[#1F3A4B]/80">March 10, 1950 — March 25, 2023</p>
+          <p className="text-sm sm:text-base text-[#1F3A4B]/70">Kashi Vishwanath Temple</p>
         </div>
       </div>
     </section>

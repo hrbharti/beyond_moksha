@@ -58,9 +58,11 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
           <div>
           <div className="flex items-center space-x-2">
             <Image src={bird} alt="Logo" width={36} height={36} />
-            <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
+            <Link href={"/"} className="cursor-pointer">
+              <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
               Beyond <span className="text-[#D4A043]">Moksha</span>
             </h1>
+            </Link>
           </div>
           <div className="text-xs text-[#1F3A4B]/60 text-right">
             सर्वसंस्कारसहायाः

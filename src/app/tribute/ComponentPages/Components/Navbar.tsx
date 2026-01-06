@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
               <span className="text-[#1F3A4B]">Beyond</span>{" "}
               <span className="text-[#D4A043]">Moksha</span>
             </h1>
-            <p className="text-sm text-gray-500 -mt-1">Tag line for beyond mokshaaaaaaa</p>
+            <p className="text-sm text-gray-500 -mt-1">सर्वसंस्कारसहायाः</p>
           </div>
         </Link>
 

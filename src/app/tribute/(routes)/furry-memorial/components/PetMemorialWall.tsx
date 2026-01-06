@@ -1,26 +1,25 @@
 "use client";
 
 import React from "react";
-import MemoryCard from "./Components/MemoryCard";
+import MemoryCard from "./MemoryCard";
 
 const MemoryWall: React.FC = () => {
   const memories = [
     {
       date: "September 28, 2023",
-      message: `In remembrance of Radha Devi Sharma’s life and values.
+      message: `Remembering Tommy and the quiet joy he brought into our home.
 
-Her warmth, simplicity, and quiet strength brought comfort to everyone around her.
+His loyalty, warmth, and loving presence made every day better.
 
-Time spent with her was filled with care, guidance, and affection.
+He may be gone, but he will never be forgotten.
 
-Though she is no longer with us, her blessings and teachings continue to live on.
 `,
-      author: "XYZ ABC",
+      author: "Ankit Sharma",
     },
     {
       date: "September 28, 2023",
-      message: `Remembering her kindness, generosity, and the grace with which she touched every life.`,
-      author: "Suman Gupta",
+      message: `Forever grateful for the love and companionship he gave us.`,
+      author: "Neha Verma",
     },
   ];
 
@@ -33,10 +32,10 @@ Though she is no longer with us, her blessings and teachings continue to live on
             Memory Wall
           </h1>
           <p className="text-gray-700 italic mb-2">
-            &quot;Those who live in our memories remain forever with us.&quot;
+            &quot;Some souls walk with us for a short while, but their love stays forever.&quot;
           </p>
           <p className="text-gray-700">
-            Please share your photos and memories of Radha Devi Sharma.
+            Please share your photos and memories of Tommy.
           </p>
         </div>
 

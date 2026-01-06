@@ -30,9 +30,9 @@ const Footer = () => {
         {/* Menu Links */}
         <nav className="flex flex-wrap justify-center gap-6 text-sm md:text-base font-light">
           <a href="#" className="hover:text-[#E1B650] transition-colors">Home</a>
+          <a href="#" className="hover:text-[#E1B650] transition-colors">Tribute</a>
+          <a href="#" className="hover:text-[#E1B650] transition-colors">Legacy Vault</a>
           <a href="#" className="hover:text-[#E1B650] transition-colors">About us</a>
-          <a href="#" className="hover:text-[#E1B650] transition-colors">Our Services</a>
-          <a href="#" className="hover:text-[#E1B650] transition-colors">Special Services</a>
           <a href="#" className="hover:text-[#E1B650] transition-colors">Blogs</a>
         </nav>
 

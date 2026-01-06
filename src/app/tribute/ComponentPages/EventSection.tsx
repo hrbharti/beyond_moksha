@@ -14,20 +14,12 @@ const EventsSection: React.FC = () => {
       {/* Main Event Card */}
       <div className="border border-[#1F3A4B]/40 rounded-md p-6 sm:p-8 md:p-10 flex flex-col space-y-6 bg-white">
         <div className="space-y-4 leading-relaxed text-[#1F3A4B]/90">
-          <p>Please join us to pay a last tribute.</p>
+          <p>Please join us in paying final tribute.</p>
           <p>
-            We invite you to join us in a solemn gathering as we come together
-            to celebrate the life of our beloved Shannon Moore.
+            Family, friends, and well-wishers are requested to attend a remembrance gathering to honour the life and values of Mrs. Radha Devi Sharma. Your presence will provide comfort as we come together to share memories, support one another, and offer a peaceful farewell.
           </p>
           <p>
-            Your presence would mean a great deal to us as we remember and honor
-            the legacy of a remarkable friend, wife, mother. In this moment of
-            remembrance, let us come together to share our fond memories, offer
-            our support to one another, and bid farewell to a truly exceptional
-            individual.
-          </p>
-          <p>
-            Please join us in commemorating Shannon&apos;s life and the positive impact she had on all of us.
+            Please join us in commemorating Mrs. Radha Devi Sharma&apos;s life and the positive impact she had on all of us.
           </p>
         </div>
 
@@ -39,11 +31,12 @@ const EventsSection: React.FC = () => {
               <span>Location :</span>
             </div>
             <p className="text-[#1F3A4B]/90">
-              San Jose Funeral Home
+              Shanti Bhavan Community Hall
               <br />
-              1050 S. Bascom Ave
+              Assi Ghat Road,
               <br />
-              San California 95128
+              Varanasi, Uttar Pradesh – 221005
+
             </p>
           </div>
 
@@ -52,7 +45,7 @@ const EventsSection: React.FC = () => {
               <CalendarDays size={18} />
               <span>Date/time :</span>
             </div>
-            <p className="text-[#1F3A4B]/90">June 26,</p>
+            <p className="text-[#1F3A4B]/90">June 26, 11:00 AM</p>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
@@ -74,7 +67,7 @@ const EventsSection: React.FC = () => {
         {/* RSVP Section */}
         <div className="space-y-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-[#D4A043]">
-            RSVP
+            Confirm Attendance
           </h2>
 
           {/* Form */}
@@ -138,7 +131,7 @@ const EventsSection: React.FC = () => {
               type="submit"
               className="bg-gradient-to-r from-[#D4A043] to-[#b37c1c] text-white font-medium py-2 px-6 rounded-md w-fit hover:opacity-90 transition"
             >
-              Submit RSVP
+              Submit Confirmation
             </button>
           </form>
         </div>

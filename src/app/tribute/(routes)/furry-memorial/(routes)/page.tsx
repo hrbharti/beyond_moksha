@@ -1,7 +1,7 @@
 import React from "react";
-import Memorial from "../../../ComponentPages/Components/Memorial";
+import Memorial from "../components/PetMemorial";
 import Gallery from "@/app/tribute/ComponentPages/Gallery";
-import MemoryWall from "@/app/tribute/ComponentPages/MemoryWall";
+import MemoryWall from "../components/PetMemorialWall";
 
 const MemorialPage = () => {
     return (

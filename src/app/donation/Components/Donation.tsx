@@ -4,6 +4,8 @@ import { Heart, Star, Book, Users } from "@deemlol/next-icons";
 
 export default function ContactUs() {
   const [selected, setSelected] = useState<number>(1);
+  const [showCustomInput, setShowCustomInput] = useState<boolean>(false);
+  const [customAmount, setCustomAmount] = useState<string>("");
 
   const cards = [
     {
@@ -11,7 +13,7 @@ export default function ContactUs() {
       logo: <Heart size={30} color="#f4ac5a" />,
       price: 1000,
       title: "Gentle Support",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, nisi!",
+      description: "Provides a comforting prayer ceremony for one family in their time of need.",
       motto: "Every act of kindness matters."
     },
     {
@@ -19,7 +21,7 @@ export default function ContactUs() {
       logo: <Users size={30} color="#f4ac5a" />,
       price: 5000,
       title: "Compassionate Care",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, nisi!",
+      description: "Supports eco-friendly arrangements, ensuring a peaceful and sustainable farewell.",
       motto: "Together we are stronger."
     },
     {
@@ -27,7 +29,7 @@ export default function ContactUs() {
       logo: <Book size={30} color="#f4ac5a" />,
       price: 15000,
       title: "Legacy Guardian",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, nisi!",
+      description: "Helps digitize precious memories, creating a lasting digital sanctuary for families to cherish.",
       motto: "A legacy built on compassion."
     },
     {
@@ -35,7 +37,7 @@ export default function ContactUs() {
       logo: <Star size={30} color="#f4ac5a" />,
       price: 50000,
       title: "Hope Builder",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, nisi!",
+      description: "Sponsors complete technology infrastructure development to serve hundreds of families with dignity.",
       motto: "Hope shines the brightest."
     },
   ];
@@ -75,12 +77,32 @@ export default function ContactUs() {
       </div>
 
       {/* Custom Amount */}
-      <button
-        className="border border-slate-400 rounded-md px-6 py-2 mt-10 mx-auto block text-sm font-medium 
-        hover:border-[#f4ac5a] hover:text-[#f4ac5a] transition-all duration-300 text-slate-600"
-      >
-        Custom amount
-      </button>
+      <div className="mt-10">
+        <button
+          onClick={() => {
+            setShowCustomInput(!showCustomInput);
+            if (!showCustomInput) {
+              setSelected(-1);
+            }
+          }}
+          className="border border-slate-400 rounded-md px-6 py-2 mx-auto block text-sm font-medium 
+          hover:border-[#f4ac5a] hover:text-[#f4ac5a] transition-all duration-300 text-slate-600"
+        >
+          Custom amount
+        </button>
+        
+        {showCustomInput && (
+          <div className="mt-4 max-w-xs mx-auto">
+            <input
+              type="number"
+              value={customAmount}
+              onChange={(e) => setCustomAmount(e.target.value)}
+              placeholder="Enter custom amount"
+              className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm bg-white focus:border-[#f4ac5a] outline-none transition-all duration-200"
+            />
+          </div>
+        )}
+      </div>
 
       {/* Form */}
       <form className="max-w-4xl mx-auto mt-8 px-2 md:px-6">
@@ -135,7 +157,7 @@ export default function ContactUs() {
         <div className="bg-[#f4ac5a] text-white text-center rounded-xl py-6 mt-10 shadow-md">
           <p className="text-base font-medium">Your Gift of Compassion</p>
           <p className="text-4xl md:text-5xl font-bold my-2">
-            ₹{cards[selected].price.toLocaleString()}
+            ₹{selected === -1 && customAmount ? parseInt(customAmount).toLocaleString() : selected >= 0 ? cards[selected].price.toLocaleString() : "0"}
           </p>
           <p className="text-sm md:text-base">
             Honoring life while protecting our earth

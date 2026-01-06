@@ -11,45 +11,23 @@ const Memorial: React.FC = () => {
       {/* Paragraphs */}
       <div className="space-y-6 text-base leading-relaxed text-gray-800">
         <p>
-          Rebecca Wilson, a beloved wife, mother, and dedicated community member,
-          peacefully passed away on March 25, 2023 – at the age of 73.
-          Born on March 10, 1950, Rebecca grew up with strong family values and
-          a deep sense of community.
+          Mrs. Radha Devi Sharma passed away peacefully on March 25, 2023, at the age of 73. Born in Varanasi on March 10, 1950, she lived a life guided by grace and strong values.
         </p>
 
         <p>
-          She excelled academically and athletically in high school, eventually
-          earning a Bachelor&apos;s degree in Business Administration.
-          In 1975, Rebecca married her love, Mark, and they shared 48 years of a
-          loving marriage, raising two children, Emily and Michael, and becoming
-          adoring grandparents to Grace, Ethan, and Lily.
+          A Commerce graduate from Banaras Hindu University, she served at the State Bank of India with integrity and dedication. Married to Mr. Ramesh Kumar Sharma in 1975, she shared 48 years of family life. She is survived by her husband, children Priya and Aditya, and grandchildren Aaradhya, Arjun, and Ayushmati.
         </p>
 
         <p>
-          Professionally, Rebecca had a distinguished career in finance, marked
-          by her integrity and mentorship of young professionals. She also
-          dedicated her time to various charitable causes, leaving a positive
-          impact on her community.
+          The Terhvin ceremony will be held on April 7, 2023, at Kashi Vishwanath Temple.
         </p>
 
         <p>
-          Rebecca had a passion for the outdoors, often spending weekends
-          camping, fishing, and hiking with her family, instilling a love for
-          nature in her loved ones.
+          In her memory, contributions to the Radha Devi Memorial Scholarship Fund are welcome.
         </p>
 
         <p>
-          Rebecca is survived by her husband, children, grandchildren, and
-          siblings, Robert Jr. and Susan. A memorial service will be held on
-          October 2, 2023, at St. Mary&apos;s Community Church at 2:00 PM.
-        </p>
-
-        <p>
-          In lieu of flowers, the family requests donations to the Rebecca
-          Wilson Memorial Scholarship Fund, supporting underprivileged youth&apos;s
-          education in the community. Rebecca&apos;s legacy lives on through the
-          countless lives she touched, the values she upheld, and the love she
-          shared. She will be deeply missed but forever cherished.
+          Om Shanti.
         </p>
       </div>
     </section>
