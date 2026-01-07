@@ -153,7 +153,7 @@ export default function LoginForm() {
           {/* Gender */}
           <div>
             <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-              What's your gender? <span className="text-gray-500">(Optional)</span>
+              What&apos;s your gender? <span className="text-gray-500">(Optional)</span>
             </label>
             <div className="flex gap-4 sm:gap-6">
               {["Female", "Male", "Non-binary"].map(option => (
@@ -175,7 +175,7 @@ export default function LoginForm() {
           {/* Date of Birth */}
           <div>
             <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-              What's your date of birth?
+              What&apos;s your date of birth?
             </label>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {/* Month */}
@@ -245,7 +245,7 @@ export default function LoginForm() {
           <div className="border border-gray-300 rounded-lg p-3 bg-white">
             <div className="flex items-center gap-2">
               <input type="checkbox" className="w-5 h-5" />
-              <span className="text-xs sm:text-sm text-gray-700">I'm not a robot</span>
+              <span className="text-xs sm:text-sm text-gray-700">I&apos;m not a robot</span>
               <div className="ml-auto flex gap-1">
                 <img 
                   src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40'%3E%3Ctext x='5' y='25' font-size='10' fill='%23999'%3EreCAPTCHA%3C/text%3E%3C/svg%3E" 
