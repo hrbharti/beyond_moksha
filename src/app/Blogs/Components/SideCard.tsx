@@ -5,7 +5,7 @@ import React from 'react';
 interface IProps {
   id: number;
   title: string;
-  coverImageUrl: string;
+  presignedCoverUrl: string;
   createdAt: string;
   needDivider?: boolean;
 }
@@ -20,7 +20,7 @@ export default function SideCard(props: IProps) {
       <div className='w-full p-2 flex items-center cursor-pointer' onClick={handleClick}>
         <Image
           className='w-[60px] h-[60px] rounded-full'
-          src={props.coverImageUrl || "/blog.jpg"}
+          src={props.presignedCoverUrl || "/blog.jpg"}
           alt='Blog_image'
           width={100}
           height={100}

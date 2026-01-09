@@ -14,7 +14,7 @@ interface IBlogData {
     contentUrl: string;
     views: number;
     likes: number;
-    coverImageUrl?: string;
+    presignedCoverUrl?: string;
     createdAt?: string;
 }
 
@@ -162,10 +162,10 @@ export default function BlogDetail() {
                         </div>
 
                         {/* Featured Image */}
-                        {blog.coverImageUrl && (
+                        {blog.presignedCoverUrl && (
                             <div className='mb-8 rounded-lg overflow-hidden shadow-lg'>
                                 <Image
-                                    src={blog.coverImageUrl}
+                                    src={blog.presignedCoverUrl}
                                     alt={blog.title}
                                     width={800}
                                     height={400}
