@@ -13,7 +13,7 @@ interface Blog {
   id: number;
   title: string;
   tags: string[];
-  contentUrl: string;
+  presignedContentUrl: string;
   presignedCoverUrl: string | null;
   readTime: number;
   views: number;

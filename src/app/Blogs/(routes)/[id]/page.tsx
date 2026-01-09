@@ -11,7 +11,7 @@ import Image from "next/image";
 interface IBlogData {
     id: string;
     title: string;
-    contentUrl: string;
+    presignedContentUrl: string;
     views: number;
     likes: number;
     presignedCoverUrl?: string;
@@ -62,9 +62,9 @@ export default function BlogDetail() {
 
     // Fetch blog content - only when blog URL changes
     useEffect(() => {
-        if (blog?.contentUrl) {
+        if (blog?.presignedContentUrl) {
             setContentLoading(true);
-            fetch(blog.contentUrl)
+            fetch(blog.presignedContentUrl)
                 .then(response => {
                     if (!response.ok) throw new Error('Failed to fetch content');
                     return response.text();
@@ -78,7 +78,7 @@ export default function BlogDetail() {
                     setContentLoading(false);
                 });
         }
-    }, [blog?.contentUrl]);
+    }, [blog?.presignedContentUrl]);
 
     // Skeleton Loader
     const SkeletonLoader = () => (
