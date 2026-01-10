@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -19,41 +20,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       }
     ]
-  },
-  
-  // Performance optimizations for Vercel
-  experimental: {
-    optimizePackageImports: ['mammoth', 'axios']
-  },
-  
-  // Security headers
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          }
-        ]
-      }
-    ]
-  },
-
-  // Remove console logs in production, keep errors and warnings
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn']
-    } : false,
   }
 };
 

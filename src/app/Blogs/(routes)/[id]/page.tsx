@@ -12,7 +12,6 @@ interface IBlogData {
     id: string;
     title: string;
     tags: string[];
-    contentUrl: string;
     coverImageUrl: string;
     readTime: number;
     views: number;
@@ -47,18 +46,27 @@ export default function BlogDetail() {
             setLoading(true);
             setError(null);
             try {
+                console.log('🚀 Fetching blog with ID:', params.id);
+                console.log('🌐 API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
+                
                 const response = await axiosInstance.get<IApiResponse>(`/api/blogs/${params.id}`);
+                
+                console.log('📡 API Response status:', response.status);
+                console.log('📊 API Response data:', response.data);
+                
                 if (response.data.success) {
+                    console.log('✅ Blog data received:', response.data.data);
+                    console.log('🔗 presignedContentUrl:', response.data.data.presignedContentUrl);
+                    console.log('🖼️ presignedCoverUrl:', response.data.data.presignedCoverUrl);
+                    
                     setBlog(response.data.data);
                 } else {
                     setError('Failed to load blog');
                 }
             } catch (err) {
+                console.error('❌ API call failed:', err);
                 setError('Unable to fetch blog. Please try again later.');
-                // PRODUCTION: Use proper logging service instead of console.error
-                if (process.env.NODE_ENV !== 'production') {
-                    console.error('Error fetching blog:', err);
-                }
+                console.error('Error fetching blog:', err);
             } finally {
                 setLoading(false);
             }
@@ -69,7 +77,7 @@ export default function BlogDetail() {
         }
     }, [params.id]);
 
-    // Fetch blog content - only when blog URL changes
+    // Fetch blog content - only when presigned URL is available
     useEffect(() => {
         if (blog?.presignedContentUrl) {
             setContentLoading(true);
@@ -77,34 +85,45 @@ export default function BlogDetail() {
             
             const urlToUse = blog.presignedContentUrl;
             
-            console.log('🔗 Content URL:', urlToUse);
+            console.log('🔗 Using presigned content URL:', urlToUse);
             console.log('📄 Is Word document:', urlToUse.includes('.docx'));
+            
+            // Validate that it's a proper HTTPS URL
+            if (!urlToUse.startsWith('https://')) {
+                setError('Invalid content URL format. Expected HTTPS presigned URL.');
+                setContentLoading(false);
+                return;
+            }
             
             // Check if it's a Word document
             if (urlToUse.includes('.docx')) {
+                console.log('🔄 Converting Word document...');
+                
                 // Handle Word document - use presigned URL through a proxy
                 import('mammoth').then((mammoth) => {
+                    console.log('📚 Mammoth library loaded');
+                    
                     // Create a proxy endpoint to fetch the document
                     const proxyUrl = `/api/proxy-document?url=${encodeURIComponent(urlToUse)}`;
                     
                     fetch(proxyUrl)
                         .then(response => {
+                            console.log('📥 Fetched Word document via proxy, status:', response.status);
                             if (!response.ok) {
                                 throw new Error(`Proxy fetch failed: ${response.status} ${response.statusText}`);
                             }
                             return response.arrayBuffer();
                         })
                         .then(arrayBuffer => {
+                            console.log('📦 ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
                             if (arrayBuffer.byteLength === 0) {
                                 throw new Error('Empty Word document received');
                             }
                             
-                            // PRODUCTION: Minimal logging
-                            if (process.env.NODE_ENV !== 'production') {
-                                console.log('📦 ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
-                                const uint8Array = new Uint8Array(arrayBuffer);
-                                console.log('🔍 First few bytes:', Array.from(uint8Array.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' '));
-                            }
+                            // Convert ArrayBuffer for mammoth
+                            const uint8Array = new Uint8Array(arrayBuffer);
+                            console.log('🔍 First few bytes:', Array.from(uint8Array.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                            console.log('🔧 Converting with mammoth...');
                             
                             return (mammoth as any).convertToHtml({arrayBuffer: arrayBuffer}, {
                                 includeDefaultStyleMap: true,
@@ -162,7 +181,12 @@ export default function BlogDetail() {
                     });
             }
         } else {
-            console.log('❓ No presignedContentUrl found');
+            // No presigned content URL available
+            if (blog && !blog.presignedContentUrl) {
+                console.warn('❌ No presignedContentUrl available for blog:', blog.id);
+                setError('Content URL not available. The backend must provide a valid presigned URL.');
+                setContentLoading(false);
+            }
         }
     }, [blog?.presignedContentUrl]);
 

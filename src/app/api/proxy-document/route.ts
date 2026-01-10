@@ -90,10 +90,8 @@ export async function GET(request: NextRequest) {
                 'X-Content-Type-Options': 'nosniff',
                 'X-Frame-Options': 'DENY',
                 'Content-Security-Policy': "default-src 'none'",
-                // PRODUCTION: CORS for your domain only
-                'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
-                    ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com')
-                    : '*',
+                // CORS: Allow same-origin requests (this API route is on the same domain as your frontend)
+                'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET',
                 'Access-Control-Allow-Headers': 'Content-Type'
             }
@@ -102,11 +100,9 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('💥 Proxy error:', error);
         
-        // PRODUCTION: Don't expose internal error details
+        // Handle timeout errors specifically
         const isTimeout = error instanceof Error && error.name === 'TimeoutError';
-        const errorMessage = process.env.NODE_ENV === 'production' 
-            ? (isTimeout ? 'Request timeout' : 'Internal server error')
-            : error instanceof Error ? error.message : 'Internal server error';
+        const errorMessage = isTimeout ? 'Request timeout' : 'Internal server error';
             
         return NextResponse.json(
             { error: errorMessage },
