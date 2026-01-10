@@ -11,11 +11,17 @@ import Image from "next/image";
 interface IBlogData {
     id: string;
     title: string;
-    presignedContentUrl: string;
+    tags: string[];
+    contentUrl: string;
+    coverImageUrl: string;
+    readTime: number;
     views: number;
     likes: number;
-    presignedCoverUrl?: string;
-    createdAt?: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    presignedContentUrl: string;
+    presignedCoverUrl: string;
 }
 
 interface IApiResponse {
@@ -32,186 +38,222 @@ export default function BlogDetail() {
     const [error, setError] = useState<string | null>(null);
     const fetchedRef = useRef(false);
 
-    // Fetch blog data - only once
     useEffect(() => {
-        if (fetchedRef.current) return;
+        if (fetchedRef.current || !params.id) return;
         fetchedRef.current = true;
 
-        const fetchBlog = async () => {
+        const fetchBlogData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axiosInstance.get<IApiResponse>(`/api/blogs/${params.id}`);
+                console.log("Fetching blog data for ID:", params.id);
+                const response = await axiosInstance.get<IApiResponse>(`/blogs/${params.id}`);
+                console.log("Blog data response:", response.data);
+                
                 if (response.data.success) {
                     setBlog(response.data.data);
+                    
+                    // If there's a presigned content URL, fetch and convert the Word document
+                    if (response.data.data.presignedContentUrl) {
+                        await fetchWordDocument(response.data.data.presignedContentUrl);
+                    }
                 } else {
-                    setError('Failed to load blog');
+                    setError("Failed to fetch blog data");
                 }
             } catch (err) {
-                setError('Unable to fetch blog. Please try again later.');
-                console.error('Error fetching blog:', err);
+                console.error("Error fetching blog:", err);
+                setError("Error fetching blog data");
             } finally {
                 setLoading(false);
             }
-        }
+        };
 
-        if (params.id) {
-            fetchBlog();
-        }
+        fetchBlogData();
     }, [params.id]);
 
-    // Fetch blog content - only when blog URL changes
-    useEffect(() => {
-        if (blog?.presignedContentUrl) {
+    const fetchWordDocument = async (presignedUrl: string) => {
+        try {
             setContentLoading(true);
-            fetch(blog.presignedContentUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to fetch content');
-                    return response.text();
-                })
-                .then(data => {
-                    setHtmlContent(data);
-                    setContentLoading(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching blog content:', error);
-                    setContentLoading(false);
-                });
-        }
-    }, [blog?.presignedContentUrl]);
+            console.log("Fetching Word document from:", presignedUrl);
 
-    // Skeleton Loader
-    const SkeletonLoader = () => (
-        <div className='max-w-4xl mx-auto px-4 py-8 animate-pulse'>
-            <div className='h-12 bg-gray-200 rounded-lg mb-6 w-3/4'></div>
-            <div className='h-64 bg-gray-200 rounded-lg mb-6'></div>
-            <div className='space-y-4'>
-                <div className='h-4 bg-gray-200 rounded w-full'></div>
-                <div className='h-4 bg-gray-200 rounded w-5/6'></div>
-                <div className='h-4 bg-gray-200 rounded w-4/6'></div>
+            // Use frontend proxy API to avoid CORS issues
+            const proxyUrl = `/api/proxy-document?url=${encodeURIComponent(presignedUrl)}`;
+            console.log("Calling frontend proxy at:", proxyUrl);
+            
+            const response = await fetch(proxyUrl);
+            
+            if (!response.ok) {
+                throw new Error(`Proxy request failed: ${response.status}`);
+            }
+            
+            const arrayBuffer = await response.arrayBuffer();
+
+            // Convert the array buffer to HTML using mammoth
+            const mammoth = await import('mammoth');
+            
+            console.log("Converting Word document to HTML...");
+            const result = await mammoth.convertToHtml({ arrayBuffer });
+            
+            if (result.value) {
+                console.log("Word document converted successfully");
+                setHtmlContent(result.value);
+                if (result.messages && result.messages.length > 0) {
+                    console.warn("Conversion warnings:", result.messages);
+                }
+            } else {
+                throw new Error("Failed to convert Word document");
+            }
+        } catch (err) {
+            console.error("Error processing Word document:", err);
+            setError("Error processing document content");
+        } finally {
+            setContentLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-white">
+                <Navbar />
+                <div className="flex items-center justify-center min-h-[60vh]">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Loading blog...</p>
+                    </div>
+                </div>
+                <Footer />
             </div>
-        </div>
-    );
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-white">
+                <Navbar />
+                <div className="flex items-center justify-center min-h-[60vh]">
+                    <div className="text-center">
+                        <p className="text-red-500 mb-4">{error}</p>
+                        <Link 
+                            href="/Blogs" 
+                            className="text-orange-500 hover:text-orange-600 underline"
+                        >
+                            Back to Blogs
+                        </Link>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (!blog) {
+        return (
+            <div className="min-h-screen bg-white">
+                <Navbar />
+                <div className="flex items-center justify-center min-h-[60vh]">
+                    <div className="text-center">
+                        <p className="text-gray-600 mb-4">Blog not found</p>
+                        <Link 
+                            href="/Blogs" 
+                            className="text-orange-500 hover:text-orange-600 underline"
+                        >
+                            Back to Blogs
+                        </Link>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
-        <div className='flex flex-col min-h-screen'>
+        <div className="min-h-screen bg-white">
             <Navbar />
-
-            <div className='flex-1'>
-                {/* Loading State */}
-                {loading && <SkeletonLoader />}
-
-                {/* Error State */}
-                {error && !loading && (
-                    <div className='max-w-4xl mx-auto px-4 py-12'>
-                        <div className='bg-red-50 border border-red-200 rounded-lg p-8 text-center'>
-                            <svg className='w-12 h-12 mx-auto mb-4 text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
-                            </svg>
-                            <h2 className='text-2xl font-bold text-red-900 mb-2'>Oops! Something went wrong</h2>
-                            <p className='text-red-700 mb-6'>{error}</p>
-                            <Link href='/Blogs' className='inline-block bg-gradient-to-t from-[#1F3A52] to-[#4682B8] text-white px-6 py-2 rounded-full hover:shadow-lg transition'>
-                                Back to Blogs
-                            </Link>
-                        </div>
+            
+            {/* Hero Section */}
+            <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8">
+                {blog.presignedCoverUrl ? (
+                    <Image
+                        src={blog.presignedCoverUrl}
+                        alt={blog.title}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                ) : (
+                    <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+                        <span className="text-gray-500">No Image Available</span>
                     </div>
                 )}
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+                    <div className="container mx-auto px-4 pb-8">
+                        <h1 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                            {blog.title}
+                        </h1>
+                        <div className="flex flex-wrap items-center gap-4 text-white text-sm">
+                            <span>{blog.readTime} min read</span>
+                            <span>{blog.views} views</span>
+                            <span>{blog.likes} likes</span>
+                            <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                {/* Blog Content */}
-                {!loading && blog && (
-                    <article className='max-w-4xl mx-auto px-4 py-12'>
-                        {/* Header Section */}
-                        <div className='mb-8'>
-                            <Link href='/Blogs' className='inline-flex items-center text-blue-600 hover:text-blue-800 mb-4 transition'>
-                                <svg className='w-4 h-4 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
-                                </svg>
-                                Back to Blogs
-                            </Link>
-
-                            <h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight'>
-                                {blog.title}
-                            </h1>
-
-                            {/* Meta Information */}
-                            <div className='flex flex-wrap items-center gap-6 text-gray-600 border-b pb-4'>
-                                {blog.createdAt && (
-                                    <div className='flex items-center gap-2'>
-                                        <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' />
-                                        </svg>
-                                        <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                                    </div>
-                                )}
-
-                                <div className='flex items-center gap-2'>
-                                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
-                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' />
-                                    </svg>
-                                    <span>{blog.views || 0} views</span>
-                                </div>
-
-                                <div className='flex items-center gap-2'>
-                                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M14 10h4.764a2 2 0 011.789 2.894l-3.646 7.23a2 2 0 01-1.789 1.106H5a2 2 0 01-2-2V8a2 2 0 012-2h1.657a2 2 0 011.414.586l2.828-2.829a2 2 0 112.828 2.829l-.828.828h2.172a2 2 0 012 2v.286a2 2 0 01-2 2H12v4z' />
-                                    </svg>
-                                    <span>{blog.likes || 0} likes</span>
-                                </div>
+            {/* Content Section */}
+            <div className="container mx-auto px-4 pb-16">
+                <div className="max-w-4xl mx-auto">
+                    {/* Tags */}
+                    {blog.tags && blog.tags.length > 0 && (
+                        <div className="mb-8">
+                            <div className="flex flex-wrap gap-2">
+                                {blog.tags.map((tag, index) => (
+                                    <span
+                                        key={index}
+                                        className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
                             </div>
                         </div>
+                    )}
 
-                        {/* Featured Image */}
-                        {blog.presignedCoverUrl && (
-                            <div className='mb-8 rounded-lg overflow-hidden shadow-lg'>
-                                <Image
-                                    src={blog.presignedCoverUrl}
-                                    alt={blog.title}
-                                    width={800}
-                                    height={400}
-                                    className='w-full h-96 object-cover'
-                                />
+                    {/* Article Content */}
+                    <div className="prose prose-lg max-w-none">
+                        {contentLoading ? (
+                            <div className="flex items-center justify-center py-8">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+                                <span className="ml-3 text-gray-600">Loading content...</span>
                             </div>
+                        ) : htmlContent ? (
+                            <div 
+                                className="word-document-content"
+                                dangerouslySetInnerHTML={{ __html: htmlContent }}
+                            />
+                        ) : (
+                            <p className="text-gray-500 text-center py-8">
+                                No content available
+                            </p>
                         )}
+                    </div>
 
-                        {/* Content Loading State */}
-                        {contentLoading && (
-                            <div className='bg-blue-50 border border-blue-200 rounded-lg p-6 text-center'>
-                                <div className='flex justify-center mb-3'>
-                                    <div className='w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin'></div>
-                                </div>
-                                <p className='text-blue-700'>Loading content...</p>
-                            </div>
-                        )}
-
-                        {/* Blog Content */}
-                        {htmlContent && !contentLoading && (
-                            <div className='prose prose-lg max-w-none'>
-                                <div
-                                    className='text-gray-700 leading-relaxed space-y-4'
-                                    dangerouslySetInnerHTML={{ __html: htmlContent }}
-                                />
-                            </div>
-                        )}
-
-                        {/* No Content */}
-                        {!htmlContent && !contentLoading && !loading && (
-                            <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center'>
-                                <p className='text-yellow-800'>Content is being prepared. Please check back soon.</p>
-                            </div>
-                        )}
-
-                        {/* Back Button */}
-                        <div className='mt-12 pt-8 border-t'>
-                            <Link href='/Blogs' className='inline-block bg-gradient-to-t from-[#1F3A52] to-[#4682B8] text-white px-8 py-3 rounded-full hover:shadow-lg transition'>
-                                ← Back to Blogs
-                            </Link>
-                        </div>
-                    </article>
-                )}
+                    {/* Back to Blogs */}
+                    <div className="mt-12 pt-8 border-t border-gray-200">
+                        <Link 
+                            href="/Blogs"
+                            className="inline-flex items-center text-orange-500 hover:text-orange-600 transition-colors"
+                        >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to All Blogs
+                        </Link>
+                    </div>
+                </div>
             </div>
 
             <Footer />
         </div>
-    )
+    );
 }
