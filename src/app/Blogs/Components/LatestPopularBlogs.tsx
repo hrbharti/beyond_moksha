@@ -9,7 +9,7 @@ interface IProps {
 interface Blog {
     id: number;
     title: string;
-    coverImageUrl: string;
+    presignedCoverUrl: string;
     createdAt: string;
 }
 

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 .input {
   @apply w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#D29D39];
 }
@@ -154,4 +155,40 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Simple Word Document Content Styling */
+.word-document-content {
+  line-height: 1.6;
+  color: #333;
+}
+
+.word-document-content h1,
+.word-document-content h2, 
+.word-document-content h3 {
+  color: #2c3e50;
+  margin: 1.5em 0 0.5em 0;
+}
+
+.word-document-content p {
+  margin: 1em 0;
+}
+
+.word-document-content ul,
+.word-document-content ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.word-document-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.word-document-content table th,
+.word-document-content table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }

@@ -11,11 +11,16 @@ import Image from "next/image";
 interface IBlogData {
     id: string;
     title: string;
-    contentUrl: string;
+    tags: string[];
+    coverImageUrl: string;
+    readTime: number;
     views: number;
     likes: number;
-    coverImageUrl?: string;
-    createdAt?: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    presignedContentUrl: string;
+    presignedCoverUrl: string;
 }
 
 interface IApiResponse {
@@ -41,13 +46,25 @@ export default function BlogDetail() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axiosInstance.get<IApiResponse>(`/blogs/${params.id}`);
+                console.log('🚀 Fetching blog with ID:', params.id);
+                console.log('🌐 API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
+                
+                const response = await axiosInstance.get<IApiResponse>(`/api/blogs/${params.id}`);
+                
+                console.log('📡 API Response status:', response.status);
+                console.log('📊 API Response data:', response.data);
+                
                 if (response.data.success) {
+                    console.log('✅ Blog data received:', response.data.data);
+                    console.log('🔗 presignedContentUrl:', response.data.data.presignedContentUrl);
+                    console.log('🖼️ presignedCoverUrl:', response.data.data.presignedCoverUrl);
+                    
                     setBlog(response.data.data);
                 } else {
                     setError('Failed to load blog');
                 }
             } catch (err) {
+                console.error('❌ API call failed:', err);
                 setError('Unable to fetch blog. Please try again later.');
                 console.error('Error fetching blog:', err);
             } finally {
@@ -60,25 +77,118 @@ export default function BlogDetail() {
         }
     }, [params.id]);
 
-    // Fetch blog content - only when blog URL changes
+    // Fetch blog content - only when presigned URL is available
     useEffect(() => {
-        if (blog?.contentUrl) {
+        if (blog?.presignedContentUrl) {
             setContentLoading(true);
-            fetch(blog.contentUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to fetch content');
-                    return response.text();
-                })
-                .then(data => {
-                    setHtmlContent(data);
-                    setContentLoading(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching blog content:', error);
+            setError(null);
+            
+            const urlToUse = blog.presignedContentUrl;
+            
+            console.log('🔗 Using presigned content URL:', urlToUse);
+            console.log('📄 Is Word document:', urlToUse.includes('.docx'));
+            
+            // Validate that it's a proper HTTPS URL
+            if (!urlToUse.startsWith('https://')) {
+                setError('Invalid content URL format. Expected HTTPS presigned URL.');
+                setContentLoading(false);
+                return;
+            }
+            
+            // Check if it's a Word document
+            if (urlToUse.includes('.docx')) {
+                console.log('🔄 Converting Word document...');
+                
+                // Handle Word document - use presigned URL through a proxy
+                import('mammoth').then((mammoth) => {
+                    console.log('📚 Mammoth library loaded');
+                    
+                    // Create a proxy endpoint to fetch the document
+                    const proxyUrl = `/api/proxy-document?url=${encodeURIComponent(urlToUse)}`;
+                    
+                    fetch(proxyUrl)
+                        .then(response => {
+                            console.log('📥 Fetched Word document via proxy, status:', response.status);
+                            if (!response.ok) {
+                                throw new Error(`Proxy fetch failed: ${response.status} ${response.statusText}`);
+                            }
+                            return response.arrayBuffer();
+                        })
+                        .then(arrayBuffer => {
+                            console.log('📦 ArrayBuffer size:', arrayBuffer.byteLength, 'bytes');
+                            if (arrayBuffer.byteLength === 0) {
+                                throw new Error('Empty Word document received');
+                            }
+                            
+                            // Convert ArrayBuffer for mammoth
+                            const uint8Array = new Uint8Array(arrayBuffer);
+                            console.log('🔍 First few bytes:', Array.from(uint8Array.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+                            console.log('🔧 Converting with mammoth...');
+                            
+                            return (mammoth as any).convertToHtml({arrayBuffer: arrayBuffer}, {
+                                includeDefaultStyleMap: true,
+                                includeEmbeddedStyleMap: true,
+                                convertImage: (mammoth as any).images.imgElement(function(image: any) {
+                                    return image.read().then(function(imageBuffer: any) {
+                                        const base64 = btoa(String.fromCharCode(...new Uint8Array(imageBuffer)));
+                                        return { src: `data:${image.contentType};base64,${base64}` };
+                                    });
+                                })
+                            });
+                        })
+                        .then((result: any) => {
+                            console.log('✅ Conversion successful!');
+                            console.log('📄 HTML length:', result.value.length);
+                            console.log('🎨 Generated HTML preview:', result.value.substring(0, 300) + '...');
+                            console.log('⚠️ Conversion messages:', result.messages);
+                            
+                            if (result.value && result.value.trim()) {
+                                setHtmlContent(result.value);
+                                setError(null);
+                            } else {
+                                throw new Error('Empty content after conversion');
+                            }
+                            setContentLoading(false);
+                        })
+                        .catch(error => {
+                            console.error('❌ Error converting Word document:', error);
+                            setError(`Failed to convert Word document: ${error.message}`);
+                            setContentLoading(false);
+                        });
+                }).catch(error => {
+                    console.error('❌ Error loading mammoth library:', error);
+                    setError('Failed to load document converter');
                     setContentLoading(false);
                 });
+            } else {
+                console.log('📝 Processing as HTML content...');
+                // Handle HTML content (existing logic)
+                fetch(urlToUse)
+                    .then(response => {
+                        console.log('📥 HTML response status:', response.status);
+                        if (!response.ok) throw new Error('Failed to fetch content');
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log('✅ HTML content loaded, length:', data.length);
+                        setHtmlContent(data);
+                        setContentLoading(false);
+                    })
+                    .catch(error => {
+                        console.error('❌ Error fetching blog content:', error);
+                        setError(`Failed to fetch content: ${error.message}`);
+                        setContentLoading(false);
+                    });
+            }
+        } else {
+            // No presigned content URL available
+            if (blog && !blog.presignedContentUrl) {
+                console.warn('❌ No presignedContentUrl available for blog:', blog.id);
+                setError('Content URL not available. The backend must provide a valid presigned URL.');
+                setContentLoading(false);
+            }
         }
-    }, [blog?.contentUrl]);
+    }, [blog?.presignedContentUrl]);
 
     // Skeleton Loader
     const SkeletonLoader = () => (
@@ -162,10 +272,10 @@ export default function BlogDetail() {
                         </div>
 
                         {/* Featured Image */}
-                        {blog.coverImageUrl && (
+                        {blog.presignedCoverUrl && (
                             <div className='mb-8 rounded-lg overflow-hidden shadow-lg'>
                                 <Image
-                                    src={blog.coverImageUrl}
+                                    src={blog.presignedCoverUrl}
                                     alt={blog.title}
                                     width={800}
                                     height={400}
@@ -195,9 +305,22 @@ export default function BlogDetail() {
                         )}
 
                         {/* No Content */}
-                        {!htmlContent && !contentLoading && !loading && (
+                        {!htmlContent && !contentLoading && !loading && !error && (
                             <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center'>
                                 <p className='text-yellow-800'>Content is being prepared. Please check back soon.</p>
+                            </div>
+                        )}
+
+                        {/* Content Error */}
+                        {error && !loading && (
+                            <div className='bg-red-50 border border-red-200 rounded-lg p-6 text-center'>
+                                <p className='text-red-800'>{error}</p>
+                                <button 
+                                    onClick={() => window.location.reload()} 
+                                    className='mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700'
+                                >
+                                    Retry
+                                </button>
                             </div>
                         )}
 
