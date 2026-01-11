@@ -14,7 +14,8 @@ interface Blog {
   title: string;
   tags: string[];
   presignedContentUrl: string;
-  presignedCoverUrl: string | null;
+  presignedCoverUrl?: string | null;
+  coverImageUrl?: string | null;
   readTime: number;
   views: number;
   likes: number;
@@ -174,7 +175,7 @@ export default function Page() {
                         key={blog.id}
                         id={String(blog.id)}
                         title={blog.title}
-                        image={blog.presignedCoverUrl}
+                        image={blog.presignedCoverUrl || blog.coverImageUrl || null}
                       />
                     </div>
                   ))}
