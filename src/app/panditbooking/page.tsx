@@ -36,9 +36,9 @@ export default function PanditBookingPage() {
         <Blog/>
       </div>
 
-        {/* <div>
+        <div>
           <WhyChooseUs/>
-        </div> */}
+        </div>
 
         <div>
           <Testimonials/>

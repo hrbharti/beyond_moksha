@@ -6,22 +6,22 @@ import { FaChevronDown } from "react-icons/fa";
 const services = [
   {
     title: "Bhagwat Katha",
-    desc: "Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja",
+    desc: "शाश्वत ज्ञान को आधुनिक संदर्भ में प्रस्तुत करने वाली कथा परिवार और समुदाय के लिए शांत, सार्थक अनुभव",
     img: "/sacredservice1.jpg",
   },
   {
     title: "Diwali Pooja",
-    desc: "Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja",
+    desc: "समृद्धि और सकारात्मक शुरुआत का प्रतीक घर और कार्यस्थल के लिए सरल, शुभ आयोजन",
     img: "/sacredservice2.jpg",
   },
   {
     title: "Marriage ceremony",
-    desc: "Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja",
+    desc: "परंपरा और आधुनिकता का संतुलित संगम जीवन के नए अध्याय की गरिमामय शुरुआत",
     img: "/sacredservice3.jpg",
   },
   {
     title: "Office Pooja",
-    desc: "Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja Regular Pooja",
+    desc: "कार्यस्थल के लिए शुभ और सकारात्मक आरंभ स्थिरता, स्पष्टता और टीम ऊर्जा के लिए",
     img: "/sacredservice4.jpg",
   },
 ];

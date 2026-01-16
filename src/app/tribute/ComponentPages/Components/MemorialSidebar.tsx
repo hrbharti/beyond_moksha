@@ -21,6 +21,7 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
     {name : "Gallery", href: "#gallery"},
     {name : "Memory Wall", href: "#memory-wall"},
     {name : "Family Tree", href: "#family-tree"},
+    {name : "Events", href: "#events"},
   ];
 
   return (

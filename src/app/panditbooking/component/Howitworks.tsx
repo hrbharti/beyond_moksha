@@ -28,14 +28,16 @@ export default function HowItWorks() {
           
           {/* Left Text */}
           <p className="text-gray-700 leading-relaxed  h-full text-xl ">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc venenatis eget 
-            lacus vitae rhoncus. Morbi vestibulum ipsum semper neque tempor, ac rhoncus 
-            tortor semper. Donec sed odio ut libero accumsan posuere a ac massa. Aliquam 
-            cursus, sapien eu varius ultricies, nunc nisl sollicitudin ligula, vitae 
-            bibendum nunc lectus sit amet lectus. Ut accumsan efficitur ultricies. 
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia 
-            curae; Pellentesque sed iaculis libero. Morbi vestibulum nibh massa, sed iaculis 
-            lacus dictum eu. Sed pulvinar consequat leo, nec malesuada dolor accumsan nec.
+            Beyond Moksha offers simple, reliable, and well-organized Puja services.
+All ceremonies are conducted by verified and experienced Pandits based on your requirements.
+You choose the Puja, and we take care of everything else.
+All essential Puja materials are arranged and provided on time.
+Each ritual is performed following traditional practices with modern convenience.
+Verified & Experienced Pandits
+Multilingual Support Across Regions (Hindi, English, Kannada, Tamil, Maithili, and Bengali)
+All Puja Essentials Included
+Region-Specific Ritual Expertise
+Seamless, End-to-End Experience
           </p>
 
           {/* Right Image */}
@@ -54,25 +56,25 @@ export default function HowItWorks() {
         <div className="mt-16 flex flex-wrap justify-center gap-x-12 gap-y-10">
 
   <StepItem
-    icon={<BookOpen className="w-20 h-20 text-[#1F3A52]" />}
+    icon="/image30.png"
     title="Select a Pooja"
     description="Explore 50+ pujas and pick the one that matches your needs."
   />
 
   <StepItem
-    icon={<Calendar className="w-20 h-20 text-[#1F3A52]" />}
+    icon="/image32.png"
     title="Select Date & Time"
     description="Choose a convenient time slot. Same-day bookings available."
   />
 
   <StepItem
-    icon={<CheckCircle className="w-20 h-20 text-[#1F3A52]" />}
+    icon="/Frame464.png"
     title="Confirm Booking"
     description="Secure payment + instant confirmation via SMS & email."
   />
 
   <StepItem
-    icon={<UserCheck className="w-20 h-20 text-[#1F3A52]" />}
+    icon="/image30.png"
     title="Pandit Visits You"
     description="A verified pandit performs pooja at your place as per rituals."
   />

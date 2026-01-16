@@ -58,7 +58,7 @@ export default function SecureSection() {
 
           <div className="bg-white rounded-[18px] border border-black shadow-sm p-6 flex flex-col justify-evenly">
             <div className="w-full flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full bg-[#FBE4EC] flex justify-center items-center text-[#F0A8C8]">
+              <div className="w-20 h-20 rounded-full bg-[#FBE4EC] flex justify-center items-center text-[#F0A8C8]">
               <Image src={'/Frame500.png'} alt="cloud" width={50} height={50}/>
               </div>
             </div>
@@ -70,7 +70,7 @@ export default function SecureSection() {
 
           <div className="bg-white rounded-[18px] border border-black shadow-sm p-6 flex flex-col justify-evenly">
             <div className="w-full flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-[#E8F1FF] flex justify-center items-center text-[#9AB7F7]">
+                <div className="w-20 h-20 rounded-full bg-[#E8F1FF] flex justify-center items-center text-[#9AB7F7]">
                 <Image src={'/Frame501.png'} alt="cloud" width={50} height={50}/>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default function SecureSection() {
  
           <div className="bg-white rounded-[18px] border border-black shadow-sm p-6 flex flex-col justify-evenly">
             <div className="w-full flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full bg-[#FFF3D9] flex justify-center items-center text-[#F7C76B]">
+              <div className="w-20 h-20 rounded-full bg-[#FFF3D9] flex justify-center items-center text-[#F7C76B]">
               <Image src={'/Frame502.png'} alt="cloud" width={50} height={50}/>
               </div>
             </div>

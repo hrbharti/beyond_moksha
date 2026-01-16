@@ -22,33 +22,33 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Subtitle */}
-        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+        <p className="mt-4 text-gray-600 max-w-3xl mx-auto text-base">
           Experience peace of mind with our transparent, reliable, and expert-led service at every step
         </p>
 
         {/* Cards Grid */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-[4.75rem] place-items-center">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
           <WhyChooseItem
-            icon="/price.svg"
+            icon="/Frame424.png"
             title="Trustworthy & Qualified Pandits"
             description="We ensure experienced Pandits for every occasion, matching your tradition and location."
           />
 
           <WhyChooseItem
-            icon="/time.svg"
+            icon="/Frame436.png"
             title="Fast & Convenient Booking"
             description="Book your ritual, muhurat, and samagri— all in just a few easy steps."
           />
 
           <WhyChooseItem
-            icon="/computer.svg"
+            icon="/Frame437.png"
             title="User-Friendly Platform"
             description="Enjoy a smooth experience for booking pujas anytime, from anywhere in India."
           />
 
           <WhyChooseItem
-            icon="/helpline.svg"
+            icon="/Frame438.png"
             title="Committed Support & Satisfaction"
             description="Our dedicated team guarantees smooth ceremonies and round-the-clock help for families."
           />

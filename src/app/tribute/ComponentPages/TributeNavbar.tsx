@@ -33,7 +33,7 @@ export default function TributeNavbar() {
                     <Link href="#" className="hover:text-[#D4A043] transition font-thin">
                         F.A.Q
                     </Link>
-                    <Link href="#" className="hover:text-[#D4A043] transition font-thin">
+                    <Link href="/tribute/login" className="hover:text-[#D4A043] transition font-thin">
                         Login
                     </Link>
                     <Link
