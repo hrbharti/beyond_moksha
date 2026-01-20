@@ -1,6 +1,5 @@
-"use client"
-
-export const dynamic = "force-dynamic";
+"use client";
+import { Suspense } from "react";
 
 import Memorial from "@/app/tribute/ComponentPages/Components/Memorial";
 import Gallery from "@/app/tribute/ComponentPages/Gallery";
@@ -9,12 +8,11 @@ import TimelineSection from "@/app/tribute/ComponentPages/TimelineSection";
 import EventsSection from "@/app/tribute/ComponentPages/EventSection";
 import FamilyTree from "@/app/tribute/ComponentPages/FamilyTree";
 import HeroSection from "@/app/tribute/ComponentPages/Components/MemorialHero";
-import { Suspense } from "react";
 
 export default function Page() {
   return (
     <div>
-      <Suspense fallback={<div>Loading hero section...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
         <HeroSection />
       </Suspense>
 

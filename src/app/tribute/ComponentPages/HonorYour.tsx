@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import flower from "../../../../public/flower.png"; // your image path
+import flower from "../../../../public/flower.png";
+import Link from "next/link";
 
 export default function MemorialSection() {
   return (
@@ -9,7 +10,7 @@ export default function MemorialSection() {
       <div className="max-w-max mx-auto flex flex-col md:flex-row items-center gap-16">
         {/* Left Text Section */}
         <div className="flex-1 text-left">
-          <h2 className="text-[#1F3A4B] text-2xl md:text-3xl font-semibold mb-4 leading-snug">
+          <h2 className="text-[#1F3A4B] text-2xl md:text-5xl font-semibold mb-4 leading-snug">
             Honor your loved ones with a personal online memorial
           </h2>
 
@@ -25,23 +26,20 @@ export default function MemorialSection() {
             anniversaries.
           </p>
 
-          <p className="text-[#1F3A4B] text-base md:text-lg mb-8 leading-relaxed">
-            The service is affordable at <span className="font-semibold">₹450</span> per month or a
-            one-time fee of <span className="font-semibold">₹3,200</span> to keep your loved one’s
-            memories safe and easily accessible.
-          </p>
-
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <button className="bg-[#D4A043] text-white font-medium px-6 py-3 rounded-md hover:bg-[#C18E33] transition">
+            <Link
+              href="/tribute/memorial?theme=1"
+              className="bg-[#D4A043] text-white font-medium px-6 py-3 rounded-md hover:bg-[#C18E33] transition"
+            >
               Create memorial
-            </button>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="#designs"
               className="text-[#D4A043] font-medium hover:underline inline-block"
             >
               Explore all Designs →
-            </a>
+            </Link>
           </div>
         </div>
 

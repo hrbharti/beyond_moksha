@@ -7,7 +7,7 @@ export default function GetInTouch() {
   return (
     <div className="w-full py-12 px-4 sm:px-6 lg:px-16 text-black flex flex-col items-center">
       <div className="flex flex-col items-center justify-center gap-3 text-center max-w-3xl mx-auto">
-        <div className="text-3xl sm:text-4xl tracking-wider bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent font-lora font-normal">
+        <div className="text-3xl sm:text-4xl bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent">
           Get in touch with us
         </div>
         <div className="mt-4 text-sm sm:text-base">

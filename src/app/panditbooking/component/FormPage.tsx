@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Phone, Mail } from "lucide-react";
+import api from "@/lib/api/api";
 
 export default function BookPujaForm() {
   const [fullName, setFullName] = useState("");
@@ -12,14 +13,33 @@ export default function BookPujaForm() {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [location, setLocation] = useState("");
+  const [pincode, setPincode] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [requirements, setRequirements] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("clicked");
-    // debug: console.log({ fullName, poojaType, phone, email, state, city, location, date, time, requirements })
+    const formData = {
+      fullName,
+      poojaType,
+      phone,
+      email,
+      state,
+      city,
+      location,
+      pincode,
+      date,
+      time,
+      requirements,
+    };
+
+    try {
+      await api.post("/api/booking/puja", formData);
+      alert("Booking submitted successfully!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -33,8 +53,8 @@ export default function BookPujaForm() {
             </h2>
 
             <p className="mt-4 text-gray-600 max-w-md">
-              Fill out the form and our team will get back to you within
-              2 hours to confirm your booking and discuss the details.
+              Fill out the form and our team will get back to you within 2 hours
+              to confirm your booking and discuss the details.
             </p>
 
             <div className="mt-6 md:mt-8 w-full">
@@ -52,14 +72,22 @@ export default function BookPujaForm() {
 
             {/* CONTACT BUTTONS */}
             <div className="mt-6 md:mt-8 flex flex-wrap gap-3">
-              <button className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 shadow-sm text-sm hover:shadow-md transition">
+              <button
+                className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 shadow-sm text-sm hover:shadow-md transition"
+                onClick={() => window.open("tel:+917050966971", "_blank")}
+              >
                 <Phone className="w-4 h-4 text-[#D29D39]" />
-                +91 9991122333
+                +91-7050966971
               </button>
 
-              <button className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 shadow-sm text-sm hover:shadow-md transition">
+              <button
+                className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 shadow-sm text-sm hover:shadow-md transition"
+                onClick={() =>
+                  window.open("mailto:beyondmoksha360@gmail.com", "_blank")
+                }
+              >
                 <Mail className="w-4 h-4 text-[#D29D39]" />
-                @beyondmoksha22
+                beyondmoksha360@gmail.com
               </button>
             </div>
           </div>
@@ -81,7 +109,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Select Pooja Type*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Select Pooja Type*
+                </label>
                 <select
                   className="input"
                   value={poojaType}
@@ -95,7 +125,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Phone Number*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Phone Number*
+                </label>
                 <input
                   type="text"
                   className="input"
@@ -105,7 +137,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Email Address*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Email Address*
+                </label>
                 <input
                   type="email"
                   className="input"
@@ -115,7 +149,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Select State*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Select State*
+                </label>
                 <select
                   className="input"
                   value={state}
@@ -129,7 +165,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Select City of Puja*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Select City of Puja*
+                </label>
                 <select
                   className="input"
                   value={city}
@@ -143,19 +181,33 @@ export default function BookPujaForm() {
               </div>
             </div>
 
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-600 mb-1">Location*</label>
-              <input
-                type="text"
-                className="input"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+              <div className="flex flex-col">
+                <label className="text-sm text-gray-600 mb-1">Location*</label>
+                <input
+                  type="text"
+                  className="input"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label className="text-sm text-gray-600 mb-1">Pincode*</label>
+                <input
+                  type="text"
+                  className="input"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Preferred Date*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Preferred Date*
+                </label>
                 <input
                   type="date"
                   className="input"
@@ -165,7 +217,9 @@ export default function BookPujaForm() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600 mb-1">Preferred Time*</label>
+                <label className="text-sm text-gray-600 mb-1">
+                  Preferred Time*
+                </label>
                 <input
                   type="time"
                   className="input"
@@ -176,7 +230,9 @@ export default function BookPujaForm() {
             </div>
 
             <div className="flex flex-col">
-              <label className="text-sm text-gray-600 mb-1">Additional Requirements</label>
+              <label className="text-sm text-gray-600 mb-1">
+                Additional Requirements
+              </label>
               <textarea
                 rows={3}
                 className="input"
