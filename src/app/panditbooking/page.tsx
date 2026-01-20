@@ -14,44 +14,38 @@ import Footer from "./component/Footer";
 export default function PanditBookingPage() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <Hero />
-      
       <div className="mt-20">
         <TrendingPoojas />
       </div>
-
       <div>
         <FeaturedPoojaServices />
       </div>
-
       <div>
-        <SacredServices/>
-      </div>
-
-      <div>
-        <HowItWorks/>
+        <SacredServices />
       </div>
       <div>
-        <Blog/>
+        <HowItWorks />
       </div>
-
-        <div>
-          <WhyChooseUs/>
-        </div>
-
-        <div>
-          <Testimonials/>
-        </div>
+      <div>
+        <Blog />
+      </div>
+      <div>
+        <WhyChooseUs />
+      </div>
+      <div>
+        <Testimonials />
+      </div>
+      <div id="booking">
         <FormPage />
-
-        <div>
-          <JoinPanditSection />
-        </div>
-
-        <div>
-          <Footer/>
-        </div>
+      </div>
+      <div>
+        <JoinPanditSection />
+      </div>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

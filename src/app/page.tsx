@@ -1,19 +1,17 @@
-"use client"
-import { Navbar } from "./components/Navbar"
-import Footer from "./components/Footer"
-import Corousal from "./components/Corousal"
-import { Pledge } from "./components/Pledge"
-import { Section } from "./components/utils/Section"
-import { Services } from "./components/Services"
-import { Blogs } from "./components/Blog"
-import { Testimonials } from "./components/Testimonial"
-import { useRef } from "react"
-import Partner from "./components/Partner"
-import GetInTouch from "./components/utils/GetInTouch"
-import Foot from "./components/utils/Foot"
+"use client";
+import { Navbar } from "./components/Navbar";
+import Footer from "./components/Footer";
+import Corousal from "./components/Corousal";
+import { Pledge } from "./components/Pledge";
+import { Section } from "./components/utils/Section";
+import { Services } from "./components/Services";
+import { Blogs } from "./components/Blog";
+import { Testimonials } from "./components/Testimonial";
+import { useRef } from "react";
+import Partner from "./components/Partner";
+import GetInTouch from "./components/utils/GetInTouch";
 
 export default function Home() {
-
   // Use HTMLDivElement because you're attaching refs to divs in this component
   const servicesRef = useRef<HTMLDivElement | null>(null);
   const homeRef = useRef<HTMLDivElement | null>(null);
@@ -103,17 +101,12 @@ export default function Home() {
           <div className="pb-6 sm:pb-10">
             <GetInTouch />
           </div>
-
-          
         </div>
         <div className="mt-10">
-            <Partner />
-          </div>
-
-          <div className="">
-            <Foot />
-          </div>
+          <Partner />
+          <Footer />
         </div>
+      </div>
     </div>
-  )
+  );
 }

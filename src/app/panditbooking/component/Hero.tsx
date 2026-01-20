@@ -53,7 +53,7 @@ export default function Hero(){
             {/* CTA */}
             <div className="mt-8">
               <a
-                href="#book"
+                href="#booking"
                 className="inline-flex items-center gap-2 rounded-full bg-[#FBFBFB] px-5 py-3 text-[#5D2D05] font-medium shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/70"
               >
                 Book A Pandit Now →
