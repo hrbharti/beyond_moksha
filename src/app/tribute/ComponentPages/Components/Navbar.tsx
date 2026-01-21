@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Menu } from "lucide-react";
-import bird from "../../../../../public/bird.png"
+import bird from "@public/images/bird.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,10 +32,18 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8 text-[#1F3A4B] font-medium">
-          <a href="#memorial" className="hover:text-[#D4A043] transition">Memorial</a>
-          <a href="#gallery" className="hover:text-[#D4A043] transition">Gallery</a>
-          <a href="#memory-wall" className="hover:text-[#D4A043] transition">Memory Wall</a>
-          <a href="#" className="hover:text-[#D4A043] transition">Favourites</a>
+          <a href="#memorial" className="hover:text-[#D4A043] transition">
+            Memorial
+          </a>
+          <a href="#gallery" className="hover:text-[#D4A043] transition">
+            Gallery
+          </a>
+          <a href="#memory-wall" className="hover:text-[#D4A043] transition">
+            Memory Wall
+          </a>
+          <a href="#" className="hover:text-[#D4A043] transition">
+            Favourites
+          </a>
         </div>
 
         {/* Mobile Toggle Button */}

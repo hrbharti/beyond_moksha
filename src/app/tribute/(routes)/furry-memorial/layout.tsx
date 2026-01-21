@@ -1,5 +1,5 @@
 "use client";
-import Footer from "../../ComponentPages/Components/Footer";
+import Footer from "@/app/components/Footer"
 import Navbar from "../../ComponentPages/Components/Navbar";
 import Sidebar from "../../ComponentPages/Components/Sidebar";
 import { Suspense } from "react";

@@ -38,29 +38,55 @@ export default function AssetVaultPage() {
   ];
 
   const iconEmojis = [
-    "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", // Green
-    "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", // Pink
-    "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", "/Icon.png", // Purple
-    "/Icon.png", "/Icon.png", "/Icon.png", // Beige
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png", // Green
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png", // Pink
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png", // Purple
+    "/images/Icon.png",
+    "/images/Icon.png",
+    "/images/Icon.png", // Beige
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E8F4FF] to-[#F1F8FC]">
-        <div className="absolute "><Image src="/vector.svg" alt="Vector" width={500} height={500} /></div>
-        <div className="absolute right-0"><Image src="/vector.svg" alt="Vector" width={500} height={500} /></div>
+      <div className="absolute ">
+        <Image src="/svgs/vector.svg" alt="Vector" width={500} height={500} />
+      </div>
+      <div className="absolute right-0">
+        <Image src="/svgs/vector.svg" alt="Vector" width={500} height={500} />
+      </div>
 
       {/* Header */}
       <div className="max-w-6xl mx-auto px-30 pt-12 pb-8 ">
-
         <div className="text-left mb-8 mt-20">
           <h1 className="text-4xl font-bold text-[#1F3A52] flex justify-between">
-            <div> 
-                Welcome to your <span className="text-[#0866FF]">Asset Vault</span>
-                <p className="text-gray-600 mt-2 text-lg font-normal">Fill the details below to list your assets</p>
+            <div>
+              Welcome to your{" "}
+              <span className="text-[#0866FF]">Asset Vault</span>
+              <p className="text-gray-600 mt-2 text-lg font-normal">
+                Fill the details below to list your assets
+              </p>
             </div>
-            <div><Image src="/Frame.png" alt="Vector" width={150} height={150} /></div>
+            <div>
+              <Image
+                src="/images/Frame.png"
+                alt="Vector"
+                width={150}
+                height={150}
+              />
+            </div>
           </h1>
-          
         </div>
 
         {/* Country Selector */}
@@ -81,7 +107,11 @@ export default function AssetVaultPage() {
             </select>
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M5 7.5L10 12.5L15 7.5" stroke="#1F3A52" strokeWidth="2" />
+                <path
+                  d="M5 7.5L10 12.5L15 7.5"
+                  stroke="#1F3A52"
+                  strokeWidth="2"
+                />
               </svg>
             </div>
           </div>
@@ -123,7 +153,9 @@ export default function AssetVaultPage() {
               {purpleAssets.map((asset, idx) => (
                 <AssetCard
                   key={idx}
-                  icon={iconEmojis[greenAssets.length + pinkAssets.length + idx]}
+                  icon={
+                    iconEmojis[greenAssets.length + pinkAssets.length + idx]
+                  }
                   label={asset.label}
                   color={asset.color}
                 />
@@ -157,7 +189,13 @@ export default function AssetVaultPage() {
       {/* Illustration Section */}
       <div className="max-w-6xl mx-auto flex justify-end ">
         <div className="bg-[#F1F8FC] rounded-lg p-8 text-center">
-          <Image src="/info.png" alt="Asset Illustration" width={600} height={400} className="mx-auto"/>
+          <Image
+            src="/images/info.png"
+            alt="Asset Illustration"
+            width={600}
+            height={400}
+            className="mx-auto"
+          />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ import TrendingPoojas from "./component/TrendingPooja";
 import WhyChooseUs from "./component/WhyChooseUs";
 import FormPage from "./component/FormPage";
 import JoinPanditSection from "./component/Req";
-import Footer from "./component/Footer";
+import Footer from "@/app/components/Footer";
 
 export default function PanditBookingPage() {
   return (

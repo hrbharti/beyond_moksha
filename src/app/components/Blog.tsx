@@ -1,5 +1,5 @@
 import { BlogCard } from "./utils/BlogCard";
-import blog from "../../../public/blog.jpg";
+import blog from "@public/images/blog.jpg";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
@@ -8,7 +8,6 @@ export const Blogs = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center gap-10 py-10">
-
       {/* Blog cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl px-6">
         <BlogCard

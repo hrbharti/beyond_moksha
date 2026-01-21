@@ -1,5 +1,5 @@
 "use client";
-import candles from '../../../../public/flame-candles.webp'
+import candles from "@public/images/flame-candles.webp";
 import Image from "next/image";
 
 export default function TributeSection() {

@@ -61,7 +61,7 @@ export default function BookPujaForm() {
             <div className="mt-6 md:mt-8 w-full">
               <div className="w-full h-[12rem] sm:h-[14rem] md:h-[20rem] rounded-xl overflow-hidden">
                 <Image
-                  src="/form.png"
+                  src="/images/form.png"
                   alt="Puja Image"
                   width={1200}
                   height={800}

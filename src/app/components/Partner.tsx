@@ -13,8 +13,8 @@ export default function Partner() {
             </h2>
 
             <p className="mt-4 text-sm sm:text-[0.975rem] leading-relaxed">
-              If you provide funeral, transport, ritual services, or pandit services,
-              partner <br className="hidden sm:inline" />
+              If you provide funeral, transport, ritual services, or pandit
+              services, partner <br className="hidden sm:inline" />
               with us to serve families with dignity.
             </p>
 
@@ -36,7 +36,7 @@ export default function Partner() {
           <div className="flex justify-center items-center flex-shrink-0 w-full md:w-auto">
             <div className="w-44 sm:w-56 md:w-72 lg:w-96">
               <Image
-                src="/partner.png"
+                src="/images/partner.png"
                 alt="Partner Collaboration"
                 width={800}
                 height={800}

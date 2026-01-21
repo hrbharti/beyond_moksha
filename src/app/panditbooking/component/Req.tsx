@@ -5,10 +5,9 @@ import Link from "next/link";
 export default function JoinPanditSection() {
   return (
     <section className="relative w-full h-[400px] md:h-[500px] overflow-hidden  mt-20">
-
       {/* Background Image */}
       <Image
-        src="/pandithero.jpg"  // <-- replace with actual image path
+        src="/images/pandithero.jpg" // <-- replace with actual image path
         alt="Pandit performing ritual"
         fill
         className="object-cover"
@@ -26,18 +25,22 @@ export default function JoinPanditSection() {
           </h2>
 
           <p className="mt-4 text-sm md:text-base leading-relaxed text-gray-200 w-120">
-            Join our community of trusted Pandits & Astrologers! Partner with us to receive verified bookings,
-            flexible schedules, and prompt support. Let your skills bring positive change to countless homes!
+            Join our community of trusted Pandits & Astrologers! Partner with us
+            to receive verified bookings, flexible schedules, and prompt
+            support. Let your skills bring positive change to countless homes!
           </p>
 
-          <button
-            className="mt-6 px-6 py-2 bg-white text-[#1F3A52] rounded-md shadow hover:bg-gray-100 transition font-medium"
-          >
-            <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSfIOT5BpdiwLKUvZoH32E3uBHkwQ5GmA9fDZ2f1kaU5Q5Thqw/viewform?usp=publish-editor"}>Send a Request</Link>
+          <button className="mt-6 px-6 py-2 bg-white text-[#1F3A52] rounded-md shadow hover:bg-gray-100 transition font-medium">
+            <Link
+              href={
+                "https://docs.google.com/forms/d/e/1FAIpQLSfIOT5BpdiwLKUvZoH32E3uBHkwQ5GmA9fDZ2f1kaU5Q5Thqw/viewform?usp=publish-editor"
+              }
+            >
+              Send a Request
+            </Link>
           </button>
         </div>
       </div>
-
     </section>
   );
 }

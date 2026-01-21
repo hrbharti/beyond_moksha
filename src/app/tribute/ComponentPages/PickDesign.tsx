@@ -1,8 +1,8 @@
 import React from "react";
 import DesignCard from "./Components/DesignCard";
-import design1 from "../../../../public/banner1.png";
-import design2 from "../../../../public/banner2.jpg";
-import design3 from "../../../../public/banner3.jpg";
+import design1 from "@public/images/banner1.png";
+import design2 from "@public/images/banner2.jpg";
+import design3 from "@public/images/banner3.jpg";
 import MoreDesign from "./Components/MoreDesign";
 
 const PickDesign: React.FC = () => {

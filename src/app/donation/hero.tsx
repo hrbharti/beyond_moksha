@@ -7,7 +7,7 @@ export const HeroSection = () => {
     <section
       className="relative w-full h-[90vh] flex items-center justify-center bg-cover bg-center"
       style={{
-        backgroundImage: "url('/donationHero.jpg')", // ✅ use .src to access image path
+        backgroundImage: "url('/images/donationHero.jpg')",
       }}
     >
       {/* Overlay */}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import flower from "../../../../public/flower.png";
+import flower from "@public/images/flower.png";
 import Link from "next/link";
 
 export default function MemorialSection() {

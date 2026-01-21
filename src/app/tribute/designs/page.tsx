@@ -6,10 +6,9 @@ import TributeNavbar from "../ComponentPages/TributeNavbar";
 import Footer from "@/app/components/Footer";
 import DesignCard from "../ComponentPages/Components/DesignCard";
 import FurryFriendCard from "../ComponentPages/Components/FurryFriendCard";
-import design1 from "../../../../public/banner1.png";
-import design2 from "../../../../public/banner2.jpg";
-import design3 from "../../../../public/banner3.jpg";
-import bg from "../../../../public/bg.png";
+import design1 from "@public/images/banner1.png";
+import design2 from "@public/images/banner2.jpg";
+import design3 from "@public/images/banner3.jpg";
 
 function DesignsContent() {
   const searchParams = useSearchParams();
@@ -72,7 +71,7 @@ function DesignsContent() {
       <TributeNavbar />
 
       {/* Hero / Header */}
-      <div className="bg-[url('/bg.png')] bg-cover bg-center pt-16 pb-12 text-center px-4 relative overflow-hidden">
+      <div className="bg-[url('/images/bg.png')] bg-cover bg-center pt-16 pb-12 text-center px-4 relative overflow-hidden">
         <div className="inline-flex items-center justify-center mb-6">
           <span className="text-6xl md:text-7xl text-[#1F3A4B] font-medium mr-4">
             60+
