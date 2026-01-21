@@ -200,6 +200,7 @@ function DesignsContent() {
                     theme="furry-1"
                     bgImage="/images/dog.jpg"
                     textColor="text-black"
+                    type="dog"
                   />
                   <FurryFriendCard
                     name="Name"
@@ -208,6 +209,7 @@ function DesignsContent() {
                     theme="furry-2"
                     bgImage="/images/cat.jpg"
                     textColor="text-black"
+                    type="cat"
                   />
                   <FurryFriendCard
                     name="Name"
@@ -216,6 +218,7 @@ function DesignsContent() {
                     theme="furry-3"
                     bgImage="/images/dog.jpg"
                     textColor="text-black"
+                    type="dog"
                   />
                 </React.Fragment>
               ))}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import kitty from "@public/images/kitty.jpg";
+import tommy from "@public/images/tommy.jpg";
 import Link from "next/link";
 
 interface FurryFriendCardProps {
@@ -12,6 +13,7 @@ interface FurryFriendCardProps {
   bgImage: string;
   textColor?: string;
   theme?: string;
+  type?: "cat" | "dog";
 }
 
 const FurryFriendCard: React.FC<FurryFriendCardProps> = ({
@@ -21,6 +23,7 @@ const FurryFriendCard: React.FC<FurryFriendCardProps> = ({
   bgImage,
   textColor = "text-[#1F3A4B]",
   theme = "blank",
+  type = "cat",
 }) => {
   return (
     <Link
@@ -37,30 +40,32 @@ const FurryFriendCard: React.FC<FurryFriendCardProps> = ({
     >
       {/* Image Holder */}
       {/* <Link href={`/tribute/furry-memorial?theme=${theme}`}> */}
-      <div className="flex flex-col items-center justify-center p-6 sm:p-8 md:p-10">
+      <div className="flex flex-col items-center justify-center p-6 sm:p-8 md:p-10 h-full">
         <div
-          className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 
-          border-2 border-[#1F3A4B]/40 rounded-2xl bg-white shadow-md overflow-hidden mb-4"
+          className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-52 md:h-52 
+          border-4 border-[#1F3A4B]/40 rounded-[2rem] bg-white shadow-md overflow-hidden mb-1 z-20"
         >
           {/* Placeholder for pet image */}
           <Image
-            src={kitty}
+            src={type === "cat" ? kitty : tommy}
             alt="Pet"
-            width={128}
-            height={128}
+            width={208}
+            height={208}
             className="object-cover w-full h-full"
           />
         </div>
 
         {/* Name and Dates */}
-        <h3
-          className={`font-serif font-bold text-lg sm:text-xl md:text-2xl ${textColor}`}
-        >
-          {name}
-        </h3>
-        <p className="text-xs sm:text-sm md:text-base mt-1 font-bold">
-          {dob} — {dod}
-        </p>
+        <div className="relative bg-white rounded-t-[2.5rem] rounded-b-[2.5rem] px-10 py-5 shadow-sm mt-[-1rem] z-10 text-center min-w-[70%]">
+          <h3
+            className={`font-serif font-bold text-lg sm:text-xl md:text-2xl ${textColor}`}
+          >
+            {name}
+          </h3>
+          <p className="text-xs sm:text-sm md:text-base mt-1 font-bold">
+            {dob} — {dod}
+          </p>
+        </div>
       </div>
       {/* </Link> */}
     </Link>

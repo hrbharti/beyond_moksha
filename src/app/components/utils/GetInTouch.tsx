@@ -1,9 +1,43 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useForm, SubmitHandler } from "react-hook-form";
+import api from "@/lib/api/api";
 import { Button } from "./Button";
 import { Input } from "./Input";
 
+interface Inputs {
+  name: string;
+  email: string;
+  phone: string;
+  services: string;
+  message: string;
+}
+
 export default function GetInTouch() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      setLoading(true);
+      await api.post("/contact", data);
+      toast.success("Message sent successfully!");
+      reset();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full py-12 px-4 sm:px-6 lg:px-16 text-black flex flex-col items-center">
       <div className="flex flex-col items-center justify-center gap-3 text-center max-w-3xl mx-auto">
@@ -20,35 +54,79 @@ export default function GetInTouch() {
         <div className="text-xl px-2 pb-4">Send us an Email</div>
 
         <div className="w-full border border-[#1F3A52] rounded-md bg-white">
-          <div className="flex flex-col md:flex-row items-stretch p-6 md:p-10 gap-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col md:flex-row items-stretch p-6 md:p-10 gap-6"
+          >
             <div className="w-full md:w-2/3 flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="w-full sm:w-2/5">
-                  <Input type="text" title="Name" required={true} />
+                  <Input
+                    type="text"
+                    title="Name"
+                    required={true}
+                    {...register("name", { required: true })}
+                  />
+                  {errors.name && (
+                    <span className="text-red-500 text-xs">
+                      This field is required
+                    </span>
+                  )}
                 </div>
                 <div className="w-full sm:w-3/5">
-                  <Input type="text" title="Email Address" required={true} />
+                  <Input
+                    type="email"
+                    title="Email Address"
+                    required={true}
+                    {...register("email", { required: true })}
+                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-xs">
+                      This field is required
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="w-full sm:w-2/5">
-                  <Input type="number" title="Phone" required={false} />
+                  <Input type="text" title="Phone" {...register("phone")} />
                 </div>
                 <div className="w-full sm:w-3/5">
-                  <Input type="text" title="Services" required={true} />
+                  <Input
+                    type="text"
+                    title="Services"
+                    required={true}
+                    {...register("services", { required: true })}
+                  />
+                  {errors.services && (
+                    <span className="text-red-500 text-xs">
+                      This field is required
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div>
-                <Input type="textarea" title="Messages" required={true} />
+                <Input
+                  type="textarea"
+                  title="Messages"
+                  required={true}
+                  {...register("message", { required: true })}
+                />
+                {errors.message && (
+                  <span className="text-red-500 text-xs">
+                    This field is required
+                  </span>
+                )}
               </div>
               <div className="pt-2">
                 <Button
                   variantType="primary"
                   size="lg"
-                  text="Send Message"
-                  onClick={() => console.log("message clicked")}
+                  text={loading ? "Sending..." : "Send Message"}
+                  onClick={() => handleSubmit(onSubmit)()}
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -71,7 +149,7 @@ export default function GetInTouch() {
                 are addressed swiftly and efficiently.
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

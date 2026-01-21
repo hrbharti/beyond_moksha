@@ -9,22 +9,22 @@ const FurryFriendsSection: React.FC = () => {
     {
       id: 1,
       bgImage: "/images/dog.jpg",
-      theme: "Dog",
+      theme: "dog",
     },
     {
       id: 2,
       bgImage: "/images/cat.jpg",
-      theme: "Cat",
+      theme: "cat",
     },
     {
       id: 3,
       bgImage: "/images/cat.jpg",
-      theme: "Cat",
+      theme: "cat",
     },
     {
       id: 4,
       bgImage: "/images/dog.jpg",
-      theme: "Dog",
+      theme: "dog",
     },
   ];
 
@@ -48,6 +48,7 @@ const FurryFriendsSection: React.FC = () => {
             dod="DOD"
             bgImage={theme.bgImage}
             theme={theme.theme}
+            type={theme.theme as "dog" | "cat"}
           />
         ))}
       </div>

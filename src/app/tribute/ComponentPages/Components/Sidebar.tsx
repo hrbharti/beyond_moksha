@@ -48,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         {/* Sidebar content */}
         <div className="flex flex-col items-center px-6 py-6 space-y-4 overflow-y-auto">
           {/* Profile section */}
-          <div className="relative w-40 h-40 border-2 border-[#1F3A4B] rounded-[30px] overflow-hidden">
+          <div className="relative w-40 h-40 border-4 border-[#1F3A4B]/40 rounded-[2rem] bg-white shadow-md overflow-hidden mb-1 z-20">
             <Image
               src="/images/kitty.jpg"
               alt="Profile"
@@ -57,10 +57,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             />
           </div>
 
-          <h2 className="text-xl font-serif font-semibold text-[#1F3A4B] mt-2">
-            Tommy
-          </h2>
-          <p className="text-[#1F3A4B]/80 text-sm mb-6">DOB -- DOD</p>
+          <div className="relative bg-white rounded-t-[2.5rem] rounded-b-[2.5rem] px-10 py-5 shadow-sm mt-[-1.5rem] z-10 text-center min-w-[70%]">
+            <h2 className="text-xl font-serif font-bold text-[#1F3A4B]">
+              Tommy
+            </h2>
+            <p className="text-[#1F3A4B] text-xs font-bold mt-1">DOB -- DOD</p>
+          </div>
 
           {/* Mobile Navigation Links */}
           <div className="md:hidden flex flex-col items-center space-y-4 text-[#1F3A4B] font-medium mt-4">

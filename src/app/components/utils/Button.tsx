@@ -17,24 +17,42 @@ interface BtnProps {
   size: keyof typeof btnSize;
   text: string;
   onClick: React.MouseEventHandler<HTMLDivElement>;
+  disabled?: boolean;
 }
 
-export const Button = ({ variantType, size, text, onClick }: BtnProps) => {
+export const Button = ({
+  variantType,
+  size,
+  text,
+  onClick,
+  disabled,
+}: BtnProps) => {
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (disabled) return;
     if (e.key === "Enter" || e.key === " ") {
       e.currentTarget.click();
     }
   };
 
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (disabled) return;
+    onClick(e);
+  };
+
   return (
     <div
       role="button"
-      tabIndex={0}
+      tabIndex={disabled ? -1 : 0}
       onKeyDown={handleKeyDown}
-      onClick={onClick}
-      className={`${variant[variantType]} ${btnSize[size]} px-4 py-2 rounded text-white flex items-center justify-center cursor-pointer select-none`}
+      onClick={handleClick}
+      aria-disabled={disabled}
+      className={`${variant[variantType]} ${btnSize[size]} px-4 py-2 rounded text-white flex items-center justify-center cursor-pointer select-none ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
     >
-      <div className="h-full w-full flex items-center justify-center">{text}</div>
+      <div className="h-full w-full flex items-center justify-center">
+        {text}
+      </div>
     </div>
   );
 };
