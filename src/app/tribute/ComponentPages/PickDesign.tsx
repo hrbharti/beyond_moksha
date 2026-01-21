@@ -74,7 +74,7 @@ const PickDesign: React.FC = () => {
           />
         </div>
 
-        <MoreDesign />
+        <MoreDesign theme="human" />
       </div>
     </section>
   );

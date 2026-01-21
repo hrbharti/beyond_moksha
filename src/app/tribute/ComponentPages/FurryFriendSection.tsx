@@ -51,7 +51,7 @@ const FurryFriendsSection: React.FC = () => {
           />
         ))}
       </div>
-      <MoreDesign />
+      <MoreDesign theme="pet" />
     </section>
   );
 };

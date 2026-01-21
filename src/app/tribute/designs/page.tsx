@@ -29,12 +29,6 @@ function DesignsContent() {
     }
   }, [searchParams]);
 
-  const handleTributeTypeChange = (type: "Human" | "Pet") => {
-    setTributeType(type);
-    const newTheme = type === "Pet" ? "pet" : "human";
-    router.push(`/tribute/designs?theme=${newTheme}`, { scroll: false });
-  };
-
   const contentFilters = [
     "Popular",
     "Sunset",
@@ -92,30 +86,6 @@ function DesignsContent() {
           <br />
           You can change this anytime later.
         </p>
-
-        {/* Tribute Type Toggle */}
-        <div className="flex justify-center space-x-6 mb-12">
-          <button
-            onClick={() => handleTributeTypeChange("Human")}
-            className={`text-lg transition-colors ${
-              tributeType === "Human"
-                ? "text-[#D4A043] font-bold border-b-2 border-[#D4A043]"
-                : "text-[#1F3A4B] hover:text-[#D4A043]"
-            }`}
-          >
-            Human Tribute
-          </button>
-          <button
-            onClick={() => handleTributeTypeChange("Pet")}
-            className={`text-lg transition-colors ${
-              tributeType === "Pet"
-                ? "text-[#D4A043] font-bold border-b-2 border-[#D4A043]"
-                : "text-[#1F3A4B] hover:text-[#D4A043]"
-            }`}
-          >
-            Pet Tribute
-          </button>
-        </div>
 
         {/* Filters */}
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
@@ -228,7 +198,7 @@ function DesignsContent() {
                     dob="DOB"
                     dod="DOD"
                     theme="furry-1"
-                    bgImage="/dog.jpg"
+                    bgImage="/images/dog.jpg"
                     textColor="text-black"
                   />
                   <FurryFriendCard
@@ -236,7 +206,7 @@ function DesignsContent() {
                     dob="DOB"
                     dod="DOD"
                     theme="furry-2"
-                    bgImage="/cat.jpg"
+                    bgImage="/images/cat.jpg"
                     textColor="text-black"
                   />
                   <FurryFriendCard
@@ -244,7 +214,7 @@ function DesignsContent() {
                     dob="DOB"
                     dod="DOD"
                     theme="furry-3"
-                    bgImage="/dog.jpg"
+                    bgImage="/images/dog.jpg"
                     textColor="text-black"
                   />
                 </React.Fragment>

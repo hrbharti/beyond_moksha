@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function MoreDesign() {
+export default function MoreDesign({ theme }: { theme: "human" | "pet" }) {
   return (
     <div className="text-center mt-20">
       <p className="text-[#1F3A4B]/90 text-lg mb-6">
@@ -10,7 +10,7 @@ export default function MoreDesign() {
       </p>
 
       <Link
-        href="/tribute/designs?theme=human"
+        href={`/tribute/designs?theme=${theme}`}
         className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white font-medium px-8 py-3 rounded-md hover:bg-[#C18E33] transition inline-block"
       >
         More Designs
@@ -18,7 +18,10 @@ export default function MoreDesign() {
 
       <p className="text-sm text-[#1F3A4B]/90 mt-6">
         Or create your page from the ground up with full customisation:{" "}
-        <a href="/tribute/designs" className="text-[#D4A043] font-medium hover:underline">
+        <a
+          href={`/tribute/designs?theme=${theme}`}
+          className="text-[#D4A043] font-medium hover:underline"
+        >
           Start without theme →
         </a>
       </p>
