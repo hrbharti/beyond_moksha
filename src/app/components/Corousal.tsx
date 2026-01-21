@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const images = [
-  "/banner1.png",
-  "/banner2.jpg",
-  "/banner3.jpg",
+  "/images/banner1.png",
+  "/images/banner2.jpg",
+  "/images/banner3.jpg",
 ];
 
 export default function Carousel() {
@@ -98,7 +98,8 @@ export default function Carousel() {
             mb-6
           "
         >
-          Losing someone is painful enough. Let us handle the arrangements so you can focus on family, prayers, and memories.
+          Losing someone is painful enough. Let us handle the arrangements so
+          you can focus on family, prayers, and memories.
         </p>
 
         {/* Buttons */}

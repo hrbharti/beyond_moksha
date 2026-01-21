@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { X } from "lucide-react"; // ✅ cross icon
-import bird from "../../../../../public/bird.png";
+import bird from "@public/images/bird.png";
 import Link from "next/link";
 
 interface MemorialSidebarProps {

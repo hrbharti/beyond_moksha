@@ -1,6 +1,6 @@
 import React from "react";
 import PetCard from "./Components/PetCard";
-import kitty from "../../../../public/kitty.jpg";
+import kitty from "@public/images/kitty.jpg";
 import MoreDesign from "./Components/MoreDesign";
 
 const FurryFriends: React.FC = () => {

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
-import banner1 from "../../../../../public/banner1.png";
-import banner2 from "../../../../../public/banner2.jpg";
-import banner3 from "../../../../../public/banner3.jpg";
-import founder from "../../../../../public/founder.jpeg";
+import banner1 from "@public/images/banner1.png";
+import banner2 from "@public/images/banner2.jpg";
+import banner3 from "@public/images/banner3.jpg";
+import founder from "@public/images/founder.jpeg";
 import { useSearchParams } from "next/navigation";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -14,11 +14,7 @@ const HeroSection: React.FC = () => {
   const theme = searchParams.get("theme");
   const [isAudioVisible, setIsAudioVisible] = useState(true);
 
-  const banner = theme === "1"
-      ? banner1
-      : theme === "2"
-      ? banner2
-      : banner3;
+  const banner = theme === "1" ? banner1 : theme === "2" ? banner2 : banner3;
   return (
     <section className="relative flex flex-col w-full text-[#1F3A4B] font-serif overflow-hidden">
       {/* Banner */}
@@ -53,7 +49,12 @@ const HeroSection: React.FC = () => {
             overflow-hidden bg-white shadow-lg
           "
         >
-          <Image src='/flower.png' alt="Profile" fill className="object-cover" />
+          <Image
+            src="/images/flower.png"
+            alt="Profile"
+            fill
+            className="object-cover"
+          />
         </div>
 
         {/* Text Info */}
@@ -62,13 +63,16 @@ const HeroSection: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 leading-tight">
               Radha Devi
             </h1>
-            <p className="text-xs sm:text-sm text-[#1F3A4B]/80">March 10, 1950 — March 25, 2023</p>
-            <p className="text-sm sm:text-base text-[#1F3A4B]/70">Varanasi, Uttar Pradesh</p>
+            <p className="text-xs sm:text-sm text-[#1F3A4B]/80">
+              March 10, 1950 — March 25, 2023
+            </p>
+            <p className="text-sm sm:text-base text-[#1F3A4B]/70">
+              Varanasi, Uttar Pradesh
+            </p>
           </div>
 
           {/* Audio Toggle Controls and Player */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-3 w-full md:w-auto mt-16">
-            
             {/* Audio Player */}
             <div className="w-full md:w-64 h-8">
               {isAudioVisible && (
@@ -102,8 +106,6 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      
     </section>
   );
 };

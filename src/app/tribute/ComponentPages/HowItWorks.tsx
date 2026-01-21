@@ -5,7 +5,7 @@ import StepCard from "./Components/StepCard";
 import WorkItem from "./Components/WorkItem";
 
 // Example placeholder images (replace with your actual ones)
-import white from "../../../../public/whiteBg.jpg";
+import white from "@public/images/whiteBg.jpg";
 
 const HowItWorks: React.FC = () => {
   return (

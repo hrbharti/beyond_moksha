@@ -1,13 +1,13 @@
-
 import Image from "next/image";
 import { Bolt, CheckCircle2, IndianRupee } from "lucide-react";
 
-export default function Hero(){
-    return <div>
-            <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden">
+export default function Hero() {
+  return (
+    <div>
+      <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden">
         {/* Background image */}
         <Image
-          src="/pandithero.jpg" // <- put your image in /public or replace with your path
+          src="/images/pandithero.jpg" // <- put your image in /public or replace with your path
           alt="Pandit performing aarti"
           fill
           priority
@@ -63,4 +63,5 @@ export default function Hero(){
         </div>
       </section>
     </div>
+  );
 }

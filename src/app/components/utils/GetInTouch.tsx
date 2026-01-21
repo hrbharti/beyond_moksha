@@ -56,7 +56,7 @@ export default function GetInTouch() {
             <div className="w-full md:w-1/3 flex flex-col items-center justify-between gap-4">
               <div className="w-full flex items-center justify-center bg-white">
                 <Image
-                  src="/getInTouch.png"
+                  src="/images/getInTouch.png"
                   alt="message us"
                   width={200}
                   height={200}

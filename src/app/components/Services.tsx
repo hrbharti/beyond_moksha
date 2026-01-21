@@ -1,12 +1,12 @@
 import { ServicesCard } from "./utils/ServicesCard";
-import nama from "../../../public/nama.png";
-import legacy from "../../../public/legacy.png";
-import people from "../../../public/people.png";
-import petServices from "../../../public/Pet services.png";
+import nama from "@public/images/nama.png";
+import legacy from "@public/images/legacy.png";
+import people from "@public/images/people.png";
+import petServices from "@public/images/Pet services.png";
 
 export const Services = () => {
   return (
-    <div  className="flex flex-wrap h-full items-center justify-center content-center gap-x-20 gap-y-15 mx-auto py-12">
+    <div className="flex flex-wrap h-full items-center justify-center content-center gap-x-20 gap-y-15 mx-auto py-12">
       {/* <ServicesCard
         heading="Human Funeral"
         subHeading="We organise everything for you, from rituals to arrangements, so you can focus on family and prayers."
