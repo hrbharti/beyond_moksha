@@ -1,44 +1,45 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import Image from "next/image";
 import { Phone, Mail } from "lucide-react";
 import api from "@/lib/api/api";
+import { useForm } from "react-hook-form";
+
+type BookPujaFormData = {
+  fullName: string;
+  poojaType: string;
+  phone: string;
+  email: string;
+  state: string;
+  city: string;
+  location: string;
+  pincode: string;
+  date: string;
+  time: string;
+  requirements?: string;
+};
 
 export default function BookPujaForm() {
-  const [fullName, setFullName] = useState("");
-  const [poojaType, setPoojaType] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [location, setLocation] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [requirements, setRequirements] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<BookPujaFormData>();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = {
-      fullName,
-      poojaType,
-      phone,
-      email,
-      state,
-      city,
-      location,
-      pincode,
-      date,
-      time,
-      requirements,
-    };
-
+  const onSubmit = async (data: BookPujaFormData) => {
     try {
-      await api.post("/booking/puja", formData);
-      alert("Booking submitted successfully!");
+      setLoading(true);
+      await api.post("/booking/puja", data);
+      toast.success("Booking submitted successfully!");
+      reset();
     } catch (error) {
-      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +78,7 @@ export default function BookPujaForm() {
                 onClick={() => window.open("tel:+917050966971", "_blank")}
               >
                 <Phone className="w-4 h-4 text-[#D29D39]" />
-                +91-7050966971
+                +91 7050966971
               </button>
 
               <button
@@ -94,7 +95,7 @@ export default function BookPujaForm() {
 
           {/* RIGHT SIDE FORM */}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="bg-white shadow-md rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-8 space-y-5 w-full md:w-1/2"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
@@ -103,9 +104,15 @@ export default function BookPujaForm() {
                 <input
                   type="text"
                   className="input"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  {...register("fullName", {
+                    required: "Full name is required",
+                  })}
                 />
+                {errors.fullName && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.fullName.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -114,14 +121,20 @@ export default function BookPujaForm() {
                 </label>
                 <select
                   className="input"
-                  value={poojaType}
-                  onChange={(e) => setPoojaType(e.target.value)}
+                  {...register("poojaType", {
+                    required: "Pooja type is required",
+                  })}
                 >
                   <option value="">Select Pooja Type</option>
                   <option>Griha Pravesh</option>
                   <option>Satyanarayan Pooja</option>
                   <option>Marriage Pooja</option>
                 </select>
+                {errors.poojaType && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.poojaType.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -131,9 +144,19 @@ export default function BookPujaForm() {
                 <input
                   type="text"
                   className="input"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  {...register("phone", {
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Please enter a valid 10-digit number",
+                    },
+                  })}
                 />
+                {errors.phone && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.phone.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -143,9 +166,19 @@ export default function BookPujaForm() {
                 <input
                   type="email"
                   className="input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
                 />
+                {errors.email && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -154,14 +187,18 @@ export default function BookPujaForm() {
                 </label>
                 <select
                   className="input"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  {...register("state", { required: "State is required" })}
                 >
                   <option value="">Select State</option>
                   <option>Maharashtra</option>
                   <option>Delhi</option>
                   <option>Gujarat</option>
                 </select>
+                {errors.state && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.state.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -170,14 +207,18 @@ export default function BookPujaForm() {
                 </label>
                 <select
                   className="input"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  {...register("city", { required: "City is required" })}
                 >
                   <option value="">Select City</option>
                   <option>Mumbai</option>
                   <option>Delhi</option>
                   <option>Ahmedabad</option>
                 </select>
+                {errors.city && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.city.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -187,9 +228,15 @@ export default function BookPujaForm() {
                 <input
                   type="text"
                   className="input"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  {...register("location", {
+                    required: "Location is required",
+                  })}
                 />
+                {errors.location && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.location.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -197,9 +244,23 @@ export default function BookPujaForm() {
                 <input
                   type="text"
                   className="input"
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
+                  {...register("pincode", {
+                    required: "Pincode is required",
+                    minLength: {
+                      value: 6,
+                      message: "Pincode must be 6 digits",
+                    },
+                    maxLength: {
+                      value: 6,
+                      message: "Pincode must be 6 digits",
+                    },
+                  })}
                 />
+                {errors.pincode && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.pincode.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -211,9 +272,14 @@ export default function BookPujaForm() {
                 <input
                   type="date"
                   className="input"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  min={new Date().toISOString().split("T")[0]}
+                  {...register("date", { required: "Date is required" })}
                 />
+                {errors.date && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.date.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -223,9 +289,13 @@ export default function BookPujaForm() {
                 <input
                   type="time"
                   className="input"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  {...register("time", { required: "Time is required" })}
                 />
+                {errors.time && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {errors.time.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -236,16 +306,16 @@ export default function BookPujaForm() {
               <textarea
                 rows={3}
                 className="input"
-                value={requirements}
-                onChange={(e) => setRequirements(e.target.value)}
+                {...register("requirements")}
               ></textarea>
             </div>
 
             <button
               type="submit"
               className="w-full py-3 rounded-lg bg-gradient-to-r from-[#D29D39] to-[#B6761E] text-white font-medium shadow hover:opacity-95 transition"
+              disabled={loading}
             >
-              Submit Booking Request
+              {loading ? "Submitting..." : "Submit Booking Request"}
             </button>
           </form>
         </div>

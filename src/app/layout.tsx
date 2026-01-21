@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,6 +30,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Toaster
+          position="top-center"
+          richColors
+          duration={5000}
+        />
         <GoogleAnalytics gaId="G-1JT1ZD2NKC" />
       </body>
     </html>
