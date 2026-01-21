@@ -11,7 +11,8 @@ interface DesignCardProps {
   dob?: string;
   dod?: string;
   location?: string;
-  theme ?: string;
+  theme?: string;
+  isHindi?: boolean;
 }
 
 const DesignCard: React.FC<DesignCardProps> = ({
@@ -22,7 +23,8 @@ const DesignCard: React.FC<DesignCardProps> = ({
   dob = "DOB",
   dod = "DOD",
   location = "Location",
-  theme = '1'
+  theme = "1",
+  isHindi = false,
 }) => {
   return (
     <div className="w-full max-w-[340px] border border-gray-300 rounded-xl overflow-hidden bg-white">
@@ -48,7 +50,9 @@ const DesignCard: React.FC<DesignCardProps> = ({
         <div className="flex flex-col items-start">
           <h3 className="text-[#1F3A4B] font-medium text-[14px]">{name}</h3>
           <p className="text-xs text-[#1F3A4B]/80 mt-0.5">
-            Relation (ex: {relation})
+            {isHindi
+              ? `संबंध (जैसे: ${relation})`
+              : `Relation (ex: ${relation})`}
           </p>
           <p className="text-xs text-[#1F3A4B]/80 mt-0.5">
             {dob} — {dod}
@@ -62,8 +66,11 @@ const DesignCard: React.FC<DesignCardProps> = ({
             size={20}
             className="text-[#1F3A4B] cursor-pointer hover:fill-[#D4A043] hover:text-[#D4A043] transition"
           />
-          <Link href={`/tribute/memorial?theme=${theme}`} className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition">
-            View Memorial
+          <Link
+            href={`/tribute/memorial?theme=${theme}`}
+            className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition"
+          >
+            {isHindi ? "स्मृति देखें" : "View Memorial"}
           </Link>
         </div>
       </div>

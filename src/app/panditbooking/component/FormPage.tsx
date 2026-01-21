@@ -35,7 +35,7 @@ export default function BookPujaForm() {
     };
 
     try {
-      await api.post("/api/booking/puja", formData);
+      await api.post("/booking/puja", formData);
       alert("Booking submitted successfully!");
     } catch (error) {
       console.error(error);

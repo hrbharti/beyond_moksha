@@ -16,13 +16,45 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
   toggleSidebar,
 }) => {
   const navItems = [
-    {name : "Memorial", href: "#memorial"},
-    {name : "Timeline", href: "#timeline"},
-    {name : "Gallery", href: "#gallery"},
-    {name : "Memory Wall", href: "#memory-wall"},
-    {name : "Family Tree", href: "#family-tree"},
-    {name : "Events", href: "#events"},
+    { name: "Memorial", href: "#memorial" },
+    { name: "Timeline", href: "#timeline" },
+    { name: "Gallery", href: "#gallery" },
+    { name: "Memory Wall", href: "#memory-wall" },
+    { name: "Family Tree", href: "#family-tree" },
+    { name: "Events", href: "#events" },
   ];
+
+  /* Active Highlight Logic */
+  const [activeSection, setActiveSection] = React.useState("");
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150; // Offset for sticky headers/comfort
+
+      // Find the current section
+      let current = "";
+      for (const item of navItems) {
+        const id = item.href.replace("#", "");
+        const element = document.getElementById(id);
+
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            current = item.href;
+            break;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -57,32 +89,50 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
         {/* Logo Section */}
         <Link href={"/"} className="flex flex-col items-center space-y-1 mb-12">
           <div>
-          <div className="flex items-center space-x-2">
-            <Image src={bird} alt="Logo" width={36} height={36} />
-            <Link href={"/"} className="cursor-pointer">
-              <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
-              Beyond <span className="text-[#D4A043]">Moksha</span>
-            </h1>
-            </Link>
-          </div>
-          <div className="text-xs text-[#1F3A4B]/60 text-right">
-            सर्वसंस्कारसहायाः
-          </div>
+            <div className="flex items-center space-x-2">
+              <Image src={bird} alt="Logo" width={36} height={36} />
+              <div className="cursor-pointer">
+                <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
+                  Beyond <span className="text-[#D4A043]">Moksha</span>
+                </h1>
+              </div>
+            </div>
+            <div className="text-xs text-[#1F3A4B]/60 text-right">
+              सर्वसंस्कारसहायाः
+            </div>
           </div>
         </Link>
 
         {/* Navigation Links */}
-        <nav className="flex flex-col items-start space-y-8 pl-8 font-serif text-[#1F3A4B] w-full">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={toggleSidebar}
-              className="hover:text-[#D4A043] text-lg transition-colors"
-            >
-              {item.name}
-            </a>
-          ))}
+        <nav className="flex flex-col items-start space-y-2 pl-6 font-serif text-[#1F3A4B] w-full">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href;
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={toggleSidebar}
+                className={`flex items-center w-full px-4 py-3 rounded-l-lg transition-all duration-300 relative group text-lg
+                  ${
+                    isActive
+                      ? "text-white bg-[#D4A043] shadow-md translate-x-1"
+                      : "hover:text-[#D4A043] hover:bg-gray-50"
+                  }`}
+              >
+                {/* Active Indicator Line (Optional design choice, removing simpler highlight above) */}
+                <span
+                  className={`font-medium tracking-wide ${isActive ? "ml-2" : ""}`}
+                >
+                  {item.name}
+                </span>
+
+                {/* Chevron or indicator if active (optional) */}
+                {isActive && (
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-white/20 rounded-l-full mr-1" />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Sidebar Footer */}

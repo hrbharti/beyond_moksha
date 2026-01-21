@@ -44,30 +44,33 @@ const PickDesign: React.FC = () => {
           />
           <DesignCard
             imageSrc={design1}
-            name="Name Surname"
-            relation="Brother"
-            dob="DOB"
-            dod="DOD"
-            location="Location"
+            name="नाम सरनेम"
+            relation="भाई"
+            dob="जन्म"
+            dod="म्रत्यु"
+            location="स्थान"
             theme="1"
+            isHindi={true}
           />
           <DesignCard
             imageSrc={design2}
-            name="Name Surname"
-            relation="Sister"
-            dob="DOB"
-            dod="DOD"
-            location="Location"
+            name="नाम सरनेम"
+            relation="बहन"
+            dob="जन्म"
+            dod="म्रत्यु"
+            location="स्थान"
             theme="2"
+            isHindi={true}
           />
           <DesignCard
             imageSrc={design3}
-            name="Name Surname"
-            relation="Uncle"
-            dob="DOB"
-            dod="DOD"
-            location="Location"
+            name="नाम सरनेम"
+            relation="चाचा"
+            dob="जन्म"
+            dod="म्रत्यु"
+            location="स्थान"
             theme="3"
+            isHindi={true}
           />
         </div>
 

@@ -10,7 +10,7 @@ export default function HowItWorks() {
         {/* Title */}
         <div className="text-center">
           <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
-            How it Works
+            How It Works
           </h2>
 
           {/* Decorative Divider */}
@@ -37,10 +37,14 @@ export default function HowItWorks() {
             <p>
               Beyond Moksha offers simple, reliable, and well-organized Puja
               services. All ceremonies are conducted by verified and experienced
-              Pandits based on your requirements. You choose the Puja, and we
-              take care of everything else. All essential Puja materials are
-              arranged and provided on time. Each ritual is performed following
-              traditional practices with modern convenience.
+              Pandits based on your requirements.
+              <br />
+              You choose the Puja, and we take care of everything else.
+              <br />
+              All essential Puja materials are arranged and provided on time.
+              <br />
+              Each ritual is performed following traditional practices with
+              modern convenience.
             </p>
 
             <ul className="space-y-2 font-semibold text-gray-800 mt-6">
@@ -69,7 +73,7 @@ export default function HowItWorks() {
           </div>
 
           {/* Right Image */}
-          <div className="relative h-[300px] lg:h-[400px] w-full rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+          <div className="relative h-[300px] lg:h-[450px] w-full rounded-2xl overflow-hidden shadow-xl border border-gray-100">
             <Image
               src="/how.png"
               alt="How Beyond Moksha Works"
@@ -80,7 +84,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Steps Section */}
-        <div className="mt-16 flex flex-wrap justify-center gap-x-12 gap-y-10">
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
           <StepItem
             icon="/image30.png"
             title="Select a Pooja"
@@ -88,13 +92,13 @@ export default function HowItWorks() {
           />
 
           <StepItem
-            icon="/image32.png"
+            icon="/Frame464.png"
             title="Select Date & Time"
             description="Choose a convenient time slot. Same-day bookings available."
           />
 
           <StepItem
-            icon="/Frame464.png"
+            icon="/image32.png"
             title="Confirm Booking"
             description="Secure payment + instant confirmation via SMS & email."
           />
