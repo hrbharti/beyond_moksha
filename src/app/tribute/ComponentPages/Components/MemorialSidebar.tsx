@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { X } from "lucide-react"; // ✅ cross icon
-import bird from "@public/images/bird.png";
-import Link from "next/link";
+import { X } from "lucide-react";
+import Logo from "@/app/components/utils/Logo";
 
 interface MemorialSidebarProps {
   isOpen?: boolean;
@@ -71,37 +69,23 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
         className={`fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-md flex flex-col pt-8 z-50
         transition-transform duration-500 ease-in-out
         ${
-          isOpen
-            ? "translate-x-0 opacity-100"
-            : "-translate-x-full opacity-0 md:opacity-100 md:translate-x-0"
+          isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0" // Removed md: checks to allow full collapse
         }`}
       >
-        {/* Close Button (Mobile only) */}
-        <div className="absolute top-4 right-4 md:hidden">
+        {/* Close Button) */}
+        <div className="absolute top-4 right-4 z-50">
           <button
             onClick={toggleSidebar}
-            className="text-[#1F3A4B] hover:text-[#D4A043] transition-colors"
+            className="text-[#1F3A4B] hover:text-[#D4A043] transition-colors p-1"
           >
             <X size={26} />
           </button>
         </div>
 
         {/* Logo Section */}
-        <Link href={"/"} className="flex flex-col items-center space-y-1 mb-12">
-          <div>
-            <div className="flex items-center space-x-2">
-              <Image src={bird} alt="Logo" width={36} height={36} />
-              <div className="cursor-pointer">
-                <h1 className="font-serif text-xl text-[#1F3A4B] font-semibold">
-                  Beyond <span className="text-[#D4A043]">Moksha</span>
-                </h1>
-              </div>
-            </div>
-            <div className="text-xs text-[#1F3A4B]/60 text-right">
-              सर्वसंस्कारसहायाः
-            </div>
-          </div>
-        </Link>
+        <div className="flex flex-col items-center mb-8 mt-2 scale-[0.65] origin-center w-full">
+          <Logo isNav={true} />
+        </div>
 
         {/* Navigation Links */}
         <nav className="flex flex-col items-start space-y-2 pl-6 font-serif text-[#1F3A4B] w-full">
@@ -111,7 +95,6 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
               <a
                 key={item.name}
                 href={item.href}
-                onClick={toggleSidebar}
                 className={`flex items-center w-full px-4 py-3 rounded-l-lg transition-all duration-300 relative group text-lg
                   ${
                     isActive
@@ -137,7 +120,7 @@ const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
 
         {/* Sidebar Footer */}
         <div className="mt-auto mb-8 text-xs text-[#1F3A4B]/60 text-center">
-          © Beyond Moksha
+          © {new Date().getFullYear()} Beyond Moksha
         </div>
       </aside>
     </>
