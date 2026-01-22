@@ -1,26 +1,47 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { MapPin, CalendarDays, Video } from "lucide-react";
 
-const EventsSection: React.FC = () => {
+export interface EventItem {
+  description: string[];
+  locationLines: string[];
+  dateTime: string;
+  virtualLink?: string;
+  attendeeName?: string;
+}
+
+interface EventsSectionProps {
+  events?: EventItem[];
+  name?: string;
+}
+
+const EventsSection: React.FC<EventsSectionProps> = ({
+  events = [],
+  name = "Radha Devi Sharma",
+}) => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
+  if (!events || events.length === 0) return null;
+
+  const event = events[0];
+
   return (
-    <div id="events" className="w-full md:w-5/6 bg-white text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20">
-      <h1 className="text-3xl sm:text-5xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-10">Events</h1>
+    <div
+      id="events"
+      className="w-full md:w-5/6 bg-white text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20"
+    >
+      <h1 className="text-3xl sm:text-5xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-10">
+        Events
+      </h1>
 
       {/* Main Event Card */}
       <div className="border border-[#1F3A4B]/40 rounded-md p-6 sm:p-8 md:p-10 flex flex-col space-y-6 bg-white">
         <div className="space-y-4 leading-relaxed text-[#1F3A4B]/90">
-          <p>Please join us in paying final tribute.</p>
-          <p>
-            Family, friends, and well-wishers are requested to attend a remembrance gathering to honour the life and values of Mrs. Radha Devi Sharma. Your presence will provide comfort as we come together to share memories, support one another, and offer a peaceful farewell.
-          </p>
-          <p>
-            Please join us in commemorating Mrs. Radha Devi Sharma&apos;s life and the positive impact she had on all of us.
-          </p>
+          {event.description.map((desc, i) => (
+            <p key={i}>{desc}</p>
+          ))}
         </div>
 
         {/* Event Info */}
@@ -31,12 +52,12 @@ const EventsSection: React.FC = () => {
               <span>Location :</span>
             </div>
             <p className="text-[#1F3A4B]/90">
-              Shanti Bhavan Community Hall
-              <br />
-              Assi Ghat Road,
-              <br />
-              Varanasi, Uttar Pradesh – 221005
-
+              {event.locationLines.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
           </div>
 
@@ -45,7 +66,7 @@ const EventsSection: React.FC = () => {
               <CalendarDays size={18} />
               <span>Date/time :</span>
             </div>
-            <p className="text-[#1F3A4B]/90">June 26, 11:00 AM</p>
+            <p className="text-[#1F3A4B]/90">{event.dateTime}</p>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
@@ -53,12 +74,16 @@ const EventsSection: React.FC = () => {
               <Video size={18} />
               <span>Virtual event :</span>
             </div>
-            <a
-              href="#"
-              className="text-[#1F3A4B]/90 underline hover:text-[#D4A043]"
-            >
-              Click here
-            </a>
+            {event.virtualLink ? (
+              <a
+                href={event.virtualLink}
+                className="text-[#1F3A4B]/90 underline hover:text-[#D4A043]"
+              >
+                Click here
+              </a>
+            ) : (
+              <span className="text-[#1F3A4B]/90">None</span>
+            )}
           </div>
         </div>
 

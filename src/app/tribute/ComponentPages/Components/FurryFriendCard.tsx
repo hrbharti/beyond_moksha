@@ -66,6 +66,13 @@ const FurryFriendCard: React.FC<FurryFriendCardProps> = ({
             {dob} — {dod}
           </p>
         </div>
+        {/* Create Memorial Button */}
+        <button
+          className="mt-4 px-6 py-2 bg-[#D4A043] text-white font-medium text-sm rounded-lg
+            hover:bg-[#C18E33] transition-colors duration-200 shadow-sm hover:shadow-md"
+        >
+          Create Memorial
+        </button>
       </div>
       {/* </Link> */}
     </Link>

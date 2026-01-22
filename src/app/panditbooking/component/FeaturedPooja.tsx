@@ -32,7 +32,11 @@ export default function FeaturedPoojaServices() {
 
         {/* Decorative Divider */}
         <div className="flex justify-center mt-3">
-          <Image src={Divider} alt="Divider" className="w-[80px]" />
+          <Image
+            src={Divider}
+            alt="Divider"
+            className="w-[664px] h-[50px] object-contain"
+          />
         </div>
 
         {/* Subtitle */}

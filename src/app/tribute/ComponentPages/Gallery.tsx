@@ -2,13 +2,15 @@
 
 import React, { useState } from "react";
 import GalleryImage from "./Components/GalleryImage";
-import bg from "@public/images/grayishBG.jpg";
 
-const Gallery: React.FC = () => {
+interface GalleryProps {
+  images?: string[];
+}
+
+const Gallery: React.FC<GalleryProps> = ({ images = [] }) => {
   const [viewMode, setViewMode] = useState<"all" | "slideshow">("all");
 
-  // You can replace these with your actual image imports or URLs
-  const images = [bg, bg, bg, bg, bg, bg, bg, bg, bg];
+  if (!images || images.length === 0) return null;
 
   return (
     <div id="gallery" className="w-full max-w-6xl mt-24">

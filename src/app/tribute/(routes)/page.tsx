@@ -4,6 +4,7 @@ import HonorYour from "../ComponentPages/HonorYour";
 import HowItWorks from "../ComponentPages/HowItWorks";
 import PickDesign from "../ComponentPages/PickDesign";
 import FurryFriendsSection from "../ComponentPages/FurryFriendSection";
+import RecentMemorials from "../ComponentPages/RecentMemorials";
 
 export default function page() {
   return (
@@ -13,6 +14,7 @@ export default function page() {
         <div id="overview" className="scroll-mt-28">
           <HonorYour />
         </div>
+        <RecentMemorials />
         <div id="features" className="scroll-mt-28">
           <HowItWorks />
         </div>

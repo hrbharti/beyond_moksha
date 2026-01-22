@@ -40,19 +40,15 @@ export default function GetInTouch() {
 
   return (
     <div className="w-full py-12 px-4 sm:px-6 lg:px-16 text-black flex flex-col items-center">
-      <div className="flex flex-col items-center justify-center gap-3 text-center max-w-3xl mx-auto">
-        <div className="text-3xl sm:text-4xl bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent">
-          Get in touch with us
-        </div>
-        <div className="mt-4 text-sm sm:text-base">
-          We are here to help you through this difficult time. Reach out to us
-          anytime
-        </div>
+      <div className="text-3xl sm:text-4xl bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent">
+        Get in touch with us
+      </div>
+      <div className="mt-4 text-sm sm:text-base">
+        We are here to help you through this difficult time. Reach out to us
+        anytime
       </div>
 
-      <div className="w-full max-w-6xl mt-8">
-        <div className="text-xl px-2 pb-4">Send us an Email</div>
-
+      <div className="w-full max-w-6xl mt-5">
         <div className="w-full border border-[#1F3A52] rounded-md bg-white">
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -90,7 +86,12 @@ export default function GetInTouch() {
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="w-full sm:w-2/5">
-                  <Input type="text" title="Phone" {...register("phone")} />
+                  <Input
+                    type="text"
+                    title="Phone"
+                    required={true}
+                    {...register("phone", { required: true })}
+                  />
                 </div>
                 <div className="w-full sm:w-3/5">
                   <Input

@@ -1,6 +1,17 @@
 "use client";
+import React from "react";
 
-const Memorial: React.FC = () => {
+interface MemorialProps {
+  bio?: string;
+  isEditing?: boolean;
+  onBioUpdate?: (bio: string) => void;
+}
+
+const Memorial: React.FC<MemorialProps> = ({
+  bio,
+  isEditing = false,
+  onBioUpdate,
+}) => {
   return (
     <section className="w-full max-w-4xl" id="memorial">
       {/* Heading */}
@@ -10,25 +21,18 @@ const Memorial: React.FC = () => {
 
       {/* Paragraphs */}
       <div className="space-y-6 text-base leading-relaxed text-gray-800">
-        <p>
-          Mrs. Radha Devi Sharma passed away peacefully on March 25, 2023, at the age of 73. Born in Varanasi on March 10, 1950, she lived a life guided by grace and strong values.
-        </p>
-
-        <p>
-          A Commerce graduate from Banaras Hindu University, she served at the State Bank of India with integrity and dedication. Married to Mr. Ramesh Kumar Sharma in 1975, she shared 48 years of family life. She is survived by her husband, children Priya and Aditya, and grandchildren Aaradhya, Arjun, and Ayushmati.
-        </p>
-
-        <p>
-          The Terhvin ceremony will be held on April 7, 2023, at Kashi Vishwanath Temple.
-        </p>
-
-        <p>
-          In her memory, contributions to the Radha Devi Memorial Scholarship Fund are welcome.
-        </p>
-
-        <p>
-          Om Shanti.
-        </p>
+        {isEditing ? (
+          <textarea
+            value={bio || ""}
+            onChange={(e) => onBioUpdate && onBioUpdate(e.target.value)}
+            className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-y text-base"
+            placeholder="Write a biography for your loved one..."
+          />
+        ) : bio ? (
+          <div className="whitespace-pre-line">{bio}</div>
+        ) : (
+          <p className="text-gray-500 italic">No biography available.</p>
+        )}
       </div>
     </section>
   );
