@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import WhyChooseItem from "./WhyChoodeItem";
+import WhyChooseItem from "./WhyChooseItem";
 import Divider from "@public/svgs/divider.svg";
 
 export default function WhyChooseUs() {
@@ -31,25 +31,25 @@ export default function WhyChooseUs() {
         {/* Cards Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <WhyChooseItem
-            icon="/images/Frame424.png"
+            icon="/images/icons/trustworthy.png"
             title="Trustworthy & Qualified Pandits"
             description="We ensure experienced Pandits for every occasion, matching your tradition and location."
           />
 
           <WhyChooseItem
-            icon="/images/Frame436.png"
+            icon="/images/icons/booking.png"
             title="Fast & Convenient Booking"
             description="Book your ritual, muhurat, and samagri— all in just a few easy steps."
           />
 
           <WhyChooseItem
-            icon="/images/Frame437.png"
+            icon="/images/icons/platform.png"
             title="User-Friendly Platform"
             description="Enjoy a smooth experience for booking pujas anytime, from anywhere in India."
           />
 
           <WhyChooseItem
-            icon="/images/Frame438.png"
+            icon="/images/icons/support.png"
             title="Committed Support & Satisfaction"
             description="Our dedicated team guarantees smooth ceremonies and round-the-clock help for families."
           />

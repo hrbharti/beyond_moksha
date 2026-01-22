@@ -85,12 +85,12 @@ export default function Testimonials() {
 
               {/* Footer */}
               <div className="mt-6 flex items-center gap-3 pt-4 border-t border-gray-200">
-                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                <div className="w-20 h-20 bg-gray-300 rounded-full flex-shrink-0"></div>
                 <div>
-                  <p className="text-sm font-medium text-[#1F3A52]">
+                  <p className="text-lg font-bold text-[#1F3A52]">
                     {item.name}
                   </p>
-                  <p className="text-xs text-gray-500">{item.location}</p>
+                  <p className="text-sm text-gray-500">{item.location}</p>
                 </div>
               </div>
             </div>
