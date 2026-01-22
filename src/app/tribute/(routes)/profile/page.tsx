@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import TributeNavbar from "../../ComponentPages/TributeNavbar";
+import api from "@/lib/api/api";
 import HeroSection from "../../ComponentPages/Components/MemorialHero";
 import Memorial from "../../ComponentPages/Components/Memorial";
 import TimelineSection from "../../ComponentPages/TimelineSection";
@@ -27,6 +29,7 @@ interface Tribute {
 }
 
 export default function TributeProfile() {
+  const router = useRouter();
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [originalTribute, setOriginalTribute] = useState<Tribute | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,39 +38,16 @@ export default function TributeProfile() {
 
   const fetchProfile = useCallback(async () => {
     try {
-      // TODO: Implement profile fetch API call
-      console.log("Fetching user profile...");
-
-      // Simulate API call delay with mock data
-      setTimeout(() => {
-        const mockTribute = {
-          id: "1",
-          name: "John Doe",
-          email: "john@example.com",
-          gender: "Male",
-          dateOfBirth: "15-05-1985",
-          bio: "A loving tribute to remember and honor loved ones.",
-          profileImageUrl: "/images/jackson.png",
-          bannerUrl: "/images/banner1.png",
-          isPublic: true,
-          familyMembers: [
-            {
-              title: "Immediate Family",
-              members: [
-                { name: "Jane Doe", relationship: "Wife", imageUrl: "/images/jackson.png" }
-              ]
-            }
-          ]
-        };
-        setTribute(mockTribute);
-        setOriginalTribute(mockTribute);
-        setLoading(false);
-      }, 1000);
+      const response = await api.get("/tribute/me");
+      setTribute(response.data);
+      setOriginalTribute(response.data);
     } catch (error) {
       console.error("Failed to fetch profile", error);
+      router.push("/tribute/login");
+    } finally {
       setLoading(false);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     fetchProfile();
@@ -83,17 +63,13 @@ export default function TributeProfile() {
     if (!tribute) return;
     setIsSaving(true);
     try {
-      // TODO: Implement profile save API call
-      console.log("Saving profile changes:", tribute);
-
-      // Simulate API call delay
-      setTimeout(() => {
-        setOriginalTribute(tribute);
-        setIsEditing(false);
-        setIsSaving(false);
-      }, 1000);
+      await api.put(`/tribute/${tribute.id}`, tribute);
+      setOriginalTribute(tribute);
+      setIsEditing(false);
     } catch (error) {
       console.error("Failed to save profile", error);
+      // Optional: Show error toast
+    } finally {
       setIsSaving(false);
     }
   };

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "../../../lib/api/api";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -37,15 +38,34 @@ export default function RegisterForm() {
     setError("");
     setLoading(true);
 
-    // TODO: Implement registration API call
-    console.log("Registration form submitted with data:", formData);
+    try {
+      let dateOfBirth = null;
+      if (formData.year && formData.month && formData.date) {
+        // Format as dd-mm-yyyy as requested
+        const d = formData.date.toString().padStart(2, "0");
+        const m = formData.month.toString().padStart(2, "0");
+        const y = formData.year;
+        dateOfBirth = `${d}-${m}-${y}`;
+      }
 
-    // Simulate API call delay
-    setTimeout(() => {
+      const payload = {
+        name: formData.profileName,
+        email: formData.email,
+        password: formData.password,
+        gender: formData.gender,
+        dateOfBirth: dateOfBirth,
+      };
+
+      const response = await api.post("/tribute", payload);
+      console.log("Signup successful:", response.data);
+
+      router.push("/tribute/profile");
+    } catch (err: any) {
+      console.error("Signup failed", err);
+      setError(err.response?.data?.message || err.message || "Signup failed");
+    } finally {
       setLoading(false);
-      // For now, just show a message that registration is not implemented yet
-      setError("Registration functionality will be implemented in the backend integration phase");
-    }, 1000);
+    }
   };
 
   const months = [

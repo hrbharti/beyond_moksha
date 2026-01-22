@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import TributeNavbar from "../../../ComponentPages/TributeNavbar";
+import api from "@/lib/api/api";
 import HeroSection from "../../../ComponentPages/Components/MemorialHero";
 import Memorial from "../../../ComponentPages/Components/Memorial";
 import TimelineSection from "../../../ComponentPages/TimelineSection";
@@ -38,36 +39,13 @@ export default function PublicTributePage({
   useEffect(() => {
     const fetchTribute = async () => {
       try {
-        // TODO: Implement tribute fetch API call
-        console.log("Fetching tribute with ID:", id);
-
-        // Simulate API call delay with mock data
-        setTimeout(() => {
-          const mockTribute = {
-            id: id,
-            name: "John Doe",
-            email: "john@example.com",
-            gender: "Male",
-            dateOfBirth: "15-05-1985",
-            bio: "A loving tribute to remember and honor loved ones.",
-            profileImageUrl: "/images/jackson.png",
-            bannerUrl: "/images/banner1.png",
-            isPublic: true,
-            familyMembers: [
-              {
-                title: "Immediate Family",
-                members: [
-                  { name: "Jane Doe", relationship: "Wife", imageUrl: "/images/jackson.png" }
-                ]
-              }
-            ]
-          };
-          setTribute(mockTribute);
-          setLoading(false);
-        }, 1000);
+        const response = await api.get(`/tribute/${id}`);
+        setTribute(response.data);
       } catch (err: any) {
-        console.error("Failed to fetch tribute", err);
-        setError(true);
+        if (err.response && err.response.status === 404) {
+          setError(true);
+        }
+      } finally {
         setLoading(false);
       }
     };

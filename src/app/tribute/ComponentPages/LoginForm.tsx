@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/lib/api/api";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -26,15 +28,16 @@ export default function LoginForm() {
     setError("");
     setLoading(true);
 
-    // TODO: Implement login API call
-    console.log("Login form submitted with data:", formData);
-
-    // Simulate API call delay
-    setTimeout(() => {
+    try {
+      await api.post("/tribute/login", formData);
+      toast.success("Login successful");
+      router.push("/tribute/profile");
+    } catch (err: any) {
+      console.error("Login failed", err);
+      setError(err.response?.data?.message || err.message || "Login failed");
+    } finally {
       setLoading(false);
-      // For now, just show a message that login is not implemented yet
-      setError("Login functionality will be implemented in the backend integration phase");
-    }, 1000);
+    }
   };
 
   return (
