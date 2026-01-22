@@ -12,15 +12,7 @@ export const Section = ({ heading, subHeading, content }: SectionProps) => {
       <div className="flex flex-col h-auto">
         {/* Heading area: responsive height and text sizes */}
         <div className="flex flex-col items-center justify-end gap-5 p-3 h-[10vh] sm:h-24">
-          <h2
-            className="
-              text-2xl sm:text-3xl md:text-4xl 
-              tracking-wider 
-              bg-gradient-to-t from-[#1F3A52] to-[#4682B8]
-              bg-clip-text text-transparent 
-              font-lora font-normal
-            "
-          >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-t from-[#1F3A52] to-[#4682B8] bg-clip-text text-transparent font-lora font-normal pb-2">
             {heading}
           </h2>
         </div>

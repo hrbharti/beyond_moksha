@@ -31,7 +31,7 @@ const FurryFriendsSection: React.FC = () => {
   return (
     <section className="flex flex-col items-center justify-center py-16 sm:py-20 lg:py-28">
       {/* Heading */}
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 mb-12 text-center">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 pb-5 text-center">
         Celebrating Our Furry Friends
       </h2>
 

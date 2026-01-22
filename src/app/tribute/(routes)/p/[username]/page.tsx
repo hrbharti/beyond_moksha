@@ -1,0 +1,120 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import TributeNavbar from "../../../ComponentPages/TributeNavbar";
+import api from "@/lib/api/api";
+import HeroSection from "../../../ComponentPages/Components/MemorialHero";
+import Memorial from "../../../ComponentPages/Components/Memorial";
+import TimelineSection from "../../../ComponentPages/TimelineSection";
+import Gallery from "../../../ComponentPages/Gallery";
+import MemoryWall from "../../../ComponentPages/MemoryWall";
+import EventsSection from "../../../ComponentPages/EventSection";
+import FamilyTree from "../../../ComponentPages/FamilyTree";
+
+interface Tribute {
+  id: string;
+  name: string;
+  email: string;
+  gender: string;
+  dateOfBirth: string;
+  dateOfDeath?: string;
+  location?: string;
+  bio?: string;
+  profileImageUrl?: string;
+  bannerUrl?: string;
+  isPublic: boolean;
+  familyMembers?: any;
+}
+
+export default function PublicTributePage({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
+  const { username } = React.use(params);
+
+  const [tribute, setTribute] = useState<Tribute | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchTribute = async () => {
+      try {
+        const response = await api.get(`/tribute/${username}`);
+        setTribute(response.data);
+      } catch (err: any) {
+        if (err.response && err.response.status === 404) {
+          setError(true);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (username) {
+      fetchTribute();
+    }
+  }, [username]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <TributeNavbar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !tribute) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <TributeNavbar />
+        <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
+          <h1 className="text-6xl font-bold text-gray-300 mb-4">404</h1>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-2">
+            Tribute Not Found
+          </h2>
+          <p className="text-gray-500 max-w-md">
+            We couldn't find a public tribute for "{username}". It might be private
+            or doesn't exist.
+          </p>
+          <a
+            href="/"
+            className="mt-8 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
+          >
+            Return Home
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 font-sans">
+      <TributeNavbar />
+
+      <HeroSection tribute={tribute} />
+
+      <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
+        <Memorial bio={tribute.bio} />
+
+        <TimelineSection items={[]} />
+        <Gallery images={[]} />
+        <MemoryWall memories={[]} name={tribute.name} />
+        <FamilyTree
+          centralPerson={{
+            name: tribute.name,
+            imageUrl: tribute.profileImageUrl,
+          }}
+          groups={
+            Array.isArray(tribute.familyMembers)
+              ? tribute.familyMembers
+              : [{ title: "Family", members: [] }]
+          }
+        />
+        <EventsSection events={[]} name={tribute.name} />
+      </div>
+    </div>
+  );
+}

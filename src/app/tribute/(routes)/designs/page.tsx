@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import TributeNavbar from "../ComponentPages/TributeNavbar";
-import Footer from "@/app/components/Footer";
-import DesignCard from "../ComponentPages/Components/DesignCard";
-import FurryFriendCard from "../ComponentPages/Components/FurryFriendCard";
+import { useSearchParams } from "next/navigation";
+import TributeNavbar from "../../ComponentPages/TributeNavbar";
+import Footer from "../../../components/Footer";
+import DesignCard from "../../ComponentPages/Components/DesignCard";
+import FurryFriendCard from "../../ComponentPages/Components/FurryFriendCard";
 import design1 from "@public/images/banner1.png";
 import design2 from "@public/images/banner2.jpg";
 import design3 from "@public/images/banner3.jpg";
 
 function DesignsContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [tributeType, setTributeType] = useState<"Human" | "Pet">("Human");
   const [contentFilter, setContentFilter] = useState("Popular");
