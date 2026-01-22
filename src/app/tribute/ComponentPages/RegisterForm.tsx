@@ -5,32 +5,93 @@ import api from "../../../lib/api/api";
 
 export default function RegisterForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    profileName: "",
+  const [step, setStep] = useState(1);
+  
+  // Step 1: Memorial Details
+  const [memorialData, setMemorialData] = useState({
+    memorialBy: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    dobDay: "",
+    dobMonth: "",
+    dobYear: "",
+    dopDay: "",
+    dopMonth: "",
+    dopYear: "",
+  });
+
+  // Step 2: User Details
+  const [userData, setUserData] = useState({
+    fullName: "",
     email: "",
+    phone: "",
     password: "",
-    gender: "",
-    month: "",
-    date: "",
-    year: "",
-    shareData: false,
+    confirmPassword: "",
+    username: "",
+    termsAccepted: false,
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const years = Array.from(
+    { length: 100 },
+    (_, i) => new Date().getFullYear() - i
+  );
+
+  const handleMemorialChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setMemorialData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleUserChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     const type = e.target.type;
     const checked = (e.target as HTMLInputElement).checked;
 
-    setFormData((prev) => ({
+    let processedValue = value;
+    if (name === "username") {
+      processedValue = value.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+    }
+
+    setUserData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : processedValue,
     }));
+  };
+
+  const handleStep1Next = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    // Validate Step 1
+    if (!memorialData.firstName || !memorialData.lastName) {
+      setError("First name and last name are required");
+      return;
+    }
+    if (!memorialData.dobDay || !memorialData.dobMonth || !memorialData.dobYear) {
+      setError("Date of birth is required");
+      return;
+    }
+    if (!memorialData.dopDay || !memorialData.dopMonth || !memorialData.dopYear) {
+      setError("Date of passing is required");
+      return;
+    }
+
+    setStep(2);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,337 +99,431 @@ export default function RegisterForm() {
     setError("");
     setLoading(true);
 
+    // Validate Step 2
+    if (!userData.fullName || !userData.email || !userData.password) {
+      setError("Full name, email, and password are required");
+      setLoading(false);
+      return;
+    }
+    if (userData.password !== userData.confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    if (!userData.termsAccepted) {
+      setError("Please accept the Terms of Use");
+      setLoading(false);
+      return;
+    }
+
     try {
-      let dateOfBirth = null;
-      if (formData.year && formData.month && formData.date) {
-        // Format as dd-mm-yyyy as requested
-        const d = formData.date.toString().padStart(2, "0");
-        const m = formData.month.toString().padStart(2, "0");
-        const y = formData.year;
-        dateOfBirth = `${d}-${m}-${y}`;
-      }
+      // Format dates
+      const dateOfBirth = `${memorialData.dobDay.padStart(2, "0")}-${memorialData.dobMonth.padStart(2, "0")}-${memorialData.dobYear}`;
+      const dateOfDeath = `${memorialData.dopDay.padStart(2, "0")}-${memorialData.dopMonth.padStart(2, "0")}-${memorialData.dopYear}`;
+
+      // Combine first, middle, last name
+      const tributeName = [memorialData.firstName, memorialData.middleName, memorialData.lastName]
+        .filter(Boolean)
+        .join(" ");
 
       const payload = {
-        name: formData.profileName,
-        email: formData.email,
-        password: formData.password,
-        gender: formData.gender,
-        dateOfBirth: dateOfBirth,
+        // User data
+        user: {
+          name: userData.fullName,
+          email: userData.email,
+          password: userData.password,
+          phone: userData.phone || null,
+        },
+        // Tribute data
+        tribute: {
+          name: tributeName,
+          firstName: memorialData.firstName,
+          middleName: memorialData.middleName || null,
+          lastName: memorialData.lastName,
+          email: userData.email,
+          password: userData.password,
+          username: userData.username || null,
+          memorialBy: memorialData.memorialBy || null,
+          dateOfBirth,
+          dateOfDeath,
+        },
       };
 
-      const response = await api.post("/tribute", payload);
-      console.log("Signup successful:", response.data);
+      const response = await api.post("/tribute/register", payload);
+      console.log("Registration successful:", response.data);
 
       router.push("/tribute/profile");
     } catch (err: any) {
-      console.error("Signup failed", err);
-      setError(err.response?.data?.message || err.message || "Signup failed");
+      console.error("Registration failed", err);
+      setError(err.response?.data?.message || err.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const years = Array.from(
-    { length: 100 },
-    (_, i) => new Date().getFullYear() - i,
-  );
-
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
-            Sign up for free to start live-streaming
-          </h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8 font-sans">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl border border-[#D4A043]/20 p-6 md:p-12">
+        {/* Progress Indicator */}
+        <div className="mb-8">
+          <div className="flex items-center justify-center gap-4">
+            <div className={`flex items-center ${step >= 1 ? "text-[#1F3A4B]" : "text-gray-400"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}>
+                {step > 1 ? "✓" : "1"}
+              </div>
+              <span className="ml-2 text-sm font-medium">Memorial Details</span>
+            </div>
+            <div className={`w-16 h-0.5 ${step >= 2 ? "bg-[#1F3A4B]" : "bg-gray-200"}`} />
+            <div className={`flex items-center ${step >= 2 ? "text-[#1F3A4B]" : "text-gray-400"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}>
+                2
+              </div>
+              <span className="ml-2 text-sm font-medium">Your Details</span>
+            </div>
+          </div>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg text-center">
+          <div className="mb-6 p-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl text-center">
             {error}
           </div>
         )}
 
-        {/* Social Login Buttons */}
-        <div className="space-y-3 mb-6">
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-full py-2.5 sm:py-3 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
-            <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-            Sign up with Facebook
-          </button>
+        {/* Step 1: Memorial Details */}
+        {step === 1 && (
+          <form onSubmit={handleStep1Next} className="space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1F3A4B] mb-8 text-center">
+              Memorial Details
+            </h2>
 
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-full py-2.5 sm:py-3 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-              />
-            </svg>
-            Sign up with Google
-          </button>
-
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-full py-2.5 sm:py-3 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
-            <svg className="w-5 h-5" fill="#1DA1F2" viewBox="0 0 24 24">
-              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7a10.6 10.6 0 01-9-5.5z" />
-            </svg>
-            Sign up with Twitter
-          </button>
-        </div>
-
-        {/* Divider */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex-1 border-t border-gray-300"></div>
-          <span className="text-gray-500 text-sm font-medium">OR</span>
-          <div className="flex-1 border-t border-gray-300"></div>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Signup with email address */}
-          <p className="text-center text-sm text-gray-600 font-medium mb-4">
-            Sign up with your email address
-          </p>
-
-          {/* Profile Name */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
-              Profile name
-            </label>
-            <input
-              type="text"
-              name="profileName"
-              value={formData.profileName}
-              onChange={handleInputChange}
-              placeholder="Enter your profile name"
-              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email address"
-              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
-              Password
-            </label>
-            <div className="relative">
+            {/* Memorial By */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Memorial By (Optional)
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Enter your password"
-                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
-                required
+                type="text"
+                name="memorialBy"
+                value={memorialData.memorialBy}
+                onChange={handleMemorialChange}
+                placeholder="Enter name (e.g., 'John Smith' or 'The Smith Family')"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs font-medium hover:text-gray-700"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
+              <p className="text-xs text-gray-500 mt-1.5">
+                Who is creating this memorial? (e.g., family member name or family name)
+              </p>
             </div>
-            <p className="text-xs text-gray-600 mt-1">
-              Use 8 or more characters with a mix of letters, numbers & symbols
-            </p>
-          </div>
 
-          {/* Gender */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-              What&apos;s your gender?{" "}
-              <span className="text-gray-500">(Optional)</span>
-            </label>
-            <div className="flex gap-4 sm:gap-6">
-              {["Female", "Male", "Non-binary"].map((option) => (
-                <label
-                  key={option}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    name="gender"
-                    value={option}
-                    checked={formData.gender === option}
-                    onChange={handleInputChange}
-                    className="w-4 h-4"
-                  />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    {option}
-                  </span>
+            {/* Name Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  First Name
                 </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Date of Birth */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-              What&apos;s your date of birth?
-            </label>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              {/* Month */}
-              <select
-                name="month"
-                value={formData.month}
-                onChange={handleInputChange}
-                className="px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                required
-              >
-                <option value="">Month</option>
-                {months.map((month, idx) => (
-                  <option key={idx} value={idx + 1}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-
-              {/* Date */}
-              <select
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                className="px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                required
-              >
-                <option value="">Date</option>
-                {days.map((day) => (
-                  <option key={day} value={day}>
-                    {day}
-                  </option>
-                ))}
-              </select>
-
-              {/* Year */}
-              <select
-                name="year"
-                value={formData.year}
-                onChange={handleInputChange}
-                className="px-2 sm:px-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                required
-              >
-                <option value="">Year</option>
-                {years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Checkbox */}
-          <label className="flex items-start gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              name="shareData"
-              checked={formData.shareData}
-              onChange={handleInputChange}
-              className="w-4 h-4 mt-0.5"
-            />
-            <span className="text-xs sm:text-sm text-gray-700">
-              Share my registration data with our content providers for
-              marketing purposes
-            </span>
-          </label>
-
-          {/* Terms and Privacy */}
-          <p className="text-xs text-gray-600 text-center">
-            By creating an account, you agree to the{" "}
-            <a href="#" className="text-blue-600 hover:underline">
-              Terms of use
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-blue-600 hover:underline">
-              Privacy Policy
-            </a>
-            .
-          </p>
-
-          {/* reCAPTCHA */}
-          <div className="border border-gray-300 rounded-lg p-3 bg-white">
-            <div className="flex items-center gap-2">
-              <input type="checkbox" className="w-5 h-5" />
-              <span className="text-xs sm:text-sm text-gray-700">
-                I&apos;m not a robot
-              </span>
-              <div className="ml-auto flex gap-1">
-                <img
-                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40'%3E%3Ctext x='5' y='25' font-size='10' fill='%23999'%3EreCAPTCHA%3C/text%3E%3C/svg%3E"
-                  alt="reCAPTCHA"
-                  className="h-6 w-auto"
+                <input
+                  type="text"
+                  name="firstName"
+                  value={memorialData.firstName}
+                  onChange={handleMemorialChange}
+                  placeholder="First name"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  Middle Name <span className="text-gray-400 font-normal normal-case">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  name="middleName"
+                  value={memorialData.middleName}
+                  onChange={handleMemorialChange}
+                  placeholder="Middle name"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={memorialData.lastName}
+                  onChange={handleMemorialChange}
+                  placeholder="Last name"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                  required
                 />
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-1">Privacy - Terms</p>
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gray-400 hover:bg-gray-500 disabled:opacity-50 text-white font-semibold py-2.5 sm:py-3 rounded-full transition-colors text-sm sm:text-base"
-          >
-            {loading ? "Signing up..." : "Sign up"}
-          </button>
+            {/* Date of Birth */}
+            <div>
+              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                Date of Birth
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                <select
+                  name="dobDay"
+                  value={memorialData.dobDay}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Day</option>
+                  {days.map((day) => (
+                    <option key={day} value={day}>
+                      {day}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="dobMonth"
+                  value={memorialData.dobMonth}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Month</option>
+                  {months.map((month, idx) => (
+                    <option key={idx} value={idx + 1}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="dobYear"
+                  value={memorialData.dobYear}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Year</option>
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-          {/* Login Link */}
-          <p className="text-center text-xs sm:text-sm text-gray-700">
-            Already have an account?{" "}
-            <a
-              href="/tribute/login"
-              className="text-blue-600 hover:underline font-medium"
+            {/* Date of Passing */}
+            <div>
+              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                Date of Passing
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                <select
+                  name="dopDay"
+                  value={memorialData.dopDay}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Day</option>
+                  {days.map((day) => (
+                    <option key={day} value={day}>
+                      {day}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="dopMonth"
+                  value={memorialData.dopMonth}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Month</option>
+                  {months.map((month, idx) => (
+                    <option key={idx} value={idx + 1}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="dopYear"
+                  value={memorialData.dopYear}
+                  onChange={handleMemorialChange}
+                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  required
+                >
+                  <option value="">Year</option>
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#D4A043] hover:bg-[#C18E33] text-white font-bold py-4 rounded-xl transition-all shadow-md hover:shadow-lg mt-8 text-lg"
             >
-              Log in
-            </a>
-          </p>
-        </form>
+              Next: Your Details
+            </button>
+          </form>
+        )}
+
+        {/* Step 2: Your Details */}
+        {step === 2 && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1F3A4B] mb-8 text-center">
+              Your Details
+            </h2>
+
+            {/* Full Name */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={userData.fullName}
+                onChange={handleUserChange}
+                placeholder="Full Name"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Email
+              </label>
+              <div className="flex gap-3">
+                <input
+                  type="email"
+                  name="email"
+                  value={userData.email}
+                  onChange={handleUserChange}
+                  placeholder="Email"
+                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  className="px-6 py-3 bg-[#1F3A4B] text-white rounded-xl hover:bg-[#162936] transition-all text-sm font-medium shadow-sm"
+                >
+                  Verify
+                </button>
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Phone
+              </label>
+              <div className="flex gap-3">
+                <div className="flex items-center px-4 border border-gray-200 rounded-xl bg-gray-50 text-[#1F3A4B]">
+                  <span className="text-sm font-medium">🇮🇳 +91</span>
+                </div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={userData.phone}
+                  onChange={handleUserChange}
+                  placeholder="Phone number"
+                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Custom Username */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Custom Address <span className="text-gray-400 font-normal">(Optional)</span>
+              </label>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-[#1F3A4B]/70 font-medium">beyondmoksha.com/tribute/p/</span>
+                <input
+                  type="text"
+                  name="username"
+                  value={userData.username}
+                  onChange={handleUserChange}
+                  placeholder="your-username"
+                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] lowercase transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={userData.password}
+                onChange={handleUserChange}
+                placeholder="password"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                required
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
+                Confirm Password
+              </label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={userData.confirmPassword}
+                onChange={handleUserChange}
+                placeholder="Confirm Password"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                required
+              />
+            </div>
+
+            {/* Terms */}
+            <label className="flex items-start gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
+              <input
+                type="checkbox"
+                name="termsAccepted"
+                checked={userData.termsAccepted}
+                onChange={handleUserChange}
+                className="w-5 h-5 mt-0.5 text-[#D4A043] border-gray-300 rounded focus:ring-[#D4A043]"
+                required
+              />
+              <span className="text-sm text-gray-600">
+                I acknowledge and agree to abide to{" "}
+                <a href="#" className="text-[#D4A043] hover:text-[#B38530] underline font-medium">
+                  Terms Of Use
+                </a>
+              </span>
+            </label>
+
+            <div className="flex gap-4 pt-4">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-[#1F3A4B] font-bold py-4 rounded-xl transition-all"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-[#D4A043] hover:bg-[#C18E33] disabled:opacity-70 text-white font-bold py-4 rounded-xl transition-all shadow-md hover:shadow-lg"
+              >
+                {loading ? "Creating Account..." : "Create Account"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

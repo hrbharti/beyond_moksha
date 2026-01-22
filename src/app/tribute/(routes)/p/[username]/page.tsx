@@ -28,9 +28,9 @@ interface Tribute {
 export default function PublicTributePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ username: string }>;
 }) {
-  const { id } = React.use(params);
+  const { username } = React.use(params);
 
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ export default function PublicTributePage({
   useEffect(() => {
     const fetchTribute = async () => {
       try {
-        const response = await api.get(`/tribute/${id}`);
+        const response = await api.get(`/tribute/${username}`);
         setTribute(response.data);
       } catch (err: any) {
         if (err.response && err.response.status === 404) {
@@ -50,10 +50,10 @@ export default function PublicTributePage({
       }
     };
 
-    if (id) {
+    if (username) {
       fetchTribute();
     }
-  }, [id]);
+  }, [username]);
 
   if (loading) {
     return (
@@ -76,7 +76,7 @@ export default function PublicTributePage({
             Tribute Not Found
           </h2>
           <p className="text-gray-500 max-w-md">
-            We couldn't find a public tribute for ID "{id}". It might be private
+            We couldn't find a public tribute for "{username}". It might be private
             or doesn't exist.
           </p>
           <a

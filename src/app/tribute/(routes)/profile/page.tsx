@@ -10,12 +10,14 @@ import Gallery from "../../ComponentPages/Gallery";
 import MemoryWall from "../../ComponentPages/MemoryWall";
 import EventsSection from "../../ComponentPages/EventSection";
 import FamilyTree from "../../ComponentPages/FamilyTree";
-import { Edit2, Save, X, Eye } from "lucide-react";
+import { Edit2, Save, X, Eye, LogOut } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface Tribute {
   id: string;
   name: string;
+  username?: string;
   email: string;
   gender: string;
   dateOfBirth: string;
@@ -67,8 +69,7 @@ export default function TributeProfile() {
       setOriginalTribute(tribute);
       setIsEditing(false);
     } catch (error) {
-      console.error("Failed to save profile", error);
-      // Optional: Show error toast
+      toast.error("Failed to save profile");
     } finally {
       setIsSaving(false);
     }
@@ -77,6 +78,17 @@ export default function TributeProfile() {
   const handleCancel = () => {
     setTribute(originalTribute);
     setIsEditing(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/tribute/logout");
+      toast.success("Logged out successfully");
+      router.push("/tribute/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Failed to logout");
+    }
   };
 
   if (loading)
@@ -93,13 +105,21 @@ export default function TributeProfile() {
 
       <div className="absolute top-24 right-5 md:right-10 z-50 flex gap-2">
         {!isEditing && (
-          <Link
-            href={`/tribute/p/${tribute.id}`}
-            target="_blank"
-            className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-          >
-            <Eye size={16} /> Public Profile
-          </Link>
+          <>
+            <Link
+              href={`/tribute/p/${tribute.username || tribute.id}`}
+              target="_blank"
+              className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+            >
+              <Eye size={16} /> Public Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-red-50/80 backdrop-blur-sm text-red-600 border border-red-200 rounded-full shadow-sm hover:bg-red-100 transition"
+            >
+              <LogOut size={16} /> Logout
+            </button>
+          </>
         )}
 
         {isEditing ? (
