@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 export default function Logo({
   isNav,
   className,
+  routeTo = "/",
 }: {
   isNav?: boolean;
   className?: string;
+  routeTo?: string;
 }) {
   const beyondClassName = isNav
     ? "bg-gradient-to-b from-[#0866FF] to-[#0866FF] bg-clip-text text-transparent"
@@ -18,7 +20,7 @@ export default function Logo({
   return (
     <div
       className="w-[340px] h-[58px] cursor-pointer flex items-center -mt-2.5"
-      onClick={() => router.push("/")}
+      onClick={() => router.push(routeTo)}
     >
       <div className="h-full w-17">
         <Image

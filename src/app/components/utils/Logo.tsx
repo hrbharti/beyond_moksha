@@ -3,8 +3,9 @@ import { useRouter } from "next/navigation";
 
 interface NavProps {
   isNav: boolean;
+  routeTo?: string;
 }
-export default function Logo({ isNav }: NavProps) {
+export default function Logo({ isNav, routeTo = "/" }: NavProps) {
   const beyondClassName = isNav
     ? "bg-gradient-to-b from-[#4682B8] to-[#1F3A52] bg-clip-text text-transparent"
     : "bg-[linear-gradient(90deg,#68553D_0%,#000_32.21%)] bg-clip-text text-transparent";
@@ -14,7 +15,7 @@ export default function Logo({ isNav }: NavProps) {
   return (
     <div
       className="w-[340px] h-[58px] cursor-pointer flex items-center -mt-2.5"
-      onClick={() => router.push("/")}
+      onClick={() => router.push(routeTo)}
     >
       <div className="h-full w-17">
         <Image

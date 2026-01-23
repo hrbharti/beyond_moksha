@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
       <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Logo isNav={true} />
+          <Logo isNav={true} routeTo="/tribute"/>
         </div>
 
         {/* Desktop Menu */}
