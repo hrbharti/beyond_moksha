@@ -5,7 +5,7 @@ import { MdArrowRightAlt } from "react-icons/md";
 interface ServicesCardProps {
   heading: string;
   subHeading: string;
-  icon: StaticImageData;
+  icon: any;
   route?: string;
   link: string;
 }
@@ -20,11 +20,11 @@ export const ServicesCard = ({
   return (
     <div className="flex flex-col items-center justify-center text-center bg-white rounded-lg shadow-md border border-gray-300 p-8 max-w-md w-full hover:shadow-xl transition-all duration-300">
       {/* Icon */}
-      <div className="h-16 w-16 mb-4">
+      <div className="h-20 w-auto mb-6 flex items-center justify-center">
         <Image
           src={icon}
           alt={heading}
-          className="object-contain w-full h-full"
+          className="h-full w-auto object-contain"
         />
       </div>
 

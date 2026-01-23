@@ -24,7 +24,7 @@ const RecentMemorials = () => {
               key={index}
               className="flex flex-col items-center flex-shrink-0 w-36 sm:w-44"
             >
-              <div className="w-36 h-36 sm:w-44 sm:h-44 relative overflow-hidden bg-gray-200 shadow-md border-4 border-[#D4A043]/20 rounded-full">
+              <div className="w-36 h-36 sm:w-44 sm:h-44 relative overflow-hidden bg-gray-200 shadow-md border-4 border-[#D4A043]/20 rounded-2xl">
                 <Image
                   src={item.image}
                   alt={item.name}

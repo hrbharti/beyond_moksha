@@ -1,6 +1,6 @@
 import { ServicesCard } from "./utils/ServicesCard";
-import nama from "@public/images/nama.png";
-import legacy from "@public/images/legacy.png";
+import tributeIcon from "@public/svgs/tribute.svg";
+import legacyVaultIcon from "@public/svgs/legacy-vault.svg";
 
 export const Services = () => {
   return (
@@ -8,15 +8,15 @@ export const Services = () => {
       <ServicesCard
         heading="Tribute"
         subHeading="A special way to celebrate the life, stories, and memories of the person you love."
-        icon={nama}
-        route="\tribute"
+        icon={tributeIcon}
+        route="/tribute"
         link="Create Memorial"
       />
 
       <ServicesCard
         heading="Legacy Vault"
         subHeading="Save memories, photos, videos, and documents safely for your family."
-        icon={legacy}
+        icon={legacyVaultIcon}
         route="/legacy-vault"
         link="Create Vault"
       />

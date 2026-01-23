@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 interface Pooja {
   title: string;
@@ -45,11 +46,52 @@ const poojas: Pooja[] = [
     discount: "29%",
     img: "/images/trendingpooja1.jpg",
   },
+  {
+    title: "Ganesh Pooja",
+    category: "Regular Pooja",
+    price: "₹4501/-",
+    oldPrice: "₹6001/-",
+    discount: "25%",
+    img: "/images/ganeshpooja.png",
+  },
+  {
+    title: "Laxmi Pooja",
+    category: "Regular Pooja",
+    price: "₹5101/-",
+    oldPrice: "₹7501/-",
+    discount: "32%",
+    img: "/images/laxmipooja.png",
+  },
+  {
+    title: "Shanti Shanti",
+    category: "Special Pooja",
+    price: "₹11001/-",
+    oldPrice: "₹15001/-",
+    discount: "26%",
+    img: "/images/shanti.png",
+  },
 ];
 
 export default function TrendingPoojas() {
+  const [startIndex, setStartIndex] = useState(0);
+
+  const nextSlide = () => {
+    if (startIndex < poojas.length - 4) {
+      setStartIndex((prev) => prev + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (startIndex > 0) {
+      setStartIndex((prev) => prev - 1);
+    }
+  };
+
+  const itemWidth = 240;
+  const gap = 32;
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center">
         {/* Title */}
         <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
@@ -58,66 +100,118 @@ export default function TrendingPoojas() {
 
         {/* Decorative Divider */}
         <div className="flex justify-center mt-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="664"
-            height="50"
-            viewBox="0 0 664 50"
-            fill="none"
-          >
-            <path
-              d="M591.275 35.3108C600.679 41.9905 612.257 46.5888 624.228 47.3922C630.194 47.7285 636.264 47.7443 642.117 46.0269C647.951 44.4955 653.595 41.579 657.663 36.9332C661.703 32.3429 663.978 26.4902 663.998 20.6217C664.082 14.7848 661.695 8.85289 657.218 5.16082C653.17 1.78532 648.183 0.0639924 643.245 0.000677094C638.298 -0.0428522 633.359 2.01484 630.114 5.4774C626.9 8.89643 625.115 13.4749 625.709 17.9664C625.974 22.5725 628.838 26.2844 632.048 28.4767C635.361 30.673 639.662 31.1636 642.851 30.0556C646.021 29.0188 648.063 26.9967 649.202 25.121C651.385 20.9976 649.704 18.3146 647.85 18.4966C645.776 18.5639 644.709 19.6442 643.233 20.6217C642.43 21.1084 641.487 21.702 640.368 21.9829C639.317 22.2441 638.109 22.2283 636.553 21.4804C635.137 20.6375 633.444 19.1179 633.147 16.985C632.445 14.8797 633.147 11.9316 634.876 9.60084C636.613 7.28983 639.546 5.50114 643.212 5.2558C646.823 5.07772 650.839 6.24906 653.832 8.76189C660.552 14.0289 660.664 26.2092 654.02 33.5855C647.505 41.1635 635.654 43.6922 624.714 42.8532C613.569 42.2953 602.781 38.3143 593.69 32.2004C592.539 31.405 591.44 30.5384 590.316 29.7034C603.275 29.7034 611.563 29.7034 612.654 29.7034C619.214 29.7034 620.076 25.5325 620.076 25.5325C620.076 25.5325 606.179 25.5325 584.84 25.5325C582.545 23.7083 580.247 21.9117 577.956 20.1309C600.057 20.1309 613.352 20.1309 613.858 20.1309C620.834 20.1309 622.002 17.5706 622.002 17.5706H574.634C572.295 15.8413 569.928 14.1912 567.469 12.7231C558.322 7.14738 547.751 5.38246 538.836 6.51422C529.786 7.42042 522.464 11.0413 516.683 14.0725C514.577 15.2676 512.747 16.4349 511.05 17.5746H152.953C151.256 16.4389 149.427 15.2676 147.321 14.0725C141.54 11.0413 134.218 7.42042 125.167 6.51422C116.257 5.38642 105.682 7.14738 96.5349 12.7231C94.0796 14.1952 91.7086 15.8453 89.3697 17.5706H42.0019C42.0019 17.5706 43.1693 20.1309 50.1459 20.1309C50.6514 20.1309 63.9427 20.1309 86.044 20.1309C83.7532 21.9156 81.4544 23.7122 79.1596 25.5325C57.8246 25.5325 43.9236 25.5325 43.9236 25.5325C43.9236 25.5325 44.7862 29.7034 51.3455 29.7034C52.4367 29.7034 60.7251 29.7034 73.6834 29.7034C72.5601 30.5384 71.4609 31.405 70.3095 32.2004C61.2226 38.3104 50.4308 42.2913 39.2859 42.8532C28.3496 43.6922 16.4986 41.1635 9.97941 33.5855C3.3358 26.2092 3.44812 14.0289 10.168 8.76189C13.1608 6.24906 17.1767 5.07377 20.7873 5.2558C24.4541 5.49719 27.3828 7.28983 29.1239 9.60084C30.853 11.9316 31.5551 14.8797 30.853 16.985C30.5562 19.1179 28.8632 20.6375 27.447 21.4804C25.8904 22.2283 24.6788 22.2441 23.6317 21.9829C22.5124 21.702 21.5696 21.1084 20.7672 20.6217C19.2909 19.6442 18.2237 18.56 16.1496 18.4966C14.2961 18.3146 12.6192 21.0015 14.7976 25.121C15.937 26.9967 17.975 29.0188 21.1484 30.0556C24.3418 31.1636 28.6385 30.673 31.9523 28.4767C35.1618 26.2844 38.0221 22.5725 38.2909 17.9664C38.8847 13.4749 37.0995 8.89643 33.886 5.4774C30.6404 2.01484 25.7018 -0.0428522 20.7552 0.000677094C15.8207 0.0639924 10.8299 1.78532 6.78198 5.16082C2.30878 8.85289 -0.0782782 14.7848 0.00195863 20.6217C0.0220178 26.4902 2.29671 32.3389 6.33664 36.9332C10.4046 41.579 16.0533 44.4994 21.8825 46.0269C27.7358 47.7404 33.8057 47.7285 39.7754 47.3922C51.7467 46.5928 63.3249 41.9945 72.7287 35.3108C75.216 33.4944 77.583 31.6069 79.8898 29.7114C144.93 29.7114 298.86 29.7114 309.066 29.7114C316.829 29.7114 324.817 36.957 329.591 41.9668C328.074 43.1223 326.401 43.9573 324.58 44.0087C321.571 44.0918 322.779 41.8837 318.574 38.0611C314.37 34.2424 310.631 38.6428 304.304 37.4714C300.545 36.775 294.684 39.6676 294.379 48.3498C297.584 44.9466 302.435 43.9573 306.86 46.8896C311.281 49.8258 316.689 50.3561 321.812 49.81C324.925 49.4776 328.179 48.6782 330.461 46.2921C330.794 45.9438 331.332 45.3344 332.006 44.5825C332.68 45.3383 333.218 45.9438 333.551 46.2921C335.833 48.6743 339.087 49.4776 342.2 49.81C347.323 50.3561 352.727 49.8258 357.152 46.8896C361.573 43.9573 366.423 44.9466 369.633 48.3498C369.328 39.6676 363.467 36.775 359.708 37.4714C353.381 38.6428 349.642 34.2424 345.438 38.0611C341.233 41.8798 342.441 44.0918 339.432 44.0087C337.611 43.9573 335.938 43.1223 334.421 41.9668C339.195 36.953 347.183 29.7114 354.946 29.7114C365.152 29.7114 519.086 29.7114 584.122 29.7114C586.425 31.6069 588.788 33.4944 591.275 35.3108ZM517.285 15.2438C523.09 12.5054 530.327 9.26448 538.997 8.70652C547.586 7.94278 557.195 9.83429 565.732 15.2952C566.823 15.9877 567.878 16.8108 568.949 17.5785H513.02C514.344 16.8069 515.756 16.0273 517.285 15.2438ZM98.276 15.2913C106.809 9.83037 116.422 7.93879 125.011 8.70253C133.676 9.26445 140.918 12.5054 146.723 15.2399C148.252 16.0234 149.664 16.8029 150.992 17.5706H95.0585C96.1296 16.8108 97.1807 15.9878 98.276 15.2913ZM91.516 20.1349C108.671 20.1349 130.367 20.1349 155.152 20.1349C156.913 21.2746 158.474 22.343 159.725 23.2255C161.118 24.2266 162.185 24.9944 162.947 25.5405C134.346 25.5405 106.472 25.5405 84.8845 25.5405C87.1071 23.6727 89.3135 21.8563 91.516 20.1349ZM332.335 39.3788C332.231 39.5015 332.11 39.6043 332.006 39.727C331.902 39.6083 331.777 39.5015 331.677 39.3788C329.607 36.9411 321.058 25.5365 302.599 25.5365C293.224 25.5365 226.615 25.5365 163.344 25.5365C163.3 25.4969 163.284 25.4811 163.236 25.4415C162.514 24.836 161.442 23.9378 160.062 22.7823C159.096 22.0106 157.904 21.0965 156.608 20.1349C257.105 20.1349 406.915 20.1349 507.408 20.1349C506.112 21.0965 504.92 22.0106 503.953 22.7823C502.573 23.9378 501.506 24.836 500.78 25.4415C500.732 25.4811 500.716 25.4969 500.672 25.5365C437.401 25.5365 370.792 25.5365 361.417 25.5365C342.95 25.5365 334.401 36.9411 332.335 39.3788ZM501.057 25.5365C501.819 24.9904 502.886 24.2227 504.278 23.2215C505.53 22.343 507.091 21.2746 508.852 20.1309C533.633 20.1309 555.333 20.1309 572.488 20.1309C574.69 21.8523 576.897 23.6687 579.115 25.5325C557.532 25.5365 529.657 25.5365 501.057 25.5365Z"
-              fill="#D2A018"
-            />
-          </svg>
+          <Image
+            src="/svgs/divider.svg"
+            alt="Divider"
+            width={664}
+            height={50}
+            className="w-[664px] h-[50px] object-contain"
+          />
         </div>
 
         {/* Subtitle */}
-        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+        <p className="mt-4 text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Book the most sought-after poojas performed by experienced pandits.
           Same-day booking available for most services.
         </p>
 
-        {/* Card List */}
-        <div className="mt-14 flex flex-wrap justify-center gap-8 relative">
-          {poojas.map((p, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 border border-[#979797] h-[20.5625rem] w-[15rem]"
-            >
-              <div className="w-full h-44 rounded-lg overflow-hidden">
-                <Image
-                  src={p.img}
-                  alt={p.title}
-                  width={300}
-                  height={200}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-
-              <h3 className="text-lg mt-3 font-semibold text-[#1F3A52]">
-                {p.title}
-              </h3>
-              <p className="text-sm text-gray-500">{p.category}</p>
-
-              <div className="mt-3 flex items-center gap-2 justify-center">
-                <span className="text-[17px] font-semibold text-[#1F3A52]">
-                  {p.price}
-                </span>
-                <span className="text-sm line-through text-gray-400">
-                  {p.oldPrice}
-                </span>
-                <span className="text-sm text-red-500 font-medium">
-                  ({p.discount})
-                </span>
-              </div>
-            </div>
-          ))}
-
-          {/* Right Navigate Button */}
-          <button className="w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition absolute right-4 top-2/5 ">
-            <ChevronRight className="h-5 w-5 text-[#BC911B]" />
+        {/* Card List - Carousel */}
+        <div className="mt-14 relative flex items-center justify-center px-4 md:px-12 group">
+          {/* Left Navigate Button (Sidebar) */}
+          <button
+            onClick={prevSlide}
+            disabled={startIndex === 0}
+            className={`w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm shadow-md transition-all duration-300 absolute left-0 z-20 hidden md:flex group/btn ${
+              startIndex === 0
+                ? "opacity-30 cursor-not-allowed"
+                : "hover:bg-[#D29D39] hover:border-[#D29D39] hover:text-white hover:scale-110 active:scale-95 md:opacity-0 md:group-hover:opacity-100 md:-translate-x-2 md:group-hover:translate-x-0"
+            }`}
+          >
+            <ChevronLeft
+              className={`h-6 w-6 transition-colors ${startIndex === 0 ? "text-gray-400" : "text-[#BC911B] group-hover/btn:text-white"}`}
+            />
           </button>
+
+          {/* Carousel Track Container */}
+          <div className="w-full overflow-hidden py-6">
+            <div
+              className="flex gap-8 transition-transform duration-500 ease-in-out"
+              style={{
+                transform: `translateX(-${startIndex * (itemWidth + gap)}px)`,
+              }}
+            >
+              {poojas.map((p, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 p-4 border border-[#979797] h-[20.5625rem] w-[15rem] flex-shrink-0"
+                >
+                  <div className="w-full h-44 rounded-lg overflow-hidden">
+                    <Image
+                      src={p.img}
+                      alt={p.title}
+                      width={300}
+                      height={200}
+                      className="object-cover w-full h-full hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+
+                  <h3 className="text-lg mt-3 font-semibold text-[#1F3A52]">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm text-gray-500">{p.category}</p>
+
+                  <div className="mt-3 flex items-center gap-2 justify-center">
+                    <span className="text-[17px] font-semibold text-[#1F3A52]">
+                      {p.price}
+                    </span>
+                    <span className="text-sm line-through text-gray-400">
+                      {p.oldPrice}
+                    </span>
+                    <span className="text-sm text-red-500 font-medium">
+                      ({p.discount})
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Navigate Button (Sidebar) */}
+          <button
+            onClick={nextSlide}
+            disabled={startIndex >= poojas.length - 4}
+            className={`w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm shadow-md transition-all duration-300 absolute right-0 z-20 hidden md:flex group/btn ${
+              startIndex >= poojas.length - 4
+                ? "opacity-30 cursor-not-allowed"
+                : "hover:bg-[#D29D39] hover:border-[#D29D39] hover:text-white hover:scale-110 active:scale-95 md:opacity-0 md:group-hover:opacity-100 md:translate-x-2 md:group-hover:translate-x-0"
+            }`}
+          >
+            <ChevronRight
+              className={`h-6 w-6 transition-colors ${startIndex >= poojas.length - 4 ? "text-gray-400" : "text-[#BC911B] group-hover/btn:text-white"}`}
+            />
+          </button>
+
+          {/* Mobile Navigation Controls */}
+          <div className="flex justify-center gap-4 mt-8 md:hidden w-full">
+            <button
+              onClick={prevSlide}
+              disabled={startIndex === 0}
+              className={`w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center bg-white transition shadow-sm active:scale-90 ${startIndex === 0 ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-100"}`}
+            >
+              <ChevronLeft
+                className={`h-5 w-5 ${startIndex === 0 ? "text-gray-400" : "text-[#BC911B]"}`}
+              />
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={startIndex >= poojas.length - 4}
+              className={`w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center bg-white transition shadow-sm active:scale-90 ${startIndex >= poojas.length - 4 ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-100"}`}
+            >
+              <ChevronRight
+                className={`h-5 w-5 ${startIndex >= poojas.length - 4 ? "text-gray-400" : "text-[#BC911B]"}`}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </section>
