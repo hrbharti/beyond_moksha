@@ -13,23 +13,24 @@ const Memorial: React.FC<MemorialProps> = ({
   onBioUpdate,
 }) => {
   return (
-    <section className="w-full max-w-4xl" id="memorial">
-      {/* Heading */}
-      <h1 className="text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950 text-3xl md:text-5xl font-serif mb-8">
+    <section className="w-full max-w-5xl px-4 sm:px-0" id="memorial">
+      <h1 className="text-[#1F3A4B] text-3xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 border-b-2 border-[#D4A043] pb-4 inline-block">
         Memorial
       </h1>
 
       {/* Paragraphs */}
-      <div className="space-y-6 text-base leading-relaxed text-gray-800">
+      <div className="space-y-6 text-base sm:text-lg leading-relaxed text-[#1F3A4B]/80 font-serif italic">
         {isEditing ? (
           <textarea
             value={bio || ""}
             onChange={(e) => onBioUpdate && onBioUpdate(e.target.value)}
-            className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-y text-base"
+            className="w-full h-80 p-4 sm:p-6 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#D4A043] focus:border-transparent outline-none resize-y text-base sm:text-lg"
             placeholder="Write a biography for your loved one..."
           />
         ) : bio ? (
-          <div className="whitespace-pre-line">{bio}</div>
+          <div className="whitespace-pre-line bg-white/50 p-6 sm:p-8 rounded-2xl border-l-4 border-[#D4A043] shadow-sm">
+            {bio}
+          </div>
         ) : (
           <p className="text-gray-500 italic">No biography available.</p>
         )}

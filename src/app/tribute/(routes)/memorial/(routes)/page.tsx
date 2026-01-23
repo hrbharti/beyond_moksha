@@ -11,6 +11,35 @@ import FamilyTree from "@/app/tribute/ComponentPages/FamilyTree";
 import HeroSection from "@/app/tribute/ComponentPages/Components/MemorialHero";
 import { Suspense } from "react";
 import bg from "@public/images/grayishBG.jpg";
+import jackson from "@public/images/jackson.png";
+import banner1 from "@public/images/banner1.png";
+
+interface Tribute {
+  id: string;
+  name: string;
+  dateOfBirth: string;
+  dateOfDeath?: string;
+  location?: string;
+  profileImageUrl?: string;
+  bannerUrl?: string;
+}
+
+const tributeData: Tribute = {
+  id: "1",
+  name: "Mrs. Radha Devi Sharma",
+  dateOfBirth: "March 16, 1973",
+  dateOfDeath: "September 28, 2023",
+  location: "Varanasi, Uttar Pradesh",
+  profileImageUrl: jackson.src,
+  bannerUrl: banner1.src,
+};
+
+const bio = `Mrs. Radha Devi Sharma was a beacon of light, warmth, and grace. Her life was a testament to the power of kindness and the enduring strength of the human spirit. Born with a natural inclination towards helping others, she dedicated her years to nurturing her family and contributing to her community with selfless devotion.
+
+Her home was always a place of refuge and joy, where the aroma of her cooking and the sound of her gentle laughter created a sanctuary for all who entered. Radha Devi possessed a rare ability to listen with her heart, offering wise counsel and unwavering support to those in need.
+
+A lover of nature and the arts, she found beauty in the simplest of things - a blooming flower, a soulful melody, or the quiet serenity of the Ganges at Assi Ghat. Her legacy is one of love, compassion, and the countless lives she touched with her generous spirit. Though she has moved beyond this mortal plane, her memory continues to inspire and guide us, a timeless reminder of a life beautifully lived.`;
+
 
 const timelineData = [
   {
@@ -118,11 +147,11 @@ export default function Page() {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <HeroSection />
+        <HeroSection tribute={tributeData as any} />
       </Suspense>
 
       <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
-        <Memorial />
+        <Memorial bio={bio} />
         <TimelineSection items={timelineData} />
         <Gallery images={galleryImages} />
         <MemoryWall memories={memoriesData} name="Radha Devi Sharma" />
