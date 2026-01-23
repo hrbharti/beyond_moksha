@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
@@ -44,9 +44,10 @@ const services = [
 
 export default function FeaturedPoojaServices() {
   const [startIndex, setStartIndex] = useState(0);
+  const [visibleItems, setVisibleItems] = useState(3);
 
   const nextSlide = () => {
-    if (startIndex < services.length - 3) {
+    if (startIndex < services.length - visibleItems) {
       setStartIndex((prev) => prev + 1);
     }
   };
@@ -57,8 +58,24 @@ export default function FeaturedPoojaServices() {
     }
   };
 
-  const itemWidth = 330;
+  const [itemWidth, setItemWidth] = useState(330);
   const gap = 40; // gap-10 in tailwind is 2.5rem or 40px
+
+  // Adjust item width based on screen size for responsive slider
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setItemWidth(window.innerWidth - 60);
+        setVisibleItems(1);
+      } else {
+        setItemWidth(330);
+        setVisibleItems(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <section className="relative py-20 bg-white overflow-hidden">
@@ -102,7 +119,7 @@ export default function FeaturedPoojaServices() {
         </p>
 
         {/* Cards */}
-        <div className="mt-20 relative flex justify-center items-center group">
+        <div className="mt-20 relative flex flex-col md:flex-row justify-center items-center group">
           {/* Sidebars (Navigate Buttons) */}
           {/* Prev Button */}
           <button
@@ -120,7 +137,7 @@ export default function FeaturedPoojaServices() {
           </button>
 
           {/* Carousel Track Container */}
-          <div className="relative z-10 w-full overflow-hidden px-2 py-4">
+          <div className="relative z-10 w-full overflow-hidden px-2 md:py-4">
             <div
               className="flex gap-10 transition-transform duration-500 ease-in-out"
               style={{
@@ -130,7 +147,8 @@ export default function FeaturedPoojaServices() {
               {services.map((s, i) => (
                 <div
                   key={i}
-                  className="w-[330px] bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-200 p-5 flex-shrink-0"
+                  style={{ width: `${itemWidth}px` }}
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-200 p-5 flex-shrink-0"
                 >
                   <div className="w-full h-48 rounded-xl overflow-hidden">
                     <Image
@@ -161,15 +179,15 @@ export default function FeaturedPoojaServices() {
           {/* Next Button */}
           <button
             onClick={nextSlide}
-            disabled={startIndex >= services.length - 3}
+            disabled={startIndex >= services.length - visibleItems}
             className={`w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm shadow-md transition-all duration-300 absolute right-2 top-1/2 -translate-y-1/2 z-20 hidden md:flex group/btn ${
-              startIndex >= services.length - 3
+              startIndex >= services.length - visibleItems
                 ? "opacity-30 cursor-not-allowed"
                 : "hover:bg-[#D29D39] hover:border-[#D29D39] hover:text-white hover:scale-110 active:scale-95 md:opacity-0 md:group-hover:opacity-100 md:translate-x-2 md:group-hover:translate-x-0"
             }`}
           >
             <ChevronRight
-              className={`h-6 w-6 transition-colors ${startIndex >= services.length - 3 ? "text-gray-400" : "text-[#BC911B] group-hover/btn:text-white"}`}
+              className={`h-6 w-6 transition-colors ${startIndex >= services.length - visibleItems ? "text-gray-400" : "text-[#BC911B] group-hover/btn:text-white"}`}
             />
           </button>
 
@@ -186,11 +204,11 @@ export default function FeaturedPoojaServices() {
             </button>
             <button
               onClick={nextSlide}
-              disabled={startIndex >= services.length - 3}
-              className={`w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center bg-white transition shadow-sm active:scale-90 ${startIndex >= services.length - 3 ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-100"}`}
+              disabled={startIndex >= services.length - visibleItems}
+              className={`w-11 h-11 rounded-full border border-gray-300 flex items-center justify-center bg-white transition shadow-sm active:scale-90 ${startIndex >= services.length - visibleItems ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-100"}`}
             >
               <ChevronRight
-                className={`h-5 w-5 ${startIndex >= services.length - 3 ? "text-gray-400" : "text-[#BC911B]"}`}
+                className={`h-5 w-5 ${startIndex >= services.length - visibleItems ? "text-gray-400" : "text-[#BC911B]"}`}
               />
             </button>
           </div>
