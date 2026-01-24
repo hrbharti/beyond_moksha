@@ -9,7 +9,7 @@ export default function WhyChooseUs() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6 text-center">
         {/* Title */}
-        <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F3A52]">
+        <h2 className="text-3xl sm:text-4xl text-[#1F3A52] font-lora font-normal">
           Why choose <span className="text-[#D29D39]">Beyond Moksha</span>
         </h2>
 

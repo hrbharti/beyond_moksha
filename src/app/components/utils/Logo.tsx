@@ -14,25 +14,25 @@ export default function Logo({ isNav, routeTo = "/" }: NavProps) {
 
   return (
     <div
-      className="w-[340px] h-[58px] cursor-pointer flex items-center -mt-2.5"
+      className="cursor-pointer flex items-center"
       onClick={() => router.push(routeTo)}
     >
-      <div className="h-full w-17">
+      <div className="w-12">
         <Image
           src="/images/bird.png"
           alt="Beyond-moksha image"
-          width={68}
-          height={58}
+          width={50}
+          height={50}
         />
       </div>
-      <div className="h-full ">
-        <div className={`text-4xl mt-3  `}>
+      <div>
+        <div className={`text-2xl mt-3  `}>
           <span className={beyondClassName}>Beyond</span>
           <span className="text-[#BC911B] text-gradient-to-t from-[#BC911B] to-[#DFAA16]">
             Moksha
           </span>
         </div>
-        <div className="text-red-500">सर्वसंस्कारसहायाः</div>
+        <div className="text-red-500 text-xs">सर्वसंस्कारसहायाः</div>
       </div>
     </div>
   );
