@@ -10,7 +10,7 @@ import Gallery from "../../ComponentPages/Gallery";
 import MemoryWall from "../../ComponentPages/MemoryWall";
 import EventsSection from "../../ComponentPages/EventSection";
 import FamilyTree from "../../ComponentPages/FamilyTree";
-import { Edit2, Save, X, Eye, LogOut } from "lucide-react";
+import { Edit2, Save, X, Eye, LogOut, Share2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -91,6 +91,30 @@ export default function TributeProfile() {
     }
   };
 
+  const handleShare = async () => {
+    if (!tribute) return;
+    const shareUrl = `${window.location.origin}/tribute/p/${tribute.username || tribute.id}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Tribute to ${tribute.name}`,
+          text: `Check out the tribute for ${tribute.name}`,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Profile link copied to clipboard!");
+      } catch (error) {
+        toast.error("Failed to copy link");
+      }
+    }
+  };
+
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -106,6 +130,12 @@ export default function TributeProfile() {
       <div className="absolute top-24 right-5 md:right-10 z-50 flex gap-2">
         {!isEditing && (
           <>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+            >
+              <Share2 size={16} /> Share
+            </button>
             <Link
               href={`/tribute/p/${tribute.username || tribute.id}`}
               target="_blank"

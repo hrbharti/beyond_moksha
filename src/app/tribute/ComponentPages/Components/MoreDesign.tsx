@@ -11,7 +11,7 @@ export default function MoreDesign({ theme }: { theme: "human" | "pet" }) {
 
       <Link
         href={`/tribute/designs?theme=${theme}`}
-        className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white font-medium px-8 py-3 rounded-md hover:bg-[#C18E33] transition inline-block"
+        className="mt-4 px-6 py-3 bg-white text-[#D4A043] font-medium text-sm rounded-lg border border-[#D4A043] hover:bg-[#D4A043] hover:text-white transition-colors duration-200 shadow-sm"
       >
         More Designs
       </Link>

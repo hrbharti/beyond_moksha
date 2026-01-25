@@ -68,7 +68,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
           />
           <Link
             href={`/tribute/memorial?theme=${theme}`}
-            className="bg-gradient-to-b from-[#e1a935] to-[#c19232] text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-[#C18E33] transition"
+            className="px-3 py-2 bg-white text-[#D4A043] font-medium text-sm rounded-lg border border-[#D4A043] hover:bg-[#D4A043] hover:text-white transition-colors duration-200 shadow-sm"
           >
             {isHindi ? "स्मृति देखें" : "View Memorial"}
           </Link>
