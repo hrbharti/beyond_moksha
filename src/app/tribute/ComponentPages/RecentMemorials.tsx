@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import jackson from "@public/images/jackson.png";
 
 const memorials = [
-  { name: "Ram Kumar", image: jackson },
-  { name: "Shyam Kumar", image: jackson },
-  { name: "Raj Kumar", image: jackson },
-  { name: "Suresh Kumar", image: jackson },
-  { name: "Mahesh Kumar", image: jackson },
+  { name: "Ram Kumar", image: "/images/recentmemorial-1.jpeg" },
+  { name: "Shyam Kumar", image: "/images/recentmemorial-2.jpeg" },
+  { name: "Raj Kumar", image: "/images/recentmemorial-3.jpeg" },
+  { name: "Suresh Kumar", image: "/images/recentmemorial-4.jpeg" },
+  { name: "Mahesh Kumar", image: "/images/recentmemorial-5.jpeg" },
 ];
 
 const RecentMemorials = () => {
