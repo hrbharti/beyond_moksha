@@ -6,7 +6,7 @@ import api from "../../../lib/api/api";
 export default function RegisterForm() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  
+
   // Step 1: Memorial Details
   const [memorialData, setMemorialData] = useState({
     memorialBy: "",
@@ -37,26 +37,50 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Email Verification State
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [verificationToken, setVerificationToken] = useState("");
+  const [verifying, setVerifying] = useState(false);
+
+  // Username Availability State
+  const [usernameAvailability, setUsernameAvailability] = useState<{
+    available: boolean;
+    message: string;
+  } | null>(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const years = Array.from(
     { length: 100 },
-    (_, i) => new Date().getFullYear() - i
+    (_, i) => new Date().getFullYear() - i,
   );
 
   const handleMemorialChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setMemorialData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUserChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     const type = e.target.type;
@@ -65,12 +89,83 @@ export default function RegisterForm() {
     let processedValue = value;
     if (name === "username") {
       processedValue = value.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+
+      // Clear previous timeout if exists
+      if ((window as any).usernameCheckTimeout) {
+        clearTimeout((window as any).usernameCheckTimeout);
+      }
+
+      // Reset availability if empty
+      if (!processedValue) {
+        setUsernameAvailability(null);
+      } else {
+        setIsCheckingUsername(true);
+        // Debounce check
+        (window as any).usernameCheckTimeout = setTimeout(async () => {
+          try {
+            const res = await api.get(
+              `/tribute/check-username/${processedValue}`,
+            );
+            setUsernameAvailability(res.data);
+          } catch (err) {
+            setUsernameAvailability({
+              available: false,
+              message: "Error checking username",
+            });
+          } finally {
+            setIsCheckingUsername(false);
+          }
+        }, 300);
+      }
     }
 
     setUserData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : processedValue,
     }));
+  };
+
+  const handleSendOtp = async () => {
+    if (!userData.email) {
+      setError("Please enter an email address");
+      return;
+    }
+    setVerifying(true);
+    setError("");
+    try {
+      await api.post("/tribute/verify-email/send", { email: userData.email });
+      setIsOtpSent(true);
+      alert("Verification code sent to your email");
+    } catch (err: any) {
+      console.error("Send OTP failed", err);
+      setError(
+        err.response?.data?.message || "Failed to send verification code",
+      );
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      setError("Please enter the verification code");
+      return;
+    }
+    setVerifying(true);
+    setError("");
+    try {
+      const res = await api.post("/tribute/verify-email/verify", {
+        email: userData.email,
+        otp,
+      });
+      setVerificationToken(res.data.verificationToken);
+      setIsVerified(true);
+      setIsOtpSent(false); // Hide OTP input
+    } catch (err: any) {
+      console.error("Verify OTP failed", err);
+      setError(err.response?.data?.message || "Invalid code");
+      setVerifying(false);
+    }
   };
 
   const handleStep1Next = (e: React.FormEvent) => {
@@ -82,11 +177,19 @@ export default function RegisterForm() {
       setError("First name and last name are required");
       return;
     }
-    if (!memorialData.dobDay || !memorialData.dobMonth || !memorialData.dobYear) {
+    if (
+      !memorialData.dobDay ||
+      !memorialData.dobMonth ||
+      !memorialData.dobYear
+    ) {
       setError("Date of birth is required");
       return;
     }
-    if (!memorialData.dopDay || !memorialData.dopMonth || !memorialData.dopYear) {
+    if (
+      !memorialData.dopDay ||
+      !memorialData.dopMonth ||
+      !memorialData.dopYear
+    ) {
       setError("Date of passing is required");
       return;
     }
@@ -122,7 +225,11 @@ export default function RegisterForm() {
       const dateOfDeath = `${memorialData.dopDay.padStart(2, "0")}-${memorialData.dopMonth.padStart(2, "0")}-${memorialData.dopYear}`;
 
       // Combine first, middle, last name
-      const tributeName = [memorialData.firstName, memorialData.middleName, memorialData.lastName]
+      const tributeName = [
+        memorialData.firstName,
+        memorialData.middleName,
+        memorialData.lastName,
+      ]
         .filter(Boolean)
         .join(" ");
 
@@ -147,6 +254,7 @@ export default function RegisterForm() {
           dateOfBirth,
           dateOfDeath,
         },
+        verificationToken, // Add verification token
       };
 
       const response = await api.post("/tribute/register", payload);
@@ -155,7 +263,9 @@ export default function RegisterForm() {
       router.push("/tribute/profile");
     } catch (err: any) {
       console.error("Registration failed", err);
-      setError(err.response?.data?.message || err.message || "Registration failed");
+      setError(
+        err.response?.data?.message || err.message || "Registration failed",
+      );
     } finally {
       setLoading(false);
     }
@@ -167,15 +277,25 @@ export default function RegisterForm() {
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-center gap-4">
-            <div className={`flex items-center ${step >= 1 ? "text-[#1F3A4B]" : "text-gray-400"}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}>
+            <div
+              className={`flex items-center ${step >= 1 ? "text-[#1F3A4B]" : "text-gray-400"}`}
+            >
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}
+              >
                 {step > 1 ? "✓" : "1"}
               </div>
               <span className="ml-2 text-sm font-medium">Memorial Details</span>
             </div>
-            <div className={`w-16 h-0.5 ${step >= 2 ? "bg-[#1F3A4B]" : "bg-gray-200"}`} />
-            <div className={`flex items-center ${step >= 2 ? "text-[#1F3A4B]" : "text-gray-400"}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}>
+            <div
+              className={`w-16 h-0.5 ${step >= 2 ? "bg-[#1F3A4B]" : "bg-gray-200"}`}
+            />
+            <div
+              className={`flex items-center ${step >= 2 ? "text-[#1F3A4B]" : "text-gray-400"}`}
+            >
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-[#1F3A4B] text-white" : "bg-gray-200"}`}
+              >
                 2
               </div>
               <span className="ml-2 text-sm font-medium">Your Details</span>
@@ -211,7 +331,8 @@ export default function RegisterForm() {
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
               />
               <p className="text-xs text-gray-500 mt-1.5">
-                Who is creating this memorial? (e.g., family member name or family name)
+                Who is creating this memorial? (e.g., family member name or
+                family name)
               </p>
             </div>
 
@@ -233,7 +354,10 @@ export default function RegisterForm() {
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                  Middle Name <span className="text-gray-400 font-normal normal-case">(Optional)</span>
+                  Middle Name{" "}
+                  <span className="text-gray-400 font-normal normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -406,16 +530,66 @@ export default function RegisterForm() {
                   value={userData.email}
                   onChange={handleUserChange}
                   placeholder="Email"
-                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                  disabled={isVerified || isOtpSent}
+                  className={`flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all ${
+                    isVerified
+                      ? "bg-green-50 border-green-200 text-green-700"
+                      : ""
+                  }`}
                   required
                 />
-                <button
-                  type="button"
-                  className="px-6 py-3 bg-[#1F3A4B] text-white rounded-xl hover:bg-[#162936] transition-all text-sm font-medium shadow-sm"
-                >
-                  Verify
-                </button>
+                {!isVerified && !isOtpSent && (
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={verifying || !userData.email}
+                    className="px-6 py-3 bg-[#1F3A4B] text-white rounded-xl hover:bg-[#162936] disabled:opacity-50 transition-all text-sm font-medium shadow-sm"
+                  >
+                    {verifying ? "Sending..." : "Verify"}
+                  </button>
+                )}
+                {isVerified && (
+                  <div className="px-6 py-3 bg-green-100 text-green-700 rounded-xl border border-green-200 flex items-center gap-2 text-sm font-medium">
+                    <span>✓ Verified</span>
+                  </div>
+                )}
               </div>
+
+              {/* OTP Input */}
+              {isOtpSent && !isVerified && (
+                <div className="mt-3 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                    Enter Verification Code
+                  </label>
+                  <div className="flex gap-3">
+                    <input
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      placeholder="Enter 6-digit code"
+                      className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleVerifyOtp}
+                      disabled={verifying || !otp}
+                      className="px-6 py-3 bg-[#D4A043] text-white rounded-xl hover:bg-[#C18E33] disabled:opacity-50 transition-all text-sm font-medium shadow-sm"
+                    >
+                      {verifying ? "Verifying..." : "Submit"}
+                    </button>
+                  </div>
+                  <div className="mt-2 text-right">
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      disabled={verifying}
+                      className="text-xs text-gray-500 hover:text-[#1F3A4B] underline"
+                    >
+                      Resend Code
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Phone */}
@@ -441,18 +615,45 @@ export default function RegisterForm() {
             {/* Custom Username */}
             <div>
               <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
-                Custom Address <span className="text-gray-400 font-normal">(Optional)</span>
+                Custom Address{" "}
+                <span className="text-gray-400 font-normal">(Optional)</span>
               </label>
               <div className="flex items-center gap-3">
-                <span className="text-sm text-[#1F3A4B]/70 font-medium">beyondmoksha.com/tribute/p/</span>
+                <span className="text-sm text-[#1F3A4B]/70 font-medium">
+                  beyondmoksha.com/tribute/p/
+                </span>
                 <input
                   type="text"
                   name="username"
                   value={userData.username}
                   onChange={handleUserChange}
                   placeholder="your-username"
-                  className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] lowercase transition-all"
+                  className={`flex-1 px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all lowercase ${
+                    usernameAvailability?.available === true
+                      ? "border-green-200 focus:ring-green-500/50 focus:border-green-500"
+                      : usernameAvailability?.available === false
+                        ? "border-red-200 focus:ring-red-500/50 focus:border-red-500"
+                        : "border-gray-200 focus:ring-[#D4A043]/50 focus:border-[#D4A043]"
+                  }`}
                 />
+              </div>
+              <div className="mt-1 h-5">
+                {isCheckingUsername ? (
+                  <p className="text-xs text-gray-500 flex items-center gap-1">
+                    <span className="w-3 h-3 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></span>
+                    Checking availability...
+                  </p>
+                ) : usernameAvailability ? (
+                  <p
+                    className={`text-xs ${
+                      usernameAvailability.available
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {usernameAvailability.message}
+                  </p>
+                ) : null}
               </div>
             </div>
 
@@ -500,7 +701,10 @@ export default function RegisterForm() {
               />
               <span className="text-sm text-gray-600">
                 I acknowledge and agree to abide to{" "}
-                <a href="#" className="text-[#D4A043] hover:text-[#B38530] underline font-medium">
+                <a
+                  href="#"
+                  className="text-[#D4A043] hover:text-[#B38530] underline font-medium"
+                >
                   Terms Of Use
                 </a>
               </span>
@@ -516,7 +720,7 @@ export default function RegisterForm() {
               </button>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !isVerified}
                 className="flex-1 bg-[#D4A043] hover:bg-[#C18E33] disabled:opacity-70 text-white font-bold py-4 rounded-xl transition-all shadow-md hover:shadow-lg"
               >
                 {loading ? "Creating Account..." : "Create Account"}
