@@ -8,22 +8,22 @@ const services = [
   {
     title: "Bhagwat Katha",
     desc: "शाश्वत ज्ञान और आध्यात्मिक शांति का अनुभव। परिवार और समुदाय के लिए।",
-    img: "/images/sacredservice1.jpg",
+    img: "/images/bhagwatkatha.png",
   },
   {
     title: "Diwali Pooja",
     desc: "समृद्धि और शुभ शुरुआत हेतु। घर और कार्यस्थल के लिए।",
-    img: "/images/sacredservice2.jpg",
+    img: "/images/diwalipooja.jpg",
   },
   {
     title: "Marriage Ceremony",
     desc: "जीवन की नई शुरुआत। विधिपूर्ण और गरिमामय आयोजन।",
-    img: "/images/sacredservice3.jpg",
+    img: "/images/marriage.jpg",
   },
   {
     title: "Office Pooja",
     desc: "कार्यस्थल के लिए शुभ आरंभ। सकारात्मक ऊर्जा और स्थिरता हेतु।",
-    img: "/images/sacredservice4.jpg",
+    img: "/images/officepooja.jpg",
   },
   {
     title: "Antyesti & Shradh",
