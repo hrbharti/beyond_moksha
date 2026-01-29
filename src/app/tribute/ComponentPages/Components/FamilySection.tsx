@@ -11,6 +11,7 @@ interface FamilySectionProps {
   title: string;
   members: FamilyMember[];
   isEditing?: boolean;
+  accentColor?: string;
   onUpdateMember?: (
     index: number,
     field: keyof FamilyMember,
@@ -18,21 +19,47 @@ interface FamilySectionProps {
   ) => void;
   onAddMember?: () => void;
   onDeleteMember?: (index: number) => void;
+  onDeleteSection?: () => void;
+  onUpdateTitle?: (newTitle: string) => void;
 }
 
 const FamilySection: React.FC<FamilySectionProps> = ({
   title,
   members,
   isEditing = false,
+  accentColor = "#D4A043",
   onUpdateMember,
   onAddMember,
   onDeleteMember,
+  onDeleteSection,
+  onUpdateTitle,
 }) => {
   return (
     <section className="w-full py-10 border-t border-[#1F3A4B]/30">
-      <h2 className="text-xl sm:text-2xl font-medium mb-8 text-[#1F3A4B]">
-        {title}
-      </h2>
+      <div className="flex justify-between items-center mb-8">
+        {isEditing ? (
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => onUpdateTitle && onUpdateTitle(e.target.value)}
+            className="text-xl sm:text-2xl font-medium text-[#1F3A4B] bg-transparent border-b border-gray-300 focus:border-blue-400 outline-none w-full max-w-md"
+            placeholder="Generation Title (e.g. Children, Grandparents)"
+          />
+        ) : (
+          <h2 className="text-xl sm:text-2xl font-medium text-[#1F3A4B]">
+            {title}
+          </h2>
+        )}
+
+        {isEditing && onDeleteSection && (
+          <button
+            onClick={onDeleteSection}
+            className="text-red-500 hover:text-red-700 text-sm font-sans"
+          >
+            Delete Generation
+          </button>
+        )}
+      </div>
 
       <div className="flex flex-wrap justify-center sm:justify-start gap-6 sm:gap-8">
         {members.map((person, index) => (

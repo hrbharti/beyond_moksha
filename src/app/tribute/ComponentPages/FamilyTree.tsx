@@ -14,17 +14,37 @@ interface FamilyTreeProps {
   centralPerson?: FamilyMember;
   groups?: FamilyGroup[];
   isEditing?: boolean;
+  accentColor?: string;
   onUpdateCentralPerson?: (field: keyof FamilyMember, value: string) => void;
   onUpdateGroup?: (groupIndex: number, newGroup: FamilyGroup) => void;
+  onAddGroup?: (newGroup: FamilyGroup) => void;
+  onDeleteGroup?: (groupIndex: number) => void;
+  onUpdateGroups?: (groups: FamilyGroup[]) => void;
 }
 
 const FamilyTree: React.FC<FamilyTreeProps> = ({
   centralPerson = { name: "Mrs. Radha Devi Sharma" },
-  groups = [],
+  groups: rawGroups = [],
   isEditing = false,
+  accentColor = "#D4A043",
   onUpdateCentralPerson,
   onUpdateGroup,
+  onAddGroup,
+  onDeleteGroup,
+  onUpdateGroups,
 }) => {
+  const groups = React.useMemo(() => {
+    if (typeof rawGroups === "string") {
+      try {
+        return JSON.parse(rawGroups);
+      } catch (e) {
+        console.error("Failed to parse family groups", e);
+        return [];
+      }
+    }
+    return rawGroups;
+  }, [rawGroups]);
+
   const handleMemberUpdate = (
     groupIndex: number,
     memberIndex: number,
@@ -54,10 +74,31 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
     if (!onUpdateGroup) return;
     const newGroups = [...groups];
     const newMembers = newGroups[groupIndex].members.filter(
-      (_, i) => i !== memberIndex,
+      (_: FamilyMember, i: number) => i !== memberIndex,
     );
     newGroups[groupIndex] = { ...newGroups[groupIndex], members: newMembers };
     onUpdateGroup(groupIndex, newGroups[groupIndex]);
+  };
+
+  const handleAddGroup = () => {
+    if (!onUpdateGroups) return;
+    const newGroups = [
+      ...groups,
+      { title: "New Generation", members: [{ name: "" }] },
+    ];
+    onUpdateGroups(newGroups);
+  };
+
+  const handleRemoveGroup = (index: number) => {
+    if (!onUpdateGroups) return;
+    const newGroups = groups.filter((_: FamilyGroup, i: number) => i !== index);
+    onUpdateGroups(newGroups);
+  };
+
+  const handleUpdateGroupTitle = (index: number, newTitle: string) => {
+    if (!onUpdateGroup) return;
+    const group = { ...groups[index], title: newTitle };
+    onUpdateGroup(index, group);
   };
 
   if ((!groups || groups.length === 0) && !centralPerson && !isEditing)
@@ -68,6 +109,16 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
       <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950">
         Family Tree
       </h1>
+
+      {isEditing && (
+        <button
+          onClick={handleAddGroup}
+          className="px-4 py-2 text-white rounded-full text-sm font-sans hover:opacity-90 transition shadow-md"
+          style={{ backgroundColor: accentColor }}
+        >
+          + Add Generation
+        </button>
+      )}
 
       {/* Central Person */}
       {centralPerson && (
@@ -84,17 +135,24 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
       )}
 
       {/* Family Sections */}
-      {groups.map((group, index) => (
+      {groups.map((group: FamilyGroup, index: number) => (
         <FamilySection
           key={index}
           title={group.title}
           members={group.members}
           isEditing={isEditing}
-          onUpdateMember={(mIndex, field, val) =>
-            handleMemberUpdate(index, mIndex, field, val)
-          }
+          accentColor={accentColor}
+          onUpdateMember={(
+            mIndex: number,
+            field: keyof FamilyMember,
+            val: string,
+          ) => handleMemberUpdate(index, mIndex, field, val)}
           onAddMember={() => handleAddMember(index)}
-          onDeleteMember={(mIndex) => handleDeleteMember(index, mIndex)}
+          onDeleteMember={(mIndex: number) => handleDeleteMember(index, mIndex)}
+          onDeleteSection={() => handleRemoveGroup(index)}
+          onUpdateTitle={(newTitle: string) =>
+            handleUpdateGroupTitle(index, newTitle)
+          }
         />
       ))}
     </div>

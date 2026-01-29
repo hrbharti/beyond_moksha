@@ -7,6 +7,7 @@ interface FamilyCardProps {
   name: string;
   imageUrl?: string;
   isEditing?: boolean;
+  accentColor?: string;
   onUpdate?: (field: "name" | "imageUrl", value: string) => void;
   onDelete?: () => void;
 }
@@ -15,11 +16,15 @@ const FamilyCard: React.FC<FamilyCardProps> = ({
   name,
   imageUrl,
   isEditing = false,
+  accentColor = "#D4A043",
   onUpdate,
   onDelete,
 }) => {
   return (
-    <div className="relative group/card flex flex-col items-center text-center border border-[#1F3A4B]/30 rounded-sm p-4 bg-white shadow-sm w-40 sm:w-56">
+    <div
+      className="relative group/card flex flex-col items-center text-center border rounded-sm p-4 bg-white shadow-sm w-40 sm:w-56"
+      style={{ borderColor: accentColor }}
+    >
       {/* Delete Button */}
       {isEditing && onDelete && (
         <button
@@ -40,7 +45,7 @@ const FamilyCard: React.FC<FamilyCardProps> = ({
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity cursor-pointer z-20">
             <button
               onClick={() => {
-                toast.success("Image Uploaded")
+                toast.success("Image Uploaded");
                 if (onUpdate) onUpdate("imageUrl", "dummy_url");
               }}
               className="flex flex-col items-center text-white"
@@ -58,7 +63,8 @@ const FamilyCard: React.FC<FamilyCardProps> = ({
             value={name}
             onChange={(e) => onUpdate && onUpdate("name", e.target.value)}
             placeholder="Name"
-            className="w-full text-center text-sm sm:text-base font-medium text-[#1F3A4B] border-b border-gray-300 focus:border-blue-500 outline-none bg-transparent"
+            className="w-full text-center text-sm sm:text-base font-medium text-[#1F3A4B] border-b border-gray-300 outline-none bg-transparent"
+            style={{ "--tw-ring-color": accentColor } as any}
           />
         ) : (
           <p className="text-sm sm:text-base font-medium text-[#1F3A4B] line-clamp-1">

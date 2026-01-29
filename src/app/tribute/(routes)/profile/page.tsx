@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import TributeNavbar from "../../ComponentPages/TributeNavbar";
 import api from "@/lib/api/api";
 import HeroSection from "../../ComponentPages/Components/MemorialHero";
 import Memorial from "../../ComponentPages/Components/Memorial";
@@ -10,9 +9,21 @@ import Gallery from "../../ComponentPages/Gallery";
 import MemoryWall from "../../ComponentPages/MemoryWall";
 import EventsSection from "../../ComponentPages/EventSection";
 import FamilyTree from "../../ComponentPages/FamilyTree";
-import { Edit2, Save, X, Eye, LogOut, Share2 } from "lucide-react";
+import bg from "@public/images/grayishBG.jpg";
+import {
+  Eye,
+  Edit2,
+  Share2,
+  LogOut,
+  Save,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+} from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import ProfileSidebar from "../../ComponentPages/Components/ProfileSidebar";
 
 interface Tribute {
   id: string;
@@ -27,7 +38,14 @@ interface Tribute {
   profileImageUrl?: string;
   bannerUrl?: string;
   isPublic: boolean;
+  language?: string;
+  textColor?: string;
+  accentColor?: string;
   familyMembers?: any;
+  timelineEvents?: any[];
+  galleryImages?: string[];
+  memories?: any[];
+  events?: any[];
 }
 
 export default function TributeProfile() {
@@ -35,8 +53,13 @@ export default function TributeProfile() {
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [originalTribute, setOriginalTribute] = useState<Tribute | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true); // Default to Edit Mode
   const [isSaving, setIsSaving] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default sidebar open
+
+  // Derived state for personalization to avoid deep nesting access in render
+  const textColor = tribute?.textColor || "#000000";
+  const accentColor = tribute?.accentColor || "#D4A043";
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -55,7 +78,7 @@ export default function TributeProfile() {
     fetchProfile();
   }, [fetchProfile]);
 
-  const handleUpdate = (field: keyof Tribute, value: string) => {
+  const handleUpdate = (field: keyof Tribute, value: any) => {
     if (tribute) {
       setTribute({ ...tribute, [field]: value });
     }
@@ -125,103 +148,170 @@ export default function TributeProfile() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-24 relative">
-      <TributeNavbar />
+      <ProfileSidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        accentColor={accentColor}
+        setAccentColor={(val) => handleUpdate("accentColor", val)}
+        isEditing={isEditing}
+      />
 
-      <div className="absolute top-24 right-5 md:right-10 z-50 flex gap-2">
+      {/* Main Content Wrapper */}
+      <div
+        className={`transition-all duration-500 ease-in-out ${isSidebarOpen ? "md:ml-80" : "ml-0"}`}
+        style={{ color: textColor }}
+      >
+        {/* Mobile Hamburger Menu */}
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed left-4 top-4 z-50 p-3 bg-white border border-gray-200 rounded-xl shadow-lg text-gray-500 hover:text-gray-800 transition-all duration-300 md:hidden flex items-center justify-center"
+          title="Open Menu"
+        >
+          <Menu size={24} />
+        </button>
+        {/* Toggle Button Inside Content (only visible when sidebar is closed) */}
+        {!isSidebarOpen && (
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="fixed left-0 top-32 z-50 bg-white border border-gray-200 p-2 rounded-r-xl shadow-md text-gray-500 hover:text-gray-800 transition-all duration-300 hidden md:flex items-center justify-center group"
+            title="Expand Sidebar"
+          >
+            <ChevronRight
+              size={20}
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            />
+          </button>
+        )}
+
+        <div className="absolute top-48 right-5 md:right-12 z-50 flex gap-2">
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+            style={{ color: isEditing ? accentColor : undefined }}
+          >
+            {isEditing ? <Eye size={16} /> : <Edit2 size={16} />}
+            <span className="hidden sm:inline">
+              {isEditing ? "Preview" : "Edit Mode"}
+            </span>
+          </button>
+
+          {isEditing && (
+            <>
+              <button
+                onClick={handleCancel}
+                disabled={isSaving}
+                className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white text-gray-700 border border-gray-300 rounded-full shadow-lg hover:bg-gray-50 transition"
+              >
+                <X size={18} /> <span className="hidden sm:inline">Cancel</span>
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex items-center gap-2 p-3 sm:px-6 sm:py-2 text-white rounded-full shadow-lg hover:opacity-90 transition font-medium"
+                style={{ backgroundColor: accentColor }}
+              >
+                <Save size={18} />{" "}
+                <span className="hidden sm:inline">
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </span>
+              </button>
+            </>
+          )}
+        </div>
+
         {!isEditing && (
-          <>
+          <div className="absolute right-0 p-5 z-50 flex gap-2">
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
             >
-              <Share2 size={16} /> Share
+              <Share2 size={16} />{" "}
+              <span className="hidden sm:inline">Share</span>
             </button>
             <Link
               href={`/tribute/p/${tribute.username || tribute.id}`}
               target="_blank"
-              className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
             >
-              <Eye size={16} /> Public Profile
+              <Eye size={16} />{" "}
+              <span className="hidden sm:inline">Public Profile</span>
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 bg-red-50/80 backdrop-blur-sm text-red-600 border border-red-200 rounded-full shadow-sm hover:bg-red-100 transition"
+              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-red-50/80 backdrop-blur-sm text-red-600 border border-red-200 rounded-full shadow-sm hover:bg-red-100 transition"
             >
-              <LogOut size={16} /> Logout
+              <LogOut size={16} />{" "}
+              <span className="hidden sm:inline">Logout</span>
             </button>
-          </>
+          </div>
         )}
 
-        {isEditing ? (
-          <>
-            <button
-              onClick={handleCancel}
-              disabled={isSaving}
-              className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-full shadow-lg hover:bg-gray-50 transition"
-            >
-              <X size={18} /> Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition font-medium"
-            >
-              <Save size={18} /> {isSaving ? "Saving..." : "Save Changes"}
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-          >
-            <Edit2 size={16} /> Edit Profile
-          </button>
-        )}
-      </div>
-
-      {/* Hero Section */}
-      <HeroSection
-        tribute={tribute}
-        isEditing={isEditing}
-        onUpdate={handleUpdate}
-      />
-
-      <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
-        <Memorial
-          bio={tribute.bio}
+        {/* Hero Section */}
+        <HeroSection
+          tribute={tribute}
           isEditing={isEditing}
-          onBioUpdate={(val) => handleUpdate("bio", val)}
+          accentColor={accentColor}
+          onUpdate={handleUpdate}
         />
 
-        <TimelineSection items={[]} />
-        <Gallery images={[]} />
-        <MemoryWall memories={[]} name={tribute.name} />
-        <FamilyTree
-          centralPerson={{
-            name: tribute.name,
-            imageUrl: tribute.profileImageUrl,
-          }}
-          groups={
-            Array.isArray(tribute.familyMembers)
-              ? tribute.familyMembers
-              : [{ title: "Family", members: [] }]
-          }
-          isEditing={isEditing}
-          onUpdateGroup={(index, newGroup) => {
-            if (!tribute) return;
-            const currentGroups = Array.isArray(tribute.familyMembers)
-              ? [...tribute.familyMembers]
-              : [{ title: "Family", members: [] }];
-            currentGroups[index] = newGroup;
-            setTribute({ ...tribute, familyMembers: currentGroups });
-          }}
-          onUpdateCentralPerson={(field, value) => {
-            // Map basic fields back to main tribute
-            if (field === "name") handleUpdate("name", value);
-            if (field === "imageUrl") handleUpdate("profileImageUrl", value);
-          }}
-        />
-        <EventsSection events={[]} name={tribute.name} />
+        <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
+          <Memorial
+            bio={tribute.bio}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onBioUpdate={(val) => handleUpdate("bio", val)}
+          />
+
+          <TimelineSection
+            items={tribute.timelineEvents || []}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onUpdate={(val) => handleUpdate("timelineEvents", val)}
+          />
+          <Gallery
+            images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onUpdate={(val) => handleUpdate("galleryImages", val)}
+          />
+          <MemoryWall
+            memories={tribute.memories || []}
+            name={tribute.name}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onUpdate={(val) => handleUpdate("memories", val)}
+          />
+          <FamilyTree
+            centralPerson={{
+              name: tribute.name,
+              imageUrl: tribute.profileImageUrl,
+            }}
+            groups={tribute.familyMembers || []}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onUpdateGroup={(index, newGroup) => {
+              const currentGroups = Array.isArray(tribute.familyMembers)
+                ? [...tribute.familyMembers]
+                : [];
+              currentGroups[index] = newGroup;
+              handleUpdate("familyMembers", currentGroups);
+            }}
+            onUpdateGroups={(newGroups) => {
+              handleUpdate("familyMembers", newGroups);
+            }}
+            onUpdateCentralPerson={(field, value) => {
+              if (field === "name") handleUpdate("name", value);
+              if (field === "imageUrl") handleUpdate("profileImageUrl", value);
+            }}
+          />
+          <EventsSection
+            events={tribute.events || []}
+            name={tribute.name}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            onUpdate={(val) => handleUpdate("events", val)}
+          />
+        </div>
       </div>
     </div>
   );

@@ -21,12 +21,14 @@ interface Tribute {
 interface HeroSectionProps {
   tribute?: Tribute;
   isEditing?: boolean;
+  accentColor?: string;
   onUpdate?: (field: keyof Tribute, value: string) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   tribute,
   isEditing = false,
+  accentColor = "#D4A043",
   onUpdate,
 }) => {
   const searchParams = useSearchParams();
@@ -107,9 +109,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             sm:right-8 md:right-16 lg:right-20 
             -bottom-12 sm:-bottom-20 md:-bottom-28 
             w-28 h-28 sm:w-40 sm:h-40 md:w-64 md:h-64 
-            border-[3px] border-[#1F3A4B] rounded-[2rem] sm:rounded-[2.5rem] 
+            border-[3px] rounded-[2rem] sm:rounded-[2.5rem] 
             overflow-hidden bg-white shadow-xl z-20
           "
+          style={{ borderColor: accentColor }}
         >
           {tribute.profileImageUrl ? (
             <img
@@ -229,7 +232,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Audio Player */}
           {isAudioVisible && (
             <div className="w-48 sm:w-56 md:w-64 h-10 flex items-center bg-gray-100 rounded-full px-4">
-              <audio controls autoPlay className="w-full h-8 accent-[#D4A043]">
+              <audio
+                controls
+                autoPlay
+                className="w-full h-8"
+                style={{ accentColor: accentColor } as any}
+              >
                 <source src="" type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>
@@ -245,10 +253,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 onChange={(e) => setIsAudioVisible(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D4A043]"></div>
+              <div
+                className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+                style={{
+                  backgroundColor: isAudioVisible ? accentColor : undefined,
+                }}
+              ></div>
             </label>
             {isAudioVisible ? (
-              <Volume2 size={20} className="text-[#D4A043]" />
+              <Volume2 size={20} style={{ color: accentColor }} />
             ) : (
               <VolumeX size={20} className="text-[#1F3A4B]/40" />
             )}
