@@ -76,7 +76,7 @@ export const Blogs = () => {
       {/* View all button */}
       <div
         className="flex items-center justify-center gap-2 text-[#BC911B] font-medium cursor-pointer hover:scale-105 transition-all duration-300"
-        onClick={() => router.push("/blogs")}
+        onClick={() => router.push("/Blogs")}
       >
         View all
         <FaAngleDoubleRight />
