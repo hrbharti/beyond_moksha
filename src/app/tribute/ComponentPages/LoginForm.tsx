@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/api/api";
 import { toast } from "sonner";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -96,8 +97,20 @@ export default function LoginForm() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs font-medium hover:text-gray-700"
               >
-                {showPassword ? <EyeIcon className="w-4 h-4" /> : <EyeOffIcon className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeIcon className="w-4 h-4" />
+                ) : (
+                  <EyeOffIcon className="w-4 h-4" />
+                )}
               </button>
+            </div>
+            <div className="flex justify-end mt-1">
+              <Link
+                href="/tribute/forgot-password"
+                className="text-xs text-blue-600 hover:underline font-medium"
+              >
+                Forgot Password?
+              </Link>
             </div>
           </div>
 
