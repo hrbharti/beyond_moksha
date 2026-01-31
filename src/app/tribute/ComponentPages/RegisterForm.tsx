@@ -9,7 +9,6 @@ export default function RegisterForm() {
 
   // Step 1: Memorial Details
   const [memorialData, setMemorialData] = useState({
-    memorialBy: "",
     firstName: "",
     middleName: "",
     lastName: "",
@@ -250,7 +249,6 @@ export default function RegisterForm() {
           email: userData.email,
           password: userData.password,
           username: userData.username || null,
-          memorialBy: memorialData.memorialBy || null,
           dateOfBirth,
           dateOfDeath,
         },
@@ -316,25 +314,6 @@ export default function RegisterForm() {
             <h2 className="text-2xl sm:text-3xl font-bold text-[#1F3A4B] mb-8 text-center">
               Memorial Details
             </h2>
-
-            {/* Memorial By */}
-            <div>
-              <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
-                Memorial By (Optional)
-              </label>
-              <input
-                type="text"
-                name="memorialBy"
-                value={memorialData.memorialBy}
-                onChange={handleMemorialChange}
-                placeholder="Enter name (e.g., 'John Smith' or 'The Smith Family')"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
-              />
-              <p className="text-xs text-gray-500 mt-1.5">
-                Who is creating this memorial? (e.g., family member name or
-                family name)
-              </p>
-            </div>
 
             {/* Name Fields */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

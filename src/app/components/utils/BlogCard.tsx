@@ -10,11 +10,16 @@ interface BlogCardProps {
 
 export const BlogCard = ({ id, image, content }: BlogCardProps) => {
   const cardContent = (
-    <div className="flex flex-col bg-white border border-gray-300 rounded-md overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full">
+    <div className="flex flex-col bg-white border border-gray-300 rounded-md overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group">
       {/* Blog image */}
       <div className="w-full h-48 overflow-hidden relative">
         {image ? (
-          <Image src={image} alt={content} fill className="object-cover" />
+          <Image
+            src={image}
+            alt={content}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+          />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
             No Image
@@ -24,12 +29,12 @@ export const BlogCard = ({ id, image, content }: BlogCardProps) => {
 
       {/* Blog content */}
       <div className="flex flex-col items-center justify-between text-center p-4 min-h-[130px] flex-grow">
-        <h3 className="text-[15px] font-medium text-[#1F3A52] leading-snug">
+        <h3 className="text-[15px] font-medium text-[#1F3A52] group-hover:text-[#BC911B] transition-colors duration-300 leading-snug">
           {content}
         </h3>
 
         {/* Learn More Button */}
-        <div className="mt-4 flex items-center justify-center text-[#BC911B] font-medium group">
+        <div className="mt-4 flex items-center justify-center text-[#BC911B] font-medium">
           <span className="group-hover:underline">Learn more</span>
           <MdArrowRightAlt className="ml-1 group-hover:translate-x-1 transition-transform duration-200" />
         </div>
