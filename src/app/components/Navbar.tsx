@@ -44,7 +44,7 @@ export const Navbar = ({ onNavigate }: navProps) => {
     }
 
     if (item === "Home") router.push("/");
-    if (item === "Blogs") router.push("/Blogs");
+    if (item === "Blogs") router.push("/blogs");
     if (item === "About Us") router.push("/aboutus");
     if (item === "Pandit Booking") router.push("/panditbooking");
     if (item === "Tribute") router.push("/tribute");

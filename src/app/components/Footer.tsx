@@ -47,7 +47,7 @@ export default function Footer() {
           >
             About us
           </div>
-          <div className="cursor-pointer" onClick={() => router.push("/Blogs")}>
+          <div className="cursor-pointer" onClick={() => router.push("/blogs")}>
             Blogs
           </div>
         </div>

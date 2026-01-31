@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 interface IProps {
   id: number;
@@ -13,7 +12,7 @@ interface IProps {
 export default function SideCard(props: IProps) {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/Blogs/${props.id}`);
+    router.push(`/blogs/${props.id}`);
   };
   return (
     <div>

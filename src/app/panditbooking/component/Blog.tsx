@@ -75,7 +75,7 @@ export default function BlogsSection() {
 
         <div className="mt-14 flex justify-center">
           <Link
-            href="/Blogs"
+            href="/blogs"
             className="px-8 py-3 bg-[#D29D39] text-white font-lora font-medium rounded-full shadow-lg hover:bg-[#b88a32] transition-all duration-300 transform hover:scale-105"
           >
             View All Blogs
