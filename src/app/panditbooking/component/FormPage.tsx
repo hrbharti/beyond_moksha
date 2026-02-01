@@ -190,9 +190,9 @@ export default function BookPujaForm() {
                   {...register("state", { required: "State is required" })}
                 >
                   <option value="">Select State</option>
-                  <option>Maharashtra</option>
                   <option>Delhi</option>
-                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Uttar Pradesh</option>
                 </select>
                 {errors.state && (
                   <span className="text-xs text-red-500 mt-1">
@@ -210,9 +210,9 @@ export default function BookPujaForm() {
                   {...register("city", { required: "City is required" })}
                 >
                   <option value="">Select City</option>
-                  <option>Mumbai</option>
                   <option>Delhi</option>
-                  <option>Ahmedabad</option>
+                  <option>Gurgaon</option>
+                  <option>Noida</option>
                 </select>
                 {errors.city && (
                   <span className="text-xs text-red-500 mt-1">
