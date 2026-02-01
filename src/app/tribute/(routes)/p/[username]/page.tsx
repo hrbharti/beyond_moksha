@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import api from "@/lib/api/api";
 import HeroSection from "../../../ComponentPages/Components/MemorialHero";
 import Memorial from "../../../ComponentPages/Components/Memorial";
@@ -103,7 +103,9 @@ export default function PublicTributePage({
       className="min-h-screen bg-gray-50 font-sans"
       style={{ color: textColor }}
     >
-      <HeroSection tribute={tribute} accentColor={accentColor} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <HeroSection tribute={tribute} accentColor={accentColor} />
+      </Suspense>
 
       <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
         <div className="max-w-6xl mx-auto space-y-24">

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api/api";
 import HeroSection from "../../ComponentPages/Components/MemorialHero";
@@ -48,7 +48,7 @@ interface Tribute {
   events?: any[];
 }
 
-export default function TributeProfile() {
+function ProfileContent() {
   const router = useRouter();
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [originalTribute, setOriginalTribute] = useState<Tribute | null>(null);
@@ -64,6 +64,11 @@ export default function TributeProfile() {
   const fetchProfile = useCallback(async () => {
     try {
       const response = await api.get("/tribute/me");
+      if (response.data.noProfile) {
+        // Redifect to memorial creation if the authenticated user has no profile (new tribute creation)
+        router.push("/tribute/new");
+        return;
+      }
       setTribute(response.data);
       setOriginalTribute(response.data);
     } catch (error) {
@@ -314,5 +319,19 @@ export default function TributeProfile() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TributeProfile() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 }
