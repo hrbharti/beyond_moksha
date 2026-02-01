@@ -60,7 +60,12 @@ export default function LoginForm() {
     try {
       await api.post("/tribute/login", formData);
       toast.success("Login successful");
-      router.push("/tribute/profile");
+      const callbackUrl = searchParams.get("callbackUrl");
+      if (callbackUrl) {
+        router.push(callbackUrl);
+      } else {
+        router.push("/tribute/profile");
+      }
     } catch (err: any) {
       console.error("Login failed", err);
       setError(err.response?.data?.message || err.message || "Login failed");
