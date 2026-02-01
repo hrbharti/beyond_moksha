@@ -35,7 +35,7 @@ export const BlogCard = ({ id, image, content }: BlogCardProps) => {
 
         {/* Learn More Button */}
         <div className="mt-4 flex items-center justify-center text-[#BC911B] font-medium">
-          <span className="group-hover:underline">Learn more</span>
+          <span className="group-hover:underline">Read more</span>
           <MdArrowRightAlt className="ml-1 group-hover:translate-x-1 transition-transform duration-200" />
         </div>
       </div>
