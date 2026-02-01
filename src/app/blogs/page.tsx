@@ -147,22 +147,19 @@ export default function Page() {
     <div>
       <Navbar />
       {/* Wrapper for layout, centered */}
-      <div className="max-w-7xl mx-auto px-6 mt-8">
-        {/* Top grid: main + sidebar */}
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-6 mt-12 mb-20">
+        <div className="flex flex-col lg:flex-row gap-12">
           {/* Main column */}
-          <div className="w-full md:w-2/3">
-            {/* Title */}
-            <div className="mb-6">
-              <h1 className="text-4xl font-lora font-semibold text-[#BC911B]">
-                {inputValue ? `Search Results for "${inputValue}"` : "Blogs"}
-              </h1>
-            </div>
-            {/* Dashed border container to match screenshot */}
-            <div className="border-2 border-dashed border-[#1867AE] rounded-xl p-6 bg-white">
-              {/* Grid of blog cards (3 columns on md, 1 on small) */}
+          <div className="w-full lg:w-2/3">
+            {/* Blue border container for blogs */}
+            <div className="border border-[#1867AE] rounded-2xl p-8 bg-white shadow-sm min-h-[800px]">
+              <h2 className="text-3xl text-center mb-10 font-serif font-bold text-[#BC911B]">
+                Blogs
+              </h2>
+
+              {/* Grid of blog cards */}
               {!loading && blogs.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {blogs.map((blog) => (
                     <BlogCard
                       key={blog.id}
@@ -178,55 +175,60 @@ export default function Page() {
 
               {/* Empty and Loading states */}
               {loading && (
-                <div className="flex justify-center items-center py-12">
-                  <p className="text-lg text-gray-500">Loading blogs...</p>
+                <div className="flex flex-col items-center justify-center py-24 gap-4">
+                  <div className="w-12 h-12 border-4 border-gray-200 border-t-[#BC911B] rounded-full animate-spin"></div>
+                  <p className="text-lg text-gray-400 font-medium italic">
+                    Loading latest blogs...
+                  </p>
                 </div>
               )}
 
               {!loading && blogs.length === 0 && !error && (
-                <div className="flex justify-center items-center py-12">
-                  <p className="text-lg text-gray-500">
+                <div className="flex justify-center items-center py-24">
+                  <p className="text-lg text-gray-400 font-medium">
                     {inputValue
-                      ? "No blogs found matching your search"
-                      : "No blogs found"}
+                      ? `No results found for "${inputValue}"`
+                      : "No blogs available yet"}
                   </p>
                 </div>
               )}
 
               {/* Pagination */}
               {!loading && totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-6">
+                <div className="flex justify-center items-center gap-3 mt-16">
                   <button
                     onClick={() =>
                       currentPage > 1 && handlePageChange(currentPage - 1)
                     }
                     disabled={currentPage === 1}
-                    className="px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-[#1F3A52] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     &#8249;
                   </button>
 
-                  {getPaginationNumbers().map((page, index) => (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        typeof page === "number" && handlePageChange(page)
-                      }
-                      disabled={page === "..."}
-                      className={`
-                        px-3 py-2 rounded-full font-medium transition
-                        ${
-                          page === currentPage
-                            ? "bg-gradient-to-t from-[#1F3A52] to-[#4682B8] text-white shadow-md"
-                            : page === "..."
-                              ? "cursor-default"
-                              : "border border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                  <div className="flex items-center gap-2">
+                    {getPaginationNumbers().map((page, index) => (
+                      <button
+                        key={index}
+                        onClick={() =>
+                          typeof page === "number" && handlePageChange(page)
                         }
-                      `}
-                    >
-                      {page}
-                    </button>
-                  ))}
+                        disabled={page === "..."}
+                        className={`
+                          min-w-[40px] h-10 px-2 flex items-center justify-center rounded-full font-bold transition-all duration-300
+                          ${
+                            page === currentPage
+                              ? "bg-[#1F3A52] text-white shadow-lg scale-110"
+                              : page === "..."
+                                ? "cursor-default text-gray-400"
+                                : "text-gray-600 hover:bg-gray-100 border border-transparent hover:border-gray-200"
+                          }
+                        `}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
 
                   <button
                     onClick={() =>
@@ -234,7 +236,7 @@ export default function Page() {
                       handlePageChange(currentPage + 1)
                     }
                     disabled={currentPage === totalPages}
-                    className="px-3 py-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-[#1F3A52] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     &#8250;
                   </button>
@@ -242,13 +244,14 @@ export default function Page() {
               )}
             </div>
           </div>
+
           {/* Sidebar */}
-          <aside className="w-full md:w-1/3 flex flex-col gap-6">
+          <aside className="w-full lg:w-1/3 flex flex-col gap-10">
             {/* Browse Blogs / Search Card */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-              <div className="mb-2">
-                <h2 className="text-xl font-semibold">Browse Blogs</h2>
-              </div>
+            <div className="bg-white rounded-2xl shadow-sm border border-[#1867AE] p-8 flex flex-col items-center">
+              <h2 className="text-2xl font-serif font-bold text-[#1F3A52] mb-6">
+                Browse Blogs
+              </h2>
               <SideSearch
                 searchString={inputValue}
                 handleSearchChange={handleSearchChange}
@@ -256,33 +259,15 @@ export default function Page() {
             </div>
 
             {/* Latest / Popular toggles */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-[#1867AE] p-8">
               <LatestPopularBlogs
                 selected={selected}
                 setSelected={setSelected}
               />
             </div>
-
-            {/* Explore Topics */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-              <h2 className="text-xl font-semibold mb-3">Explore Topics</h2>
-              <div className="flex flex-col gap-2 text-sm">
-                {exploreTopicsData.map((topic, index) => (
-                  <Link
-                    key={index}
-                    href={""}
-                    className="text-[#1F3A52] hover:text-[#1867AE]"
-                  >
-                    <span className="mr-2 text-[#6B7280]">{index + 1}.</span>{" "}
-                    {topic}
-                  </Link>
-                ))}
-              </div>
-            </div>
           </aside>
-        </div>{" "}
-        {/* end top grid */}
-      </div>{" "}
+        </div>
+      </div>
       {/* end wrapper */}
       <Footer />
     </div>

@@ -54,20 +54,26 @@ const LatestPopularBlogs = ({ selected, setSelected }: IProps) => {
 
   return (
     <>
-      <div className="flex w-full mb-6">
+      <div className="flex w-full items-center justify-around mb-8 border-b border-gray-100 pb-4">
         <button
-          className={`flex-1 py-1.5 transition-all font-medium duration-300 ${selected === 1 ? "bg-gradient-to-t from-[#1F3A52] to-[#4682B8] rounded-full text-white shadow-md" : ""}`}
+          className={`px-8 py-2.5 transition-all font-bold text-[17px] duration-300 ${
+            selected === 1
+              ? "bg-[#1F3A52] text-white rounded-full shadow-lg"
+              : "text-gray-900 hover:text-[#1867AE]"
+          }`}
           onClick={() => setSelected(1)}
         >
-          {" "}
-          Latest{" "}
+          Latest
         </button>
         <button
-          className={`flex-1 py-1.5 transition-all font-medium duration-300 ${selected === 0 ? "bg-gradient-to-t from-[#1F3A52] to-[#4682B8] rounded-full text-white shadow-md" : ""}`}
+          className={`px-8 py-2.5 transition-all font-bold text-[17px] duration-300 ${
+            selected === 0
+              ? "bg-[#1F3A52] text-white rounded-full shadow-lg"
+              : "text-gray-900 hover:text-[#1867AE]"
+          }`}
           onClick={() => setSelected(0)}
         >
-          {" "}
-          Popular{" "}
+          Popular
         </button>
       </div>
       {/* Loading State */}

@@ -15,26 +15,33 @@ export default function SideCard(props: IProps) {
     router.push(`/blogs/${props.id}`);
   };
   return (
-    <div>
+    <div className="w-full">
       <div
-        className="w-full p-2 flex items-center cursor-pointer"
+        className="w-full py-4 flex items-center cursor-pointer group"
         onClick={handleClick}
       >
-        <Image
-          className="w-[60px] h-[60px] rounded-full"
-          src={props.coverImageUrl || "/images/blog.jpg"}
-          alt="Blog_image"
-          width={100}
-          height={100}
-        />
-        <div className="ml-2">
-          <p className="">{props.title}</p>
-          <span className="text-gray-500 text-sm">
-            {new Date(props.createdAt).toDateString()}
+        <div className="relative w-14 h-14 flex-shrink-0">
+          <Image
+            className="rounded-full object-cover border border-gray-100"
+            src={props.coverImageUrl || "/images/blog.jpg"}
+            alt="Blog_image"
+            fill
+          />
+        </div>
+        <div className="ml-4 flex flex-col gap-1">
+          <p className="text-[15px] font-bold text-gray-900 leading-tight group-hover:text-[#1867AE] transition-colors">
+            {props.title}
+          </p>
+          <span className="text-gray-400 text-xs font-medium">
+            {new Date(props.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
           </span>
         </div>
       </div>
-      {props.needDivider && <hr />}
+      {props.needDivider && <hr className="border-gray-100" />}
     </div>
   );
 }

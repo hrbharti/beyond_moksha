@@ -14,18 +14,23 @@ export default function BlogCard({ id, title, image }: IProps) {
   };
 
   return (
-    <div onClick={handleClick} className="border rounded-lg cursor-pointer">
-      <div className="w-full overflow-hidden rounded-md">
+    <div
+      onClick={handleClick}
+      className="border border-black rounded-xl cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg group flex flex-col h-full"
+    >
+      <div className="w-full bg-[#E5E7EB] border-b border-black">
         <Image
           src={image || "/images/blog.jpg"}
           alt="Blog image"
           width={400}
-          height={280}
-          className="w-full h-[280px] object-cover hover:scale-105 transition-transform duration-300"
+          height={200}
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
-      <p className="p-4 font-medium hover:text-[#4682B8]">{title}</p>
+      <div className="p-5 flex-grow flex items-center justify-center text-center">
+        <h3 className="text-lg font-bold text-black leading-tight">{title}</h3>
+      </div>
     </div>
   );
 }
