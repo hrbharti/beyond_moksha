@@ -238,7 +238,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 className="w-full h-8"
                 style={{ accentColor: accentColor } as any}
               >
-                <source src="" type="audio/mpeg" />
+                <source src="/audios/audio1.webm" type="audio/webm" />
                 Your browser does not support the audio element.
               </audio>
             </div>
