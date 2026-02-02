@@ -9,6 +9,12 @@ interface ProfileSidebarProps {
   toggleSidebar: () => void;
   accentColor: string;
   setAccentColor: (color: string) => void;
+  textColor: string;
+  setTextColor: (color: string) => void;
+  backgroundColor: string;
+  setBackgroundColor: (color: string) => void;
+  language: string;
+  setLanguage: (lang: string) => void;
   isEditing: boolean;
 }
 
@@ -17,6 +23,12 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   toggleSidebar,
   accentColor,
   setAccentColor,
+  textColor,
+  setTextColor,
+  backgroundColor,
+  setBackgroundColor,
+  language,
+  setLanguage,
   isEditing,
 }) => {
   const navItems = [
@@ -95,40 +107,59 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 
         <div className="flex-1 overflow-y-auto px-6 space-y-8">
           {/* Navigation Links */}
-          <nav className="space-y-2">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
-              Menu
-            </h3>
-            {navItems.map((item) => {
-              const isActive = activeSection === item.href;
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group
-                    ${
-                      isActive
-                        ? "text-white shadow-lg shadow-gray-200"
-                        : "text-gray-600 hover:bg-gray-50"
-                    }`}
-                  style={{
-                    backgroundColor: isActive ? accentColor : undefined,
-                  }}
-                >
-                  <span className="font-medium">{item.name}</span>
-                </a>
-              );
-            })}
-          </nav>
+          {!isEditing && (
+            <nav className="space-y-2">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+                Menu
+              </h3>
+              {navItems.map((item) => {
+                const isActive = activeSection === item.href;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group
+                      ${
+                        isActive
+                          ? "text-white shadow-lg shadow-gray-200"
+                          : "text-gray-600 hover:bg-gray-50"
+                      }`}
+                    style={{
+                      backgroundColor: isActive ? accentColor : undefined,
+                    }}
+                  >
+                    <span className="font-medium">{item.name}</span>
+                  </a>
+                );
+              })}
+            </nav>
+          )}
 
           {isEditing && (
-            <div className="space-y-6 pt-6 border-t border-gray-100">
+            <div className="space-y-6 pt-6">
               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 flex items-center gap-2">
                 <Settings size={14} /> Personalization
               </h3>
 
-              {/* Colors */}
+              {/* Colors & Language */}
               <div className="space-y-4 px-2">
+                {/* Language */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Settings size={16} /> Default Language
+                  </label>
+                  <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                    className="w-full h-10 px-3 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all"
+                    style={{ borderColor: accentColor + "40" }}
+                  >
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                  </select>
+                </div>
+
+                {/* Accent Color */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                     <Palette size={16} /> Accent Color
@@ -142,6 +173,42 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
                     />
                     <span className="text-xs text-gray-500 font-mono">
                       {accentColor}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Text Color */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Palette size={16} /> Text Color
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="color"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      className="h-10 w-10 rounded-lg cursor-pointer border-0 p-0 bg-transparent"
+                    />
+                    <span className="text-xs text-gray-500 font-mono">
+                      {textColor}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Background Color */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Palette size={16} /> Background Color
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="color"
+                      value={backgroundColor}
+                      onChange={(e) => setBackgroundColor(e.target.value)}
+                      className="h-10 w-10 rounded-lg cursor-pointer border-0 p-0 bg-transparent"
+                    />
+                    <span className="text-xs text-gray-500 font-mono">
+                      {backgroundColor}
                     </span>
                   </div>
                 </div>

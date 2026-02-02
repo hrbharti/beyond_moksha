@@ -38,8 +38,10 @@ interface Tribute {
   profileImageUrl?: string;
   bannerUrl?: string;
   isPublic: boolean;
+  playAudio: boolean;
   language?: string;
   textColor?: string;
+  backgroundColor?: string;
   accentColor?: string;
   familyMembers?: any;
   timelineEvents?: any[];
@@ -59,7 +61,9 @@ function ProfileContent() {
 
   // Derived state for personalization to avoid deep nesting access in render
   const textColor = tribute?.textColor || "#000000";
+  const backgroundColor = tribute?.backgroundColor || "#F9FAFB";
   const accentColor = tribute?.accentColor || "#D4A043";
+  const language = tribute?.language || "English";
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -158,13 +162,19 @@ function ProfileContent() {
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         accentColor={accentColor}
         setAccentColor={(val) => handleUpdate("accentColor", val)}
+        textColor={textColor}
+        setTextColor={(val) => handleUpdate("textColor", val)}
+        backgroundColor={backgroundColor}
+        setBackgroundColor={(val) => handleUpdate("backgroundColor", val)}
+        language={language}
+        setLanguage={(val) => handleUpdate("language", val)}
         isEditing={isEditing}
       />
 
       {/* Main Content Wrapper */}
       <div
         className={`transition-all duration-500 ease-in-out ${isSidebarOpen ? "md:ml-80" : "ml-0"}`}
-        style={{ color: textColor }}
+        style={{ color: textColor, backgroundColor: backgroundColor }}
       >
         {/* Mobile Hamburger Menu */}
         <button
@@ -256,6 +266,7 @@ function ProfileContent() {
           tribute={tribute}
           isEditing={isEditing}
           accentColor={accentColor}
+          textColor={textColor}
           onUpdate={handleUpdate}
         />
 
@@ -264,6 +275,7 @@ function ProfileContent() {
             bio={tribute.bio}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onBioUpdate={(val) => handleUpdate("bio", val)}
           />
 
@@ -271,12 +283,14 @@ function ProfileContent() {
             items={tribute.timelineEvents || []}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onUpdate={(val) => handleUpdate("timelineEvents", val)}
           />
           <Gallery
             images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onUpdate={(val) => handleUpdate("galleryImages", val)}
           />
           <MemoryWall
@@ -284,6 +298,7 @@ function ProfileContent() {
             name={tribute.name}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onUpdate={(val) => handleUpdate("memories", val)}
           />
           <FamilyTree
@@ -294,6 +309,7 @@ function ProfileContent() {
             groups={tribute.familyMembers || []}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onUpdateGroup={(index, newGroup) => {
               const currentGroups = Array.isArray(tribute.familyMembers)
                 ? [...tribute.familyMembers]
@@ -314,6 +330,7 @@ function ProfileContent() {
             name={tribute.name}
             isEditing={isEditing}
             accentColor={accentColor}
+            textColor={textColor}
             onUpdate={(val) => handleUpdate("events", val)}
           />
         </div>

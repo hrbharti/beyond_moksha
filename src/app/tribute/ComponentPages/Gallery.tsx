@@ -8,6 +8,7 @@ interface GalleryProps {
   images?: string[];
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (images: string[]) => void;
 }
 
@@ -15,6 +16,7 @@ const Gallery: React.FC<GalleryProps> = ({
   images = [],
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
 }) => {
   const [viewMode, setViewMode] = useState<"all" | "slideshow">("all");
@@ -31,7 +33,10 @@ const Gallery: React.FC<GalleryProps> = ({
     <div id="gallery" className="w-full max-w-6xl mt-24">
       {/* Title */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl md:text-5xl font-serif text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950">
+        <h1
+          className="text-2xl sm:text-4xl md:text-5xl font-serif pb-4 inline-block border-b-2"
+          style={{ borderColor: accentColor, color: textColor }}
+        >
           Gallery
         </h1>
       </div>
@@ -41,15 +46,13 @@ const Gallery: React.FC<GalleryProps> = ({
         <button
           onClick={() => setViewMode("all")}
           className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${
-            viewMode === "all"
-              ? "text-white"
-              : "border-[#1F3A4B] text-[#1F3A4B] hover:bg-[#1F3A4B]/10"
+            viewMode === "all" ? "text-white" : "hover:bg-[#1F3A4B]/10"
           }`}
-          style={
-            viewMode === "all"
-              ? { backgroundColor: accentColor, borderColor: accentColor }
-              : {}
-          }
+          style={{
+            borderColor: viewMode === "all" ? accentColor : textColor + "66",
+            color: viewMode === "all" ? "white" : textColor,
+            backgroundColor: viewMode === "all" ? accentColor : "transparent",
+          }}
         >
           All
         </button>
@@ -57,15 +60,15 @@ const Gallery: React.FC<GalleryProps> = ({
         <button
           onClick={() => setViewMode("slideshow")}
           className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${
-            viewMode === "slideshow"
-              ? "text-white"
-              : "border-[#1F3A4B] text-[#1F3A4B] hover:bg-[#1F3A4B]/10"
+            viewMode === "slideshow" ? "text-white" : "hover:bg-[#1F3A4B]/10"
           }`}
-          style={
-            viewMode === "slideshow"
-              ? { backgroundColor: accentColor, borderColor: accentColor }
-              : {}
-          }
+          style={{
+            borderColor:
+              viewMode === "slideshow" ? accentColor : textColor + "66",
+            color: viewMode === "slideshow" ? "white" : textColor,
+            backgroundColor:
+              viewMode === "slideshow" ? accentColor : "transparent",
+          }}
         >
           Slide Show
         </button>

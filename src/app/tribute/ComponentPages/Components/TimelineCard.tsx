@@ -18,6 +18,7 @@ interface TimelineCardProps {
   isLast?: boolean;
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (updated: TimelineItem) => void;
   onDelete?: () => void;
 }
@@ -31,6 +32,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
   isLast,
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
   onDelete,
 }) => {
@@ -62,7 +64,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
           <h2
             className="text-2xl md:text-3xl text-transparent bg-clip-text leading-tight"
             style={{
-              backgroundImage: `linear-gradient(to bottom, ${accentColor}, #1F3A4B)`,
+              backgroundImage: `linear-gradient(to bottom, ${accentColor}, ${textColor})`,
             }}
           >
             {year}
@@ -78,17 +80,34 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
             placeholder="Full Date"
           />
         ) : (
-          <p className="text-sm md:text-base text-[#1F3A4B]/70">{date}</p>
+          <p
+            className="text-sm md:text-base"
+            style={{ color: textColor + "B3" }}
+          >
+            {date}
+          </p>
         )}
 
         {/* Vertical line */}
         {!isLast && (
-          <div className="hidden md:block w-[1px] h-16 bg-[#1F3A4B]/60 mt-2 ml-[0.6rem]"></div>
+          <div
+            className="hidden md:block w-[1px] h-16 mt-2 ml-[0.6rem]"
+            style={{ backgroundColor: textColor + "99" }}
+          ></div>
         )}
       </div>
 
       {/* Right Column - Content */}
-      <div className="relative flex-1 border border-[#1F3A4B]/60 rounded-md p-4 md:p-6 bg-white text-[#1F3A4B] font-serif before:content-[''] before:absolute before:left-[-10px] md:before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:border-y-[10px] md:before:border-y-[12px] before:border-y-transparent before:border-r-[10px] md:before:border-r-[12px] before:border-r-[#1F3A4B]/60 rounded-r-md">
+      <div
+        className="relative flex-1 border rounded-md p-4 md:p-6 bg-white font-serif before:content-[''] before:absolute before:left-[-10px] md:before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:border-y-[10px] md:before:border-y-[12px] before:border-y-transparent before:border-r-[10px] md:before:border-r-[12px] rounded-r-md"
+        style={
+          {
+            color: textColor,
+            borderColor: textColor + "99",
+            borderRightColor: textColor + "99", // Ensure the arrow matches
+          } as any
+        }
+      >
         {isEditing ? (
           <div className="space-y-2">
             <input
@@ -101,14 +120,16 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
             <textarea
               value={description}
               onChange={(e) => handleChange("description", e.target.value)}
-              className="text-sm md:text-base text-[#1F3A4B]/80 bg-transparent border border-gray-100 rounded p-1 w-full outline-none focus:border-blue-300"
+              className="text-sm md:text-base bg-transparent border border-gray-100 rounded p-1 w-full outline-none focus:border-blue-300"
+              style={{ color: textColor + "CC" }}
               placeholder="Description"
             />
             <input
               type="text"
               value={location}
               onChange={(e) => handleChange("location", e.target.value)}
-              className="text-xs md:text-sm italic text-[#1F3A4B]/60 bg-transparent border-b border-gray-100 focus:border-blue-500 outline-none w-full"
+              className="text-xs md:text-sm italic bg-transparent border-b border-gray-100 focus:border-blue-500 outline-none w-full"
+              style={{ color: textColor + "99" }}
               placeholder="Location"
             />
           </div>
@@ -116,12 +137,18 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
           <>
             <h3 className="text-base md:text-lg font-semibold">{title}</h3>
             {description && (
-              <p className="text-sm md:text-base text-[#1F3A4B]/80 mt-1 whitespace-pre-line">
+              <p
+                className="text-sm md:text-base mt-1 whitespace-pre-line"
+                style={{ color: textColor + "CC" }}
+              >
                 {description}
               </p>
             )}
             {location && (
-              <p className="text-xs md:text-sm italic text-[#1F3A4B]/60 mt-1">
+              <p
+                className="text-xs md:text-sm italic mt-1"
+                style={{ color: textColor + "99" }}
+              >
                 {location}
               </p>
             )}

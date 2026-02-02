@@ -13,6 +13,7 @@ interface TimelineSectionProps {
   items?: TimelineItem[];
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (items: TimelineItem[]) => void;
 }
 
@@ -20,6 +21,7 @@ const TimelineSection: React.FC<TimelineSectionProps> = ({
   items = [],
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
 }) => {
   const handleAddItem = () => {
@@ -52,14 +54,13 @@ const TimelineSection: React.FC<TimelineSectionProps> = ({
   return (
     <div
       id="timeline"
-      className="w-full text-[#1F3A4B] py-12 sm:py-16 lg:py-20 font-serif"
+      className="w-full py-12 sm:py-16 lg:py-20 font-serif"
+      style={{ color: textColor }}
     >
       <div className="flex justify-between items-center mb-12">
         <h1
-          className="text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text"
-          style={{
-            backgroundImage: `linear-gradient(to bottom, ${accentColor}, #1F3A4B)`,
-          }}
+          className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
+          style={{ borderColor: accentColor, color: textColor }}
         >
           Timeline
         </h1>
@@ -88,6 +89,8 @@ const TimelineSection: React.FC<TimelineSectionProps> = ({
             location={item.location}
             isLast={index === items.length - 1}
             isEditing={isEditing}
+            accentColor={accentColor}
+            textColor={textColor}
             onUpdate={(updated) => handleUpdateItem(index, updated)}
             onDelete={() => handleDeleteItem(index)}
           />

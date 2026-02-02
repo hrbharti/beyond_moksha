@@ -15,6 +15,7 @@ interface EventsSectionProps {
   name?: string;
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (events: EventItem[]) => void;
 }
 
@@ -22,6 +23,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
   events = [],
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
 }) => {
   const [mounted, setMounted] = useState(false);
@@ -63,20 +65,25 @@ const EventsSection: React.FC<EventsSectionProps> = ({
   return (
     <div
       id="events"
-      className="w-full md:w-5/6 text-[#1F3A4B] font-serif py-12 sm:py-16 lg:py-20"
+      className="w-full md:w-5/6 font-serif py-12 sm:py-16 lg:py-20"
+      style={{ color: textColor }}
     >
       <h1
-        className="text-3xl sm:text-5xl md:text-5xl text-transparent bg-clip-text mb-10"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, ${accentColor}, #1F3A4B)`,
-        }}
+        className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
+        style={{ borderColor: accentColor, color: textColor }}
       >
         Events
       </h1>
 
       {/* Main Event Card */}
-      <div className="border border-[#1F3A4B]/40 rounded-md p-6 sm:p-8 md:p-10 flex flex-col space-y-6 bg-white relative group/ev">
-        <div className="space-y-4 leading-relaxed text-[#1F3A4B]/90">
+      <div
+        className="border rounded-md p-6 sm:p-8 md:p-10 flex flex-col space-y-6 bg-white relative group/ev"
+        style={{ borderColor: textColor + "66" }}
+      >
+        <div
+          className="space-y-4 leading-relaxed"
+          style={{ color: textColor + "E6" }} // 90%
+        >
           {isEditing ? (
             <div className="space-y-4">
               <h3 className="font-sans font-medium text-blue-900 mb-2">
@@ -121,7 +128,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                 ))}
               </div>
             ) : (
-              <p className="text-[#1F3A4B]/90">
+              <p style={{ color: textColor + "E6" }}>
                 {event?.locationLines.map((line, i) => (
                   <span key={i}>
                     {line}
@@ -149,7 +156,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                 placeholder="e.g. Sunday, Feb 10, 2026 - 10:30 AM"
               />
             ) : (
-              <p className="text-[#1F3A4B]/90">{event?.dateTime}</p>
+              <p style={{ color: textColor + "E6" }}>{event?.dateTime}</p>
             )}
           </div>
 
@@ -180,22 +187,25 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                 Click here
               </a>
             ) : (
-              <span className="text-[#1F3A4B]/90">None</span>
+              <span style={{ color: textColor + "E6" }}>None</span>
             )}
           </div>
         </div>
 
         {!isEditing && (
           <>
-            <hr className="border-t border-[#1F3A4B]/30 my-6 sm:my-8" />
+            <hr
+              className="border-t my-6 sm:my-8"
+              style={{ borderColor: textColor + "4D" }} // 30%
+            />
             {/* RSVP Section */}
             <div className="space-y-6">
-              <h2
-                className="text-xl sm:text-2xl font-semibold"
-                style={{ color: accentColor }}
+              <h1
+                className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
+                style={{ borderColor: accentColor, color: textColor }}
               >
                 Confirm Attendance
-              </h2>
+              </h1>
 
               {/* Form */}
               <form className="flex flex-col space-y-6">
@@ -207,7 +217,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                     </label>
                     <input
                       type="text"
-                      className="border border-[#1F3A4B]/40 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-[#D4A043]"
+                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                      style={{ borderColor: textColor + "66" }}
                     />
                   </div>
                   <div className="flex flex-col w-full sm:w-1/2">
@@ -216,14 +227,21 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                     </label>
                     <input
                       type="text"
-                      className="border border-[#1F3A4B]/40 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-[#D4A043]"
+                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                      style={{ borderColor: textColor + "66" }}
                     />
                   </div>
                   <div className="flex flex-col w-full sm:w-auto">
                     <label className="text-sm mb-1 font-medium text-transparent">
                       Status
                     </label>
-                    <select className="border border-[#1F3A4B]/40 rounded-md p-2 text-[#1F3A4B]/80">
+                    <select
+                      className="border rounded-md p-2"
+                      style={{
+                        borderColor: textColor + "66",
+                        color: textColor + "CC",
+                      }}
+                    >
                       <option>Attending</option>
                       <option>Not attending</option>
                     </select>
@@ -233,7 +251,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                 {/* Add Guest Button */}
                 <button
                   type="button"
-                  className="flex items-center justify-center space-x-2 border border-[#1F3A4B]/40 rounded-md py-2 px-4 w-fit hover:bg-[#1F3A4B]/5 transition"
+                  className="flex items-center justify-center space-x-2 border rounded-md py-2 px-4 w-fit hover:bg-black/5 transition"
+                  style={{ borderColor: textColor + "66" }}
                 >
                   <span className="text-lg">+</span>
                   <span>Add guest</span>
@@ -245,7 +264,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                     <label className="text-sm mb-1 font-medium">E-mail</label>
                     <input
                       type="email"
-                      className="border border-[#1F3A4B]/40 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-[#D4A043]"
+                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                      style={{ borderColor: textColor + "66" }}
                     />
                   </div>
                   <div className="flex flex-col w-full sm:w-1/2">
@@ -254,7 +274,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                     </label>
                     <input
                       type="tel"
-                      className="border border-[#1F3A4B]/40 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-[#D4A043]"
+                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                      style={{ borderColor: textColor + "66" }}
                     />
                   </div>
                 </div>

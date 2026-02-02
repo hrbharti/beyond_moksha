@@ -8,6 +8,7 @@ interface FamilyCardProps {
   imageUrl?: string;
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (field: "name" | "imageUrl", value: string) => void;
   onDelete?: () => void;
 }
@@ -17,6 +18,7 @@ const FamilyCard: React.FC<FamilyCardProps> = ({
   imageUrl,
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
   onDelete,
 }) => {
@@ -63,11 +65,14 @@ const FamilyCard: React.FC<FamilyCardProps> = ({
             value={name}
             onChange={(e) => onUpdate && onUpdate("name", e.target.value)}
             placeholder="Name"
-            className="w-full text-center text-sm sm:text-base font-medium text-[#1F3A4B] border-b border-gray-300 outline-none bg-transparent"
-            style={{ "--tw-ring-color": accentColor } as any}
+            className="w-full text-center text-sm sm:text-base font-medium border-b border-gray-300 outline-none bg-transparent"
+            style={{ "--tw-ring-color": accentColor, color: textColor } as any}
           />
         ) : (
-          <p className="text-sm sm:text-base font-medium text-[#1F3A4B] line-clamp-1">
+          <p
+            className="text-sm sm:text-base font-medium line-clamp-1"
+            style={{ color: textColor }}
+          >
             {name}
           </p>
         )}

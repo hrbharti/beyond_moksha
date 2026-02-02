@@ -8,6 +8,7 @@ interface MemoryCardProps {
   message: string;
   author: string;
   accentColor?: string;
+  textColor?: string;
 }
 
 const MemoryCard: React.FC<MemoryCardProps> = ({
@@ -15,18 +16,29 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
   message,
   author,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
 }) => {
   return (
-    <div className="border border-[#1F3A4B] rounded-md p-6 mb-8 hover:shadow-sm transition-shadow duration-300">
+    <div
+      className="border rounded-md p-6 mb-8 hover:shadow-sm transition-shadow duration-300"
+      style={{ borderColor: textColor + "66" }}
+    >
       <div className="flex justify-between items-start mb-4">
-        <p className="italic text-gray-600 text-sm">{date}</p>
+        <p className="italic text-sm" style={{ color: textColor + "99" }}>
+          {date}
+        </p>
         <Heart
-          className="w-5 h-5 text-gray-700 transition-colors cursor-pointer"
-          style={{ "--tw-heart-hover": accentColor } as any}
+          className="w-5 h-5 transition-colors cursor-pointer"
+          style={
+            { "--tw-heart-hover": accentColor, color: textColor + "B3" } as any
+          }
         />
       </div>
 
-      <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+      <p
+        className="leading-relaxed whitespace-pre-line"
+        style={{ color: textColor + "E6" }}
+      >
         {message}
       </p>
 

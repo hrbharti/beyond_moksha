@@ -33,6 +33,7 @@ interface Tribute {
   location?: string;
   profileImageUrl?: string;
   bannerUrl?: string;
+  playAudio?: boolean;
 }
 
 const initialTributeData: Tribute = {
@@ -43,6 +44,7 @@ const initialTributeData: Tribute = {
   location: "Varanasi, Uttar Pradesh",
   profileImageUrl: jackson.src,
   bannerUrl: banner1.src,
+  playAudio: true,
 };
 
 const initialBio = `Mrs. Radha Devi Sharma was a beacon of light, warmth, and grace. Her life was a testament to the power of kindness and the enduring strength of the human spirit. Born with a natural inclination towards helping others, she dedicated her years to nurturing her family and contributing to her community with selfless devotion.

@@ -22,12 +22,14 @@ interface Tribute {
   profileImageUrl?: string;
   bannerUrl?: string;
   isPublic: boolean;
+  playAudio: boolean;
   familyMembers?: any;
   timelineEvents?: any[];
   galleryImages?: string[];
   memories?: any[];
   events?: any[];
   textColor?: string;
+  backgroundColor?: string;
   accentColor?: string;
 }
 
@@ -44,6 +46,7 @@ export default function PublicTributePage({
 
   // Derived state for personalization
   const textColor = tribute?.textColor || "#000000";
+  const backgroundColor = tribute?.backgroundColor || "#F9FAFB";
   const accentColor = tribute?.accentColor || "#D4A043";
 
   useEffect(() => {
@@ -100,31 +103,42 @@ export default function PublicTributePage({
 
   return (
     <div
-      className="min-h-screen bg-gray-50 font-sans"
-      style={{ color: textColor }}
+      className="min-h-screen font-sans"
+      style={{ color: textColor, backgroundColor: backgroundColor }}
     >
       <Suspense fallback={<div>Loading...</div>}>
-        <HeroSection tribute={tribute} accentColor={accentColor} />
+        <HeroSection
+          tribute={tribute}
+          accentColor={accentColor}
+          textColor={textColor}
+        />
       </Suspense>
 
       <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
         <div className="max-w-6xl mx-auto space-y-24">
-          <Memorial bio={tribute.bio} accentColor={accentColor} />
+          <Memorial
+            bio={tribute.bio}
+            accentColor={accentColor}
+            textColor={textColor}
+          />
 
           <TimelineSection
             items={tribute.timelineEvents || []}
             accentColor={accentColor}
+            textColor={textColor}
           />
 
           <Gallery
             images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
             accentColor={accentColor}
+            textColor={textColor}
           />
 
           <MemoryWall
             memories={tribute.memories || []}
             name={tribute.name}
             accentColor={accentColor}
+            textColor={textColor}
           />
 
           <FamilyTree
@@ -134,12 +148,14 @@ export default function PublicTributePage({
             }}
             groups={tribute.familyMembers || []}
             accentColor={accentColor}
+            textColor={textColor}
           />
 
           <EventsSection
             events={tribute.events || []}
             name={tribute.name}
             accentColor={accentColor}
+            textColor={textColor}
           />
 
           {/* Call to Action Section */}

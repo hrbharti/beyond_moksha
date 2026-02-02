@@ -16,24 +16,29 @@ interface Tribute {
   location?: string;
   profileImageUrl?: string;
   bannerUrl?: string;
+  playAudio?: boolean;
 }
 
 interface HeroSectionProps {
   tribute?: Tribute;
   isEditing?: boolean;
   accentColor?: string;
-  onUpdate?: (field: keyof Tribute, value: string) => void;
+  textColor?: string;
+  onUpdate?: (field: keyof Tribute, value: any) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   tribute,
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
 }) => {
   const searchParams = useSearchParams();
   const theme = searchParams.get("theme");
-  const [isAudioVisible, setIsAudioVisible] = useState(true);
+  const [isAudioVisible, setIsAudioVisible] = useState(
+    tribute?.playAudio ?? true,
+  );
 
   // Fallback banner logic based on theme if no custom banner
   let bannerSrc = banner1;
@@ -67,7 +72,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   return (
-    <section className="relative flex flex-col w-full text-[#1F3A4B] font-serif overflow-hidden group/hero bg-white">
+    <section
+      className="relative flex flex-col w-full font-serif overflow-hidden group/hero bg-white"
+      style={{ color: textColor }}
+    >
       {/* Banner & Profile Photo Wrapper */}
       <div className="relative w-full">
         <div className="relative w-full h-64 sm:h-72 md:h-96 overflow-hidden">
@@ -174,7 +182,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 type="text"
                 value={tribute.name}
                 onChange={(e) => onUpdate && onUpdate("name", e.target.value)}
-                className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#1F3A4B] bg-gray-50 border-b border-gray-300 focus:border-blue-500 outline-none w-full placeholder-gray-400"
+                className="text-2xl sm:text-3xl md:text-5xl font-bold bg-gray-50 border-b border-gray-300 focus:border-blue-500 outline-none w-full placeholder-gray-400"
+                style={{ color: textColor }}
                 placeholder="Full Name"
               />
               <div className="flex gap-2 items-center justify-center sm:justify-start">
@@ -189,7 +198,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     className="text-sm border rounded px-1 py-0.5"
                   />
                 </div>
-                <span className="text-[#1F3A4B]/80">—</span>
+                <span style={{ color: textColor }}>—</span>
                 <div className="flex flex-col">
                   <label className="text-[10px] text-gray-500 font-sans uppercase">
                     Passed
@@ -208,19 +217,29 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 onChange={(e) =>
                   onUpdate && onUpdate("location", e.target.value)
                 }
-                className="text-sm sm:text-base text-[#1F3A4B]/70 bg-gray-50 border-b border-gray-300 focus:border-blue-500 outline-none w-full md:w-1/2 placeholder-gray-400"
+                className="text-sm sm:text-base bg-gray-50 border-b border-gray-300 focus:border-blue-500 outline-none w-full md:w-1/2 placeholder-gray-400"
+                style={{ color: textColor + "B3" }} // 70% opacity
                 placeholder="Location (City, Country)"
               />
             </div>
           ) : (
             <div className="space-y-1 sm:space-y-2">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl text-[#1F3A4B] font-serif leading-tight">
+              <h1
+                className="text-3xl sm:text-5xl md:text-6xl font-serif leading-tight"
+                style={{ color: textColor }}
+              >
                 {tribute.name}
               </h1>
-              <p className="text-base sm:text-lg text-[#1F3A4B]/70 font-sans">
+              <p
+                className="text-base sm:text-lg font-sans"
+                style={{ color: textColor + "B3" }}
+              >
                 {tribute.dateOfBirth} — {tribute.dateOfDeath || "Present"}
               </p>
-              <p className="text-sm sm:text-base text-[#1F3A4B]/60 font-sans">
+              <p
+                className="text-sm sm:text-base font-sans"
+                style={{ color: textColor + "99" }}
+              >
                 {tribute.location || "Location"}
               </p>
             </div>
@@ -228,45 +247,54 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Audio Toggle Controls and Player */}
-        <div className="flex flex-row items-center justify-center sm:justify-start gap-4 mt-8 md:mt-0">
-          {/* Audio Player */}
-          {isAudioVisible && (
-            <div className="w-48 sm:w-56 md:w-64 h-10 flex items-center bg-gray-100 rounded-full px-4">
-              <audio
-                controls
-                autoPlay
-                className="w-full h-8"
-                style={{ accentColor: accentColor } as any}
-              >
-                <source src="/audios/audio1.webm" type="audio/webm" />
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          )}
-
-          {/* Toggle */}
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isAudioVisible}
-                onChange={(e) => setIsAudioVisible(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div
-                className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
-                style={{
-                  backgroundColor: isAudioVisible ? accentColor : undefined,
-                }}
-              ></div>
-            </label>
-            {isAudioVisible ? (
-              <Volume2 size={20} style={{ color: accentColor }} />
-            ) : (
-              <VolumeX size={20} className="text-[#1F3A4B]/40" />
+        {(isEditing || tribute.playAudio) && (
+          <div className="flex flex-row items-center justify-center sm:justify-start gap-4 mt-8 md:mt-0">
+            {/* Audio Player */}
+            {isAudioVisible && (
+              <div className="w-48 sm:w-56 md:w-64 h-10 flex items-center bg-gray-100 rounded-full px-4">
+                <audio
+                  controls
+                  autoPlay
+                  loop
+                  className="w-full h-8"
+                  style={{ accentColor: accentColor } as any}
+                >
+                  <source src="/audios/audio1.webm" type="audio/webm" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
             )}
+
+            {/* Toggle */}
+            <div className="flex items-center gap-3">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isAudioVisible}
+                  onChange={(e) => {
+                    const val = e.target.checked;
+                    setIsAudioVisible(val);
+                    if (isEditing && onUpdate) {
+                      onUpdate("playAudio", val);
+                    }
+                  }}
+                  className="sr-only peer"
+                />
+                <div
+                  className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+                  style={{
+                    backgroundColor: isAudioVisible ? accentColor : undefined,
+                  }}
+                ></div>
+              </label>
+              {isAudioVisible ? (
+                <Volume2 size={20} style={{ color: accentColor }} />
+              ) : (
+                <VolumeX size={20} style={{ color: textColor + "66" }} />
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

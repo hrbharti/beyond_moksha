@@ -15,6 +15,7 @@ interface FamilyTreeProps {
   groups?: FamilyGroup[];
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdateCentralPerson?: (field: keyof FamilyMember, value: string) => void;
   onUpdateGroup?: (groupIndex: number, newGroup: FamilyGroup) => void;
   onAddGroup?: (newGroup: FamilyGroup) => void;
@@ -27,6 +28,7 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
   groups: rawGroups = [],
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdateCentralPerson,
   onUpdateGroup,
   onAddGroup,
@@ -105,20 +107,29 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
     return null;
 
   return (
-    <div id="family-tree" className="w-full font-serif py-12 sm:py-16">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950">
-        Family Tree
-      </h1>
-
-      {isEditing && (
-        <button
-          onClick={handleAddGroup}
-          className="px-4 py-2 text-white rounded-full text-sm font-sans hover:opacity-90 transition shadow-md"
-          style={{ backgroundColor: accentColor }}
+    <div
+      id="family-tree"
+      className="w-full font-serif py-12 sm:py-16"
+      style={{ color: textColor }}
+    >
+      <div className="flex justify-between items-center mb-12">
+        <h1
+          className="text-2xl sm:text-4xl md:text-5xl font-serif mb-8 sm:mb-12 pb-4 inline-block border-b-2"
+          style={{ borderColor: accentColor, color: textColor }}
         >
-          + Add Generation
-        </button>
-      )}
+          Family Tree
+        </h1>
+
+        {isEditing && (
+          <button
+            onClick={handleAddGroup}
+            className="px-4 py-2 text-white rounded-full text-sm font-sans hover:opacity-90 transition shadow-md"
+            style={{ backgroundColor: accentColor }}
+          >
+            + Add Generation
+          </button>
+        )}
+      </div>
 
       {/* Central Person */}
       {centralPerson && (
@@ -127,6 +138,8 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
             name={centralPerson.name}
             imageUrl={centralPerson.imageUrl}
             isEditing={isEditing}
+            textColor={textColor}
+            accentColor={accentColor}
             onUpdate={(field, val) =>
               onUpdateCentralPerson && onUpdateCentralPerson(field, val)
             }
@@ -142,6 +155,7 @@ const FamilyTree: React.FC<FamilyTreeProps> = ({
           members={group.members}
           isEditing={isEditing}
           accentColor={accentColor}
+          textColor={textColor}
           onUpdateMember={(
             mIndex: number,
             field: keyof FamilyMember,

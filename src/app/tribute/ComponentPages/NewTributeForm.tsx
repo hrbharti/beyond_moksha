@@ -30,6 +30,8 @@ export default function NewTributeForm({
     dopMonth: "",
     dopYear: "",
     username: "",
+    isPublic: true,
+    playAudio: true,
   });
 
   // Username Availability State
@@ -148,6 +150,8 @@ export default function NewTributeForm({
         dateOfBirth,
         dateOfDeath,
         username: memorialData.username || null,
+        isPublic: memorialData.isPublic,
+        playAudio: memorialData.playAudio,
       };
 
       await api.post("/tribute/", payload);
@@ -325,7 +329,6 @@ export default function NewTributeForm({
               </select>
             </div>
           </div>
-
           <div>
             <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
               Custom Profile URL{" "}
@@ -354,6 +357,62 @@ export default function NewTributeForm({
               {isCheckingUsername
                 ? "Checking availability..."
                 : usernameAvailability?.message}
+            </div>
+          </div>
+
+          <div className="space-y-4 pt-4 border-t border-gray-100">
+            <h3 className="text-sm font-semibold text-[#1F3A4B] uppercase tracking-wider px-1">
+              Privacy & Features
+            </h3>
+
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-[#1F3A4B]">
+                  Public Profile
+                </span>
+                <span className="text-xs text-gray-500">
+                  Allow anyone to view this memorial
+                </span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={memorialData.isPublic}
+                  onChange={(e) =>
+                    setMemorialData((prev) => ({
+                      ...prev,
+                      isPublic: e.target.checked,
+                    }))
+                  }
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D4A043]"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-[#1F3A4B]">
+                  Play Audio
+                </span>
+                <span className="text-xs text-gray-500">
+                  Enable voice/audio on the memorial page
+                </span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={memorialData.playAudio}
+                  onChange={(e) =>
+                    setMemorialData((prev) => ({
+                      ...prev,
+                      playAudio: e.target.checked,
+                    }))
+                  }
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D4A043]"></div>
+              </label>
             </div>
           </div>
 

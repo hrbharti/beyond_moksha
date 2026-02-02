@@ -15,6 +15,7 @@ interface MemoryWallProps {
   name?: string;
   isEditing?: boolean;
   accentColor?: string;
+  textColor?: string;
   onUpdate?: (memories: Memory[]) => void;
 }
 
@@ -23,6 +24,7 @@ const MemoryWall: React.FC<MemoryWallProps> = ({
   name = "your loved one",
   isEditing = false,
   accentColor = "#D4A043",
+  textColor = "#1F3A4B",
   onUpdate,
 }) => {
   const [newMemory, setNewMemory] = useState<Memory>({
@@ -58,17 +60,24 @@ const MemoryWall: React.FC<MemoryWallProps> = ({
   if (!isEditing && (!memories || memories.length === 0)) return null;
 
   return (
-    <div id="memory-wall" className="w-full max-w-5xl text-[#1F3A4B] mt-24">
+    <div
+      id="memory-wall"
+      className="w-full max-w-5xl mt-24"
+      style={{ color: textColor }}
+    >
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10 space-y-6 md:space-y-0">
         <div>
-          <h1 className="text-3xl md:text-5xl font-serif mb-4 text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-950">
+          <h1
+            className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
+            style={{ borderColor: accentColor, color: textColor }}
+          >
             Memory Wall
           </h1>
-          <p className="text-gray-700 italic mb-2">
+          <p className="italic mb-2" style={{ color: textColor + "CC" }}>
             &quot;Those who live in our memories remain forever with us.&quot;
           </p>
-          <p className="text-gray-700">
+          <p style={{ color: textColor + "CC" }}>
             Please share your photos and memories of {name}.
           </p>
         </div>
@@ -130,6 +139,8 @@ const MemoryWall: React.FC<MemoryWallProps> = ({
               date={memory.date}
               message={memory.message}
               author={memory.author}
+              textColor={textColor}
+              accentColor={accentColor}
             />
             {isEditing && (
               <button
