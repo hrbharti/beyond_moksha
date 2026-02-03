@@ -14,7 +14,6 @@ import {
   Eye,
   Edit2,
   Share2,
-  LogOut,
   Save,
   X,
   ChevronLeft,
@@ -110,17 +109,6 @@ function ProfileContent() {
   const handleCancel = () => {
     setTribute(originalTribute);
     setIsEditing(false);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await api.post("/tribute/logout");
-      toast.success("Logged out successfully");
-      router.push("/tribute/login");
-    } catch (error) {
-      console.error("Logout failed", error);
-      toast.error("Failed to logout");
-    }
   };
 
   const handleShare = async () => {
@@ -251,13 +239,6 @@ function ProfileContent() {
               <Eye size={16} />{" "}
               <span className="hidden sm:inline">Public Profile</span>
             </Link>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-red-50/80 backdrop-blur-sm text-red-600 border border-red-200 rounded-full shadow-sm hover:bg-red-100 transition"
-            >
-              <LogOut size={16} />{" "}
-              <span className="hidden sm:inline">Logout</span>
-            </button>
           </div>
         )}
 

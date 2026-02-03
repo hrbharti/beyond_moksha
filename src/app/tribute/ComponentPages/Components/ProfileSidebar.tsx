@@ -118,17 +118,25 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
                   <a
                     key={item.name}
                     href={item.href}
-                    className={`flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group
+                    className={`relative flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group overflow-hidden
                       ${
                         isActive
-                          ? "text-white shadow-lg shadow-gray-200"
-                          : "text-gray-600 hover:bg-gray-50"
+                          ? "text-white shadow-md shadow-gray-200/50 scale-[1.02]"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                       }`}
                     style={{
                       backgroundColor: isActive ? accentColor : undefined,
                     }}
                   >
-                    <span className="font-medium">{item.name}</span>
+                    {isActive && (
+                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    )}
+                    <span className="font-medium relative z-10">
+                      {item.name}
+                    </span>
+                    {isActive && (
+                      <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    )}
                   </a>
                 );
               })}

@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Volume2, VolumeX, Camera } from "lucide-react";
+import { Volume2, VolumeX, Camera, Loader2 } from "lucide-react";
+import api from "@/lib/api/api";
+import { toast } from "sonner";
 import banner1 from "@public/images/banner1.png";
 import banner2 from "@public/images/banner2.jpg";
 import banner3 from "@public/images/banner3.jpg";
@@ -39,6 +41,59 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [isAudioVisible, setIsAudioVisible] = useState(
     tribute?.playAudio ?? true,
   );
+  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+  const [isUploadingProfile, setIsUploadingProfile] = useState(false);
+  const bannerInputRef = React.useRef<HTMLInputElement>(null);
+  const profileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "banner" | "avatar",
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size must be less than 10MB");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", type);
+
+    try {
+      if (type === "banner") setIsUploadingBanner(true);
+      else setIsUploadingProfile(true);
+
+      const response = await api.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { url } = response.data;
+
+      if (onUpdate) {
+        if (type === "banner") onUpdate("bannerUrl", url);
+        else onUpdate("profileImageUrl", url);
+      }
+
+      toast.success(
+        `${type === "banner" ? "Banner" : "Profile image"} updated successfully`,
+      );
+    } catch (error) {
+      console.error("Upload failed", error);
+      toast.error(
+        `Failed to upload ${type === "banner" ? "banner" : "profile image"}`,
+      );
+    } finally {
+      if (type === "banner") setIsUploadingBanner(false);
+      else setIsUploadingProfile(false);
+      // Reset input
+      e.target.value = "";
+    }
+  };
 
   // Fallback banner logic based on theme if no custom banner
   let bannerSrc = banner1;
@@ -95,19 +150,29 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             />
           )}
 
-          {isEditing && (
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10">
-              <button
-                onClick={() => {
-                  alert("Banner updated successfully!");
-                }}
-                className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition"
-              >
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10">
+            <button
+              onClick={() => bannerInputRef.current?.click()}
+              disabled={isUploadingBanner}
+              className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition"
+            >
+              {isUploadingBanner ? (
+                <Loader2 size={32} className="animate-spin" />
+              ) : (
                 <Camera size={32} />
-                <span className="text-sm font-sans mt-1">Change Banner</span>
-              </button>
-            </div>
-          )}
+              )}
+              <span className="text-sm font-sans mt-1">
+                {isUploadingBanner ? "Uploading..." : "Change Banner"}
+              </span>
+            </button>
+          </div>
+          <input
+            type="file"
+            ref={bannerInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={(e) => handleFileSelect(e, "banner")}
+          />
         </div>
 
         {/* Profile Photo - Overlapping Banner */}
@@ -134,32 +199,50 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           )}
 
-          {/* Profile Image Edit Overlay */}
           {isEditing && (
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer rounded-[2rem] sm:rounded-[2.5rem]">
               <button
-                onClick={() => {
-                  alert("Image updated successfully!");
-                }}
+                onClick={() => profileInputRef.current?.click()}
+                disabled={isUploadingProfile}
                 className="flex flex-col items-center text-white"
               >
-                <Camera size={24} />
+                {isUploadingProfile ? (
+                  <Loader2 size={24} className="animate-spin" />
+                ) : (
+                  <Camera size={24} />
+                )}
               </button>
             </div>
           )}
+          <input
+            type="file"
+            ref={profileInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={(e) => handleFileSelect(e, "avatar")}
+          />
         </div>
 
-        {/* Banner Edit Overlay */}
         {isEditing && (
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10">
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10 pointer-events-none">
+            {/* This overlay seems redundant with the one above, but if it was intended to catch clicks outside the inner div, we should handle it carefully. 
+                 Given the previous structure, I'll make it trigger the same banner input but ensure it doesn't block the profile photo.
+                 Actually, simpler to remove the redundancy or just hook it up. I'll hook it up.
+                 Adding pointer-events-none to the container to let clicks pass through to profile, BUT buttons need pointer-events-auto.
+             */}
             <button
-              onClick={() => {
-                alert("Banner updated successfully!");
-              }}
-              className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition"
+              onClick={() => bannerInputRef.current?.click()}
+              disabled={isUploadingBanner}
+              className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition pointer-events-auto"
             >
-              <Camera size={32} />
-              <span className="text-sm font-sans mt-1">Change Banner</span>
+              {isUploadingBanner ? (
+                <Loader2 size={32} className="animate-spin" />
+              ) : (
+                <Camera size={32} />
+              )}
+              <span className="text-sm font-sans mt-1">
+                {isUploadingBanner ? "Uploading..." : "Change Banner"}
+              </span>
             </button>
           </div>
         )}
