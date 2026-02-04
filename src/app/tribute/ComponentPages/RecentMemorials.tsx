@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import api from "@/lib/api/api";
 import {
   Carousel,
   CarouselContent,
@@ -9,17 +12,48 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const memorials = [
-  { name: "Ram Kumar", image: "/images/recentmemorial-1.jpeg" },
-  { name: "Shyam Kumar", image: "/images/recentmemorial-2.jpeg" },
-  { name: "Raj Kumar", image: "/images/recentmemorial-3.jpeg" },
-  { name: "Suresh Kumar", image: "/images/recentmemorial-4.jpeg" },
-  { name: "Mahesh Kumar", image: "/images/recentmemorial-5.jpeg" },
-  { name: "Sushant Singh", image: "/images/recentmemorial-6.png" },
-  { name: "Ray Stevenson", image: "/images/recentmemorial-7.png" },
-];
+interface Memorial {
+  id: string;
+  name: string;
+  profileImageUrl: string | null;
+  username: string;
+}
 
 const RecentMemorials = () => {
+  const [memorials, setMemorials] = useState<Memorial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecentMemorials = async () => {
+      try {
+        const response = await api.get("/tribute/recent");
+        setMemorials(response.data);
+      } catch (error) {
+        console.error("Error fetching recent memorials:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentMemorials();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="w-full bg-white py-12 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto bg-white rounded-3xl p-8 sm:p-12 relative shadow-xl border border-[#D4A043]">
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D4A043]"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (memorials.length === 0) {
+    return null; // Or show a default message/placeholder
+  }
+
   return (
     <section className="w-full bg-white py-12 px-4 sm:px-8">
       <div className="max-w-7xl mx-auto bg-white rounded-3xl p-8 sm:p-12 relative shadow-xl border border-[#D4A043]">
@@ -36,24 +70,34 @@ const RecentMemorials = () => {
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {memorials.map((item, index) => (
+              {memorials.map((item) => (
                 <CarouselItem
-                  key={index}
+                  key={item.id}
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                 >
-                  <div className="flex flex-col items-center">
-                    <div className="w-36 h-36 sm:w-44 sm:h-44 relative overflow-hidden bg-gray-200 shadow-md border-4 border-[#D4A043]/20 rounded-2xl transition-transform hover:scale-105 duration-300">
+                  <Link
+                    href={`/tribute/p/${item.username}`}
+                    className="flex flex-col items-center group cursor-pointer"
+                  >
+                    <div className="w-36 h-36 sm:w-44 sm:h-44 relative overflow-hidden bg-gray-200 shadow-md border-4 border-[#D4A043]/20 rounded-2xl transition-transform group-hover:scale-105 duration-300">
                       <Image
-                        src={item.image}
+                        src={
+                          item.profileImageUrl ||
+                          "/images/jackson.png"
+                        } // Fallback image needed
                         alt={item.name}
                         fill
                         className="object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/images/placeholder-profile.png"; // Client-side fallback
+                        }}
                       />
                     </div>
-                    <p className="mt-4 text-[#1F3A4B] text-sm sm:text-base font-medium text-center">
+                    <p className="mt-4 text-[#1F3A4B] text-sm sm:text-base font-medium text-center group-hover:text-[#D4A043] transition-colors">
                       {item.name}
                     </p>
-                  </div>
+                  </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
