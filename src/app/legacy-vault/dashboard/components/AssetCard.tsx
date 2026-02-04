@@ -4,8 +4,8 @@ import Image from "next/image";
 import React from "react";
 
 interface AssetCardProps {
-  icon: string,
-  label: string,
+  icon: React.ReactNode;
+  label: string;
   color: "green" | "pink" | "purple" | "beige";
 }
 
@@ -28,9 +28,7 @@ export default function AssetCard({ icon, label, color }: AssetCardProps) {
         cursor-pointer
       `}
     >
-      <div className="text-3xl">
-        <Image src={icon} alt={label} width={20} height={20} />
-      </div>
+      <div className="text-[#1F3A52]">{icon}</div>
       <p className="text-center font-medium text-[#1F3A52] text-sm">{label}</p>
     </div>
   );
