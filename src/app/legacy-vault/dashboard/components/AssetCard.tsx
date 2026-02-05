@@ -7,9 +7,15 @@ interface AssetCardProps {
   icon: React.ReactNode;
   label: string;
   color: "green" | "pink" | "purple" | "beige";
+  onClick?: () => void;
 }
 
-export default function AssetCard({ icon, label, color }: AssetCardProps) {
+export default function AssetCard({
+  icon,
+  label,
+  color,
+  onClick,
+}: AssetCardProps) {
   const colorClasses = {
     green: "bg-[#D4F1E8] border-[#A8E6D8]",
     pink: "bg-[#F5D8E8] border-[#EBBDD4]",
@@ -19,6 +25,7 @@ export default function AssetCard({ icon, label, color }: AssetCardProps) {
 
   return (
     <div
+      onClick={onClick}
       className={`
         ${colorClasses[color]}
         border-2 rounded-2xl p-6

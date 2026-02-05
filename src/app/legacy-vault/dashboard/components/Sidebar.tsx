@@ -1,7 +1,9 @@
-"use client";
-
-import { User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { LogOut } from "lucide-react";
 import Logo from "../../component/Logo";
+import { useRouter } from "next/navigation";
+import api from "@/lib/api/api";
+import { toast } from "sonner";
 
 interface SidebarProps {
   activeTab?: string;
@@ -14,6 +16,34 @@ export default function Sidebar({
   isOpen = false,
   onClose,
 }: SidebarProps & { isOpen?: boolean; onClose?: () => void }) {
+  const router = useRouter();
+  const [user, setUser] = useState<{ name: string; email: string } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await api.get("/auth/me");
+        setUser(res.data);
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+      toast.success("Logged out successfully");
+      router.push("/legacy-vault");
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Logout failed");
+    }
+  };
+
   const menuItems = [
     { id: "emotional-will", label: "Emotional Will" },
     { id: "asset-vault", label: "Asset Vault" },
@@ -34,7 +64,7 @@ export default function Sidebar({
       )}
 
       <div
-        className={`bg-gradient-to-b from-[#1C1F3B] to-[#1C1F3B] text-white h-screen flex flex-col shadow-lg
+        className={`bg-[#1C1F3B] text-white h-screen flex flex-col
         fixed inset-y-0 left-0 z-50 w-80 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:sticky md:top-0 md:inset-auto md:shadow-none
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
@@ -46,14 +76,14 @@ export default function Sidebar({
         </div>
 
         {/* Navigation Items */}
-        <nav className={`flex-1 py-8 flex flex-col gap-2 `}>
+        <nav className={`flex-1 py-8 flex flex-col gap-2`}>
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => onTabChange?.(item.id)}
               className={`px-4 py-6 rounded-r-xl transition text-center ${
                 activeTab === item.id
-                  ? "bg-[#B2C3F8] text-[#1C1F3B] scale-120 border-1 border-[#0866FF]"
+                  ? "bg-[#B2C3F8] text-[#1C1F3B]"
                   : "text-white hover:bg-white hover:text-black hover:bg-opacity-10"
               }`}
             >
@@ -63,18 +93,40 @@ export default function Sidebar({
         </nav>
 
         {/* Footer Profile Section */}
-        <div className="px-4 py-6 ">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-lg ">
-            <div className="w-10 h-10 rounded-full border-2  border-opacity-50 flex items-center justify-center flex-shrink-0">
-              <User />
+        <div className="px-4 py-6 border-t border-white/10">
+          {user ? (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5">
+              <div className="w-10 h-10 rounded-full border-2 border-white/50 flex items-center justify-center">
+                <span className="text-sm font-bold">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-sm font-medium truncate">
+                  {user.name}
+                </p>
+                <p className="text-white text-xs opacity-70 truncate">
+                  {user.email}
+                </p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 hover:bg-white/10 rounded-full transition text-white/70 hover:text-white"
+                title="Logout"
+              >
+                <LogOut size={18} />
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">
-                Name Surname
-              </p>
-              <p className="text-white text-xs opacity-70 truncate">subtitle</p>
+          ) : (
+            <div className="flex justify-center">
+              <button
+                onClick={() => router.push("/legacy-vault")}
+                className="text-white/70 hover:text-white text-sm underline"
+              >
+                Login
+              </button>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

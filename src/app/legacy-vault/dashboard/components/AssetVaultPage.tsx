@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AssetCard from "./AssetCard";
+import FileManager from "./FileManager";
 import Image from "next/image";
 import {
   Landmark,
@@ -23,9 +24,120 @@ import {
   Binary,
   Bitcoin,
 } from "lucide-react";
+import api from "@/lib/api/api";
+import axios from "axios";
 
 export default function AssetVaultPage() {
   const [country, setCountry] = useState("India");
+
+  // Data State
+  const [files, setFiles] = useState<any[]>([]);
+  const [storageUsed, setStorageUsed] = useState(0);
+
+  // Modal State
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // --- API Functions ---
+  const fetchStorage = async () => {
+    try {
+      const res = await api.get(`/vault/storage`);
+      setStorageUsed(res.data.storageUsed);
+    } catch (error) {
+      console.error("Failed to fetch storage", error);
+    }
+  };
+
+  const fetchFiles = async () => {
+    try {
+      const res = await api.get(`/vault/files`);
+      setFiles(res.data.files);
+    } catch (error) {
+      console.error("Failed to fetch files", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStorage();
+    fetchFiles();
+  }, []);
+
+  // --- Handlers ---
+
+  const handleAssetClick = (categoryLabel: string) => {
+    setSelectedCategory(categoryLabel);
+    setIsModalOpen(true);
+  };
+
+  const handleUpload = async (file: File, category: string) => {
+    try {
+      const res = await api.post(`/vault/upload`, {
+        fileName: `${category}/${file.name}`,
+        fileType: file.type,
+      });
+
+      const { uploadUrl } = await res.data;
+
+      const uploadRes = await axios.put(uploadUrl, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+
+      if (uploadRes.status !== 200) throw new Error("Failed to upload to S3");
+
+      await fetchFiles();
+      await fetchStorage();
+      alert("File uploaded successfully!");
+    } catch (error) {
+      console.error("Upload Error", error);
+      throw error;
+    }
+  };
+
+  const handleDelete = async (key: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/api/vault/files`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ key }),
+        },
+      );
+
+      if (!res.ok) throw new Error("Failed to delete");
+
+      await fetchFiles();
+      await fetchStorage();
+    } catch (error) {
+      console.error("Delete Error", error);
+      throw error;
+    }
+  };
+
+  const handleDownload = async (key: string, fileName: string) => {
+    try {
+      const res = await api.get(
+        `/vault/download?key=${encodeURIComponent(key)}`,
+      );
+      const { downloadUrl } = await res.data;
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Download Error", error);
+      alert("Failed to download file");
+    }
+  };
 
   const greenAssets = [
     {
@@ -148,6 +260,15 @@ export default function AssetVaultPage() {
               <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
                 Fill the details below to list your assets
               </p>
+              <div className="mt-4 inline-flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
+                <Vault className="w-5 h-5 text-[#2471B6]" />
+                <span className="text-sm font-medium text-gray-700">
+                  Storage Used:
+                </span>
+                <span className="text-sm font-bold text-[#1F3A52]">
+                  {(storageUsed / (1024 * 1024)).toFixed(2)} MB
+                </span>
+              </div>
             </div>
             <div className="hidden md:block">
               <Image
@@ -196,6 +317,7 @@ export default function AssetVaultPage() {
               {greenAssets.map((asset, idx) => (
                 <AssetCard
                   key={idx}
+                  onClick={() => handleAssetClick(asset.label)}
                   icon={asset.icon}
                   label={asset.label}
                   color={asset.color}
@@ -210,6 +332,7 @@ export default function AssetVaultPage() {
               {pinkAssets.map((asset, idx) => (
                 <AssetCard
                   key={idx}
+                  onClick={() => handleAssetClick(asset.label)}
                   icon={asset.icon}
                   label={asset.label}
                   color={asset.color}
@@ -224,6 +347,7 @@ export default function AssetVaultPage() {
               {purpleAssets.map((asset, idx) => (
                 <AssetCard
                   key={idx}
+                  onClick={() => handleAssetClick(asset.label)}
                   icon={asset.icon}
                   label={asset.label}
                   color={asset.color}
@@ -238,6 +362,7 @@ export default function AssetVaultPage() {
               {beigeAssets.map((asset, idx) => (
                 <AssetCard
                   key={idx}
+                  onClick={() => handleAssetClick(asset.label)}
                   icon={asset.icon}
                   label={asset.label}
                   color={asset.color}
@@ -260,6 +385,19 @@ export default function AssetVaultPage() {
           />
         </div>
       </div>
+
+      {/* File Manager Modal */}
+      {selectedCategory && (
+        <FileManager
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          category={selectedCategory}
+          files={files}
+          onUpload={handleUpload}
+          onDelete={handleDelete}
+          onDownload={handleDownload}
+        />
+      )}
     </div>
   );
 }

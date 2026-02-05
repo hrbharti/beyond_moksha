@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link";
+import api from "@/lib/api/api";
 
 export default function LegacyLoginForm() {
   const router = useRouter();
@@ -30,17 +31,22 @@ export default function LegacyLoginForm() {
     setLoading(true);
 
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
+      await api.post(`/auth/login`, formData);
       toast.success("Login successful");
       router.push("/legacy-vault/dashboard");
     } catch (err: any) {
       console.error("Login failed", err);
-      setError("Login failed");
+      setError(err.message || "Login failed");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    const redirectUrl = "/legacy-vault/dashboard";
+    router.push(`${backendUrl}/api/auth/google?redirect=${encodeURIComponent(redirectUrl)}`);
   };
 
   return (
@@ -140,7 +146,7 @@ export default function LegacyLoginForm() {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 font-semibold py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
-            onClick={() => toast.info("Google login is disabled in demo mode")}
+            onClick={handleGoogleLogin}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
