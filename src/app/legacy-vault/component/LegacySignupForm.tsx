@@ -6,9 +6,10 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link";
 import api from "@/lib/api/api";
 
-export default function LegacyLoginForm() {
+export default function LegacySignupForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -31,12 +32,12 @@ export default function LegacyLoginForm() {
     setLoading(true);
 
     try {
-      await api.post(`/auth/login`, formData);
-      toast.success("Login successful");
+      await api.post(`/auth/register`, formData);
+      toast.success("Account created successfully");
       router.push("/legacy-vault/dashboard");
     } catch (err: any) {
-      console.error("Login failed", err);
-      setError(err.message || "Login failed");
+      console.error("Signup failed", err);
+      setError(err.message || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,7 @@ export default function LegacyLoginForm() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-xl md:text-3xl font-semibold text-[#1F3A52]">
-            Log in to Legacy Vault
+            Create your Legacy Vault
           </h1>
         </div>
 
@@ -70,6 +71,22 @@ export default function LegacyLoginForm() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter your full name"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0866FF] focus:border-transparent"
+              required
+            />
+          </div>
+
           {/* Email */}
           <div>
             <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
@@ -97,7 +114,7 @@ export default function LegacyLoginForm() {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0866FF] focus:border-transparent pr-10"
                 required
               />
@@ -113,14 +130,6 @@ export default function LegacyLoginForm() {
                 )}
               </button>
             </div>
-            <div className="flex justify-end mt-1">
-              <Link
-                href="/legacy-vault/forgot-password"
-                className="text-xs text-[#0866FF] hover:underline font-medium"
-              >
-                Forgot Password?
-              </Link>
-            </div>
           </div>
 
           {/* Submit Button */}
@@ -129,7 +138,7 @@ export default function LegacyLoginForm() {
             disabled={loading}
             className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] hover:opacity-95 disabled:opacity-50 text-white font-semibold py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base mt-2"
           >
-            {loading ? "Logging in..." : "Log in"}
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
 
           {/* Divider */}
@@ -173,12 +182,12 @@ export default function LegacyLoginForm() {
 
           {/* Sign up Link */}
           <p className="text-center text-xs sm:text-sm text-gray-700">
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/legacy-vault/signup"
+              href="/legacy-vault/login"
               className="text-[#0866FF] hover:underline font-medium"
             >
-              Sign up
+              Log in
             </Link>
           </p>
         </form>

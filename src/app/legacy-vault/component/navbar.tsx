@@ -12,7 +12,7 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
   return (
     <>
       <div className="h-24 md:h-40 w-full flex justify-center items-center px-4 md:px-30 sticky top-0 z-50">
-        <div className="flex h-16 md:h-[50%] w-full items-center justify-between px-6 py-2 md:py-12 rounded-[20px] border border-[#3B82F6]/30 bg-[#F1F8FC]/90 md:bg-[#F1F8FC]/65 backdrop-blur-sm shadow-sm">
+        <div className="flex h-16 md:h-[50%] w-full items-center justify-between px-4 md:px-6 py-2 md:py-12 rounded-[20px] border border-[#3B82F6]/30 bg-[#F1F8FC]/90 md:bg-[#F1F8FC]/65 backdrop-blur-sm shadow-sm">
           {/* Logo */}
           <div className="ml-0 md:ml-4">
             <Logo

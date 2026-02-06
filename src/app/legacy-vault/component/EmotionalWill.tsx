@@ -31,7 +31,7 @@ export default function EmotionalWill() {
 
         {/* RIGHT SIDE CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 items-center">
             {/* Image */}
             <EmoCard
               title="Image"
@@ -47,7 +47,7 @@ export default function EmotionalWill() {
             />
           </div>
 
-          <div className="flex flex-col mt-0 sm:-mt-20 gap-8">
+          <div className="flex flex-col mt-0 sm:-mt-20 gap-8 items-center">
             {/* Video */}
             <EmoCard
               title="Video"

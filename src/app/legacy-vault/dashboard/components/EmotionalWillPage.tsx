@@ -1,8 +1,10 @@
 "use client";
-import { IoCameraOutline } from "react-icons/io5";
+import { useState } from "react";
+import { IoCameraOutline, IoClose } from "react-icons/io5";
 import { IoVideocamSharp } from "react-icons/io5";
 import { FaMicrophone } from "react-icons/fa";
 import { IoDocumentTextSharp } from "react-icons/io5";
+import FileUpload from "@/app/components/FileUpload";
 
 interface EmotionalWillCard {
   id: string;
@@ -12,6 +14,8 @@ interface EmotionalWillCard {
 }
 
 export default function EmotionalWillPage() {
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
   const cards: EmotionalWillCard[] = [
     {
       id: "image",
@@ -62,6 +66,7 @@ export default function EmotionalWillPage() {
               {cards.map((card) => (
                 <div
                   key={card.id}
+                  onClick={() => setActiveModal(card.id)}
                   className={`${card.bgColor} rounded-3xl p-6 md:p-12 flex flex-col items-center justify-center gap-4 md:gap-6 min-h-[140px] hover:shadow-lg transition cursor-pointer shadow-[inset_-6px_5px_6px_2px_rgba(0,0,0,0.1)]`}
                 >
                   <div className="flex items-center justify-center">
@@ -76,6 +81,28 @@ export default function EmotionalWillPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {activeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 relative animate-in fade-in zoom-in duration-200">
+            <button
+              onClick={() => setActiveModal(null)}
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <IoClose size={24} className="text-[#1C1F3B]" />
+            </button>
+
+            <h2 className="text-2xl font-bold text-[#1C1F3B] mb-6 capitalize text-center">
+              Create {activeModal} Emotional Will
+            </h2>
+
+            <div className="bg-gray-50 rounded-xl p-6">
+              <FileUpload category={activeModal} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
