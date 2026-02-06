@@ -9,8 +9,8 @@ export default function EmotionalWill() {
     <section className="w-full bg-[#F1F8FC] py-24 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* LEFT SIDE */}
-        <div>
-          <h2 className="text-4xl md:text-[64px] font-lora font-normal text-[#1A2E46] text-center md:text-left">
+        <div className="flex flex-col items-center md:items-start">
+          <h2 className="text-3xl md:text-5xl font-medium text-[#1A2E46] text-center md:text-left">
             Emotional Will
           </h2>
 
@@ -21,8 +21,7 @@ export default function EmotionalWill() {
           </p>
 
           <button
-            className="mt-10 px-6 py-3 text-white rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)]
-            hover:opacity-90 transition"
+            className="mt-10 px-6 py-3 text-white rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)] hover:opacity-90 transition"
             onClick={() => router.push("/legacy-vault/dashboard")}
           >
             Explore Now

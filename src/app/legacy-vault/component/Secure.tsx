@@ -3,52 +3,52 @@ import Image from "next/image";
 export default function SecureSection() {
   return (
     <section className="w-full bg-[#F1F8FC] py-12 md:py-24 px-4 md:px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Top layout */}
-        <div className="mt-10 md:mt-20 flex flex-col lg:flex-row gap-6 md:gap-10 h-auto w-full">
-          {/* Left Wide Card */}
-          <div className="w-full lg:w-2/3 flex flex-col gap-6 md:gap-0 justify-between rounded-[22px]">
-            {/* Heading */}
-            <h2 className="text-start text-3xl md:text-5xl font-lora font-normal text-[#1A2E46] leading-snug">
+        <div className="mt-10 md:mt-20 grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10 w-full">
+          {/* Heading */}
+          <div className="lg:col-span-2 flex items-end">
+            <h2 className="text-start text-3xl md:text-5xl leading-snug">
               What makes <br />
               Legacy vault <span className="text-[#0A66FF]">Secure?</span>
             </h2>
+          </div>
 
-            <div className="md:col-span-2 min-h-[15rem] h-auto md:h-60 bg-white rounded-[22px] border border-black shadow-sm flex flex-col md:flex-row justify-between items-center overflow-hidden">
-              <div className="p-6 md:p-8 w-full md:w-auto">
-                <h3 className="text-xl font-semibold text-[#1A2E46]">
-                  Military-Grade Encryption
-                </h3>
-                <p className="mt-3 text-sm text-[#4E5A6C] leading-relaxed max-w-sm">
-                  Bank-level AES-256 + RSA protection for every file and
-                  message.
-                </p>
-              </div>
-              <div className="w-full md:w-75 h-40 md:h-full bg-[#CFEDE9] rounded-t-[50%] md:rounded-t-none md:rounded-l-full flex items-center justify-center relative shrink-0">
-                {/* Replace with your fingerprint icon */}
-                <Image
-                  src={"/svgs/shield.svg"}
-                  alt="shield"
-                  height={100}
-                  width={100}
-                  className="relative z-10"
-                />
-                <Image
-                  src={"/svgs/fingerprint.svg"}
-                  alt="fingerprint"
-                  width={70}
-                  height={70}
-                  className="absolute z-0"
-                />
-              </div>
+          {/* Military-Grade Encryption Card */}
+          <div className="lg:col-span-2 min-h-[15rem] h-auto md:h-60 bg-white rounded-[22px] border border-black shadow-sm flex flex-col md:flex-row justify-between items-center overflow-hidden">
+            <div className="p-6 md:p-8 w-full md:w-auto">
+              <h3 className="text-xl md:text-3xl font-semibold text-[#1A2E46]">
+                Military-Grade Encryption
+              </h3>
+              <p className="mt-3 text-sm md:text-base text-[#4E5A6C] leading-relaxed max-w-sm">
+                Bank-level AES-256 + RSA protection for every file and message.
+              </p>
+            </div>
+            <div className="w-full md:w-75 h-40 md:h-full bg-[#CFEDE9] rounded-t-[50%] md:rounded-t-none md:rounded-l-full flex items-center justify-center relative shrink-0">
+              <Image
+                src={"/svgs/shield.svg"}
+                alt="shield"
+                height={100}
+                width={100}
+                className="relative z-10"
+              />
+              <Image
+                src={"/svgs/fingerprint.svg"}
+                alt="fingerprint"
+                width={70}
+                height={70}
+                className="absolute z-0"
+              />
             </div>
           </div>
 
-          {/* Tall Card */}
-          <div className="bg-[#0B2248] border border-black text-white rounded-[22px] shadow-sm flex flex-col justify-between w-full lg:w-1/3 xl:w-1/4 overflow-hidden min-h-[18rem]">
+          {/* Zero-Knowledge Privacy (Tall Card) */}
+          <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 bg-[#0B2248] border border-black text-white rounded-[22px] shadow-sm flex flex-col justify-between w-full overflow-hidden min-h-[18rem]">
             <div className="p-8">
-              <h3 className="text-xl font-semibold">Zero-Knowledge Privacy</h3>
-              <p className="mt-3 text-sm text-[#CDD6E3] leading-relaxed">
+              <h3 className="text-xl md:text-3xl font-semibold">
+                Zero-Knowledge Privacy
+              </h3>
+              <p className="mt-3 text-sm md:text-base text-[#CDD6E3] leading-relaxed">
                 Data is encrypted before upload. Even our team cannot view it.
               </p>
             </div>
