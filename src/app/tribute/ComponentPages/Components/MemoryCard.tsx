@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Heart } from "lucide-react";
 
 interface MemoryCardProps {
   date: string;
@@ -27,12 +26,6 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
         <p className="italic text-sm" style={{ color: textColor + "99" }}>
           {date}
         </p>
-        <Heart
-          className="w-5 h-5 transition-colors cursor-pointer"
-          style={
-            { "--tw-heart-hover": accentColor, color: textColor + "B3" } as any
-          }
-        />
       </div>
 
       <p
@@ -42,7 +35,7 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
         {message}
       </p>
 
-      <p className="text-right font-medium mt-6" style={{ color: accentColor }}>
+      <p className="text-right font-medium" style={{ color: accentColor }}>
         : {author}
       </p>
     </div>

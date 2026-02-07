@@ -3,9 +3,12 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 export default function HeroSection() {
   const router = useRouter();
+  const { user } = useUser();
+
   return (
     <section className="w-full py-10 md:py-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 md:gap-16 px-4">
@@ -26,7 +29,7 @@ export default function HeroSection() {
           <div className="flex items-center justify-center md:justify-start gap-4 mt-8 md:mt-10">
             <button
               className="px-6 py-3 text-white text-sm rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)] hover:opacity-90 transition flex items-center gap-2"
-              onClick={() => router.push("/legacy-vault/dashboard")}
+              onClick={() => router.push(`/legacy-vault/${user ? "dashboard" : "login"}`)}
             >
               Get Started
               <ArrowRight size={18} />

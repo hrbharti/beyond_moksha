@@ -26,27 +26,12 @@ import {
 } from "lucide-react";
 import api from "@/lib/api/api";
 import axios from "axios";
+import { toast } from "sonner";
 
 export default function AssetVaultPage() {
-  const [country, setCountry] = useState("India");
-
-  // Data State
   const [files, setFiles] = useState<any[]>([]);
-  const [storageUsed, setStorageUsed] = useState(0);
-
-  // Modal State
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // --- API Functions ---
-  const fetchStorage = async () => {
-    try {
-      const res = await api.get(`/vault/storage`);
-      setStorageUsed(res.data.storageUsed);
-    } catch (error) {
-      console.error("Failed to fetch storage", error);
-    }
-  };
 
   const fetchFiles = async () => {
     try {
@@ -58,11 +43,8 @@ export default function AssetVaultPage() {
   };
 
   useEffect(() => {
-    fetchStorage();
     fetchFiles();
   }, []);
-
-  // --- Handlers ---
 
   const handleAssetClick = (categoryLabel: string) => {
     setSelectedCategory(categoryLabel);
@@ -87,7 +69,6 @@ export default function AssetVaultPage() {
       if (uploadRes.status !== 200) throw new Error("Failed to upload to S3");
 
       await fetchFiles();
-      await fetchStorage();
       alert("File uploaded successfully!");
     } catch (error) {
       console.error("Upload Error", error);
@@ -97,23 +78,11 @@ export default function AssetVaultPage() {
 
   const handleDelete = async (key: string) => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/api/vault/files`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ key }),
-        },
-      );
-
-      if (!res.ok) throw new Error("Failed to delete");
-
+      await api.delete(`/vault/files`, {
+        data: { key },
+      });
+      toast.success("File deleted successfully!");
       await fetchFiles();
-      await fetchStorage();
     } catch (error) {
       console.error("Delete Error", error);
       throw error;
@@ -251,8 +220,8 @@ export default function AssetVaultPage() {
       </div>
 
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-4 md:px-8 lg:px-12 pt-12 pb-8 relative z-10">
-        <div className="text-left mb-8 mt-10 md:mt-20">
+      <div className="max-w-6xl mx-auto px-4 md:px-12 pt-16 pb-8 relative z-10">
+        <div className="text-left mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-[#1F3A52] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               Welcome to your{" "}
@@ -260,15 +229,6 @@ export default function AssetVaultPage() {
               <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
                 Fill the details below to list your assets
               </p>
-              <div className="mt-4 inline-flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
-                <Vault className="w-5 h-5 text-[#2471B6]" />
-                <span className="text-sm font-medium text-gray-700">
-                  Storage Used:
-                </span>
-                <span className="text-sm font-bold text-[#1F3A52]">
-                  {(storageUsed / (1024 * 1024)).toFixed(2)} MB
-                </span>
-              </div>
             </div>
             <div className="hidden md:block">
               <Image
@@ -279,34 +239,6 @@ export default function AssetVaultPage() {
               />
             </div>
           </h1>
-        </div>
-
-        {/* Country Selector */}
-        <div className="mb-8 md:mb-12">
-          <label className="block text-sm font-semibold text-[#1F3A52] mb-3">
-            Select your Assets location
-          </label>
-          <div className="relative max-w-md">
-            <select
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className="w-full px-6 py-2 border-2 border-gray-300 rounded-lg appearance-none bg-white text-[#1F3A52] font-medium focus:outline-none focus:border-[#2471B6]"
-            >
-              <option>India</option>
-              <option>USA</option>
-              <option>UK</option>
-              <option>Canada</option>
-            </select>
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M5 7.5L10 12.5L15 7.5"
-                  stroke="#1F3A52"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-          </div>
         </div>
 
         {/* Asset Categories Grid */}

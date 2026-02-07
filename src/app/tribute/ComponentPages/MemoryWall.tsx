@@ -78,7 +78,7 @@ const MemoryWall: React.FC<MemoryWallProps> = ({
             &quot;Those who live in our memories remain forever with us.&quot;
           </p>
           <p style={{ color: textColor + "CC" }}>
-            Please share your photos and memories of {name}.
+            Please share your memories of {name}.
           </p>
         </div>
       </div>

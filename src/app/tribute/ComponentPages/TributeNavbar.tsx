@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "@/app/components/utils/Logo";
+import { useUser } from "@/hooks/useUser";
 
 export default function TributeNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useUser();
 
   const navItems = [
     { name: "Overview", href: "#overview" },
@@ -35,12 +37,21 @@ export default function TributeNavbar() {
                   {item.name}
                 </Link>
               ))}
-              <Link
-                href="/tribute/login"
-                className="mx-4 hover:text-[#B6761E] transition"
-              >
-                Login
-              </Link>
+              {user ? (
+                <Link
+                  href="/tribute/profile"
+                  className="mx-4 hover:text-[#B6761E] transition"
+                >
+                  Profile
+                </Link>
+              ) : (
+                <Link
+                  href="/tribute/login"
+                  className="mx-4 hover:text-[#B6761E] transition"
+                >
+                  Login
+                </Link>
+              )}
             </div>
 
             <div>

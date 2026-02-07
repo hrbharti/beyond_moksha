@@ -1,9 +1,11 @@
 "use client";
 import EmoCard from "./EmoCard";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 export default function EmotionalWill() {
   const router = useRouter();
+  const { user } = useUser();
 
   return (
     <section className="w-full bg-[#F1F8FC] py-24 px-6">
@@ -22,7 +24,9 @@ export default function EmotionalWill() {
 
           <button
             className="mt-10 px-6 py-3 text-white rounded-lg bg-[linear-gradient(90deg,#0866FF,#053D99)] hover:opacity-90 transition"
-            onClick={() => router.push("/legacy-vault/dashboard")}
+            onClick={() =>
+              router.push(`/legacy-vault/${user ? "dashboard" : "login"}`)
+            }
           >
             Explore Now
           </button>
