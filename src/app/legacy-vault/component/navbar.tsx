@@ -88,9 +88,12 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
             </div>
 
             <div className="mt-auto">
-              <button className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-3 text-white rounded-lg hover:opacity-90 transition shadow-md font-medium">
+              <Link
+                href="/legacy-vault/login"
+                className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-3 text-white rounded-lg hover:opacity-90 transition shadow-md font-medium"
+              >
                 Log In
-              </button>
+              </Link>
             </div>
           </div>
         </div>

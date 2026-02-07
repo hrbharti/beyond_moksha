@@ -27,7 +27,18 @@ const EventsSection: React.FC<EventsSectionProps> = ({
   onUpdate,
 }) => {
   const [mounted, setMounted] = useState(false);
+  const [guests, setGuests] = useState([{ firstName: "", lastName: "" }]);
   useEffect(() => setMounted(true), []);
+
+  const handleAddGuest = () => {
+    setGuests([...guests, { firstName: "", lastName: "" }]);
+  };
+
+  const handleGuestChange = (index: number, field: string, value: string) => {
+    const newGuests = [...guests];
+    (newGuests[index] as any)[field] = value;
+    setGuests(newGuests);
+  };
 
   const handleUpdateEvent = (field: keyof EventItem, value: any) => {
     if (!onUpdate) return;
@@ -116,7 +127,10 @@ const EventsSection: React.FC<EventsSectionProps> = ({
             </div>
             {isEditing ? (
               <div className="flex-1 space-y-2">
-                {(event?.locationLines || ["", ""]).map((line, i) => (
+                {(event?.locationLines?.length
+                  ? event.locationLines
+                  : ["", ""]
+                ).map((line, i) => (
                   <input
                     key={i}
                     type="text"
@@ -148,13 +162,43 @@ const EventsSection: React.FC<EventsSectionProps> = ({
               <span>Date/time :</span>
             </div>
             {isEditing ? (
-              <input
-                type="text"
-                value={event?.dateTime || ""}
-                onChange={(e) => handleUpdateEvent("dateTime", e.target.value)}
-                className="flex-1 p-2 border border-gray-100 rounded focus:border-blue-300 outline-none"
-                placeholder="e.g. Sunday, Feb 10, 2026 - 10:30 AM"
-              />
+              <div className="flex-1 flex gap-2">
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    const dateVal = e.target.value;
+                    const currentDate = new Date(dateVal);
+                    const dateStr = currentDate.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    });
+
+                    const timePart =
+                      event?.dateTime?.split(" - ")[1] || "12:00 PM";
+                    handleUpdateEvent("dateTime", `${dateStr} - ${timePart}`);
+                  }}
+                  className="flex-1 p-2 border border-gray-100 rounded focus:border-blue-300 outline-none"
+                />
+                <input
+                  type="time"
+                  onChange={(e) => {
+                    const timeVal = e.target.value;
+                    const [h, m] = timeVal.split(":");
+                    const hour = parseInt(h);
+                    const ampm = hour >= 12 ? "PM" : "AM";
+                    const hour12 = hour % 12 || 12;
+                    const timeStr = `${hour12}:${m} ${ampm}`;
+
+                    const datePart = event?.dateTime?.split(" - ")[0] || "";
+                    if (datePart) {
+                      handleUpdateEvent("dateTime", `${datePart} - ${timeStr}`);
+                    }
+                  }}
+                  className="w-32 p-2 border border-gray-100 rounded focus:border-blue-300 outline-none"
+                />
+              </div>
             ) : (
               <p style={{ color: textColor + "E6" }}>{event?.dateTime}</p>
             )}
@@ -201,7 +245,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
             {/* RSVP Section */}
             <div className="space-y-6">
               <h1
-                className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
+                className="text-2xl md:text-3xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
                 style={{ borderColor: accentColor, color: textColor }}
               >
                 Confirm Attendance
@@ -231,12 +275,12 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                       style={{ borderColor: textColor + "66" }}
                     />
                   </div>
-                  <div className="flex flex-col w-full sm:w-auto">
+                  <div className="flex flex-col w-full sm:w-auto min-w-[140px]">
                     <label className="text-sm mb-1 font-medium text-transparent">
                       Status
                     </label>
                     <select
-                      className="border rounded-md p-2"
+                      className="border rounded-md p-2 w-full"
                       style={{
                         borderColor: textColor + "66",
                         color: textColor + "CC",
@@ -248,37 +292,62 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                   </div>
                 </div>
 
-                {/* Add Guest Button */}
+                {guests.map(
+                  (guest, index) =>
+                    index > 0 && (
+                      <div
+                        key={index}
+                        className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pt-4 border-t border-gray-100"
+                      >
+                        <div className="flex flex-col w-full sm:w-1/2">
+                          <label className="text-sm mb-1 font-medium">
+                            Guest {index} First Name
+                          </label>
+                          <input
+                            type="text"
+                            value={guest.firstName}
+                            onChange={(e) =>
+                              handleGuestChange(
+                                index,
+                                "firstName",
+                                e.target.value,
+                              )
+                            }
+                            className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                            style={{ borderColor: textColor + "66" }}
+                          />
+                        </div>
+                        <div className="flex flex-col w-full sm:w-1/2">
+                          <label className="text-sm mb-1 font-medium">
+                            Guest {index} Last Name
+                          </label>
+                          <input
+                            type="text"
+                            value={guest.lastName}
+                            onChange={(e) =>
+                              handleGuestChange(
+                                index,
+                                "lastName",
+                                e.target.value,
+                              )
+                            }
+                            className="border rounded-md p-2 focus:outline-none focus:ring-1"
+                            style={{ borderColor: textColor + "66" }}
+                          />
+                        </div>
+                      </div>
+                    ),
+                )}
+
                 <button
                   type="button"
+                  onClick={handleAddGuest}
                   className="flex items-center justify-center space-x-2 border rounded-md py-2 px-4 w-fit hover:bg-black/5 transition"
                   style={{ borderColor: textColor + "66" }}
                 >
                   <span className="text-lg">+</span>
                   <span>Add guest</span>
                 </button>
-
-                {/* Second Row */}
-                <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                  <div className="flex flex-col w-full sm:w-1/2">
-                    <label className="text-sm mb-1 font-medium">E-mail</label>
-                    <input
-                      type="email"
-                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
-                      style={{ borderColor: textColor + "66" }}
-                    />
-                  </div>
-                  <div className="flex flex-col w-full sm:w-1/2">
-                    <label className="text-sm mb-1 font-medium">
-                      Mobile phone
-                    </label>
-                    <input
-                      type="tel"
-                      className="border rounded-md p-2 focus:outline-none focus:ring-1"
-                      style={{ borderColor: textColor + "66" }}
-                    />
-                  </div>
-                </div>
 
                 {/* Submit Button */}
                 <button

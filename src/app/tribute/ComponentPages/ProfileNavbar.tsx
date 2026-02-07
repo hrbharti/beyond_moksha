@@ -5,11 +5,26 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import api from "@/lib/api/api";
 import Link from "next/link";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, Eye } from "lucide-react";
 import Logo from "@/app/components/utils/Logo";
 
 export default function ProfileNavbar() {
   const router = useRouter();
+  const [tributeSlug, setTributeSlug] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchTribute = async () => {
+      try {
+        const response = await api.get("/tribute/me");
+        if (response.data && !response.data.noProfile) {
+          setTributeSlug(response.data.username || response.data.id);
+        }
+      } catch (error) {
+        console.error("Failed to fetch tribute", error);
+      }
+    };
+    fetchTribute();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -42,6 +57,17 @@ export default function ProfileNavbar() {
               <User size={18} />
               <span>My account</span>
             </Link>
+
+            {tributeSlug && (
+              <Link
+                href={`/tribute/p/${tributeSlug}`}
+                target="_blank"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-full hover:bg-gray-50 transition-all duration-200"
+              >
+                <Eye size={18} />
+                <span>Public View</span>
+              </Link>
+            )}
 
             <div className="h-6 w-px bg-gray-200" />
 
@@ -88,6 +114,20 @@ export default function ProfileNavbar() {
             </div>
             My account
           </Link>
+
+          {tributeSlug && (
+            <Link
+              href={`/tribute/p/${tributeSlug}`}
+              target="_blank"
+              className="flex items-center gap-3 p-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div className="p-2 bg-gray-100 rounded-lg text-gray-500">
+                <Eye size={20} />
+              </div>
+              Public View
+            </Link>
+          )}
 
           <button
             onClick={() => {

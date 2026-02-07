@@ -167,10 +167,10 @@ function ProfileContent() {
         {/* Mobile Hamburger Menu */}
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed left-4 top-4 z-50 p-3 bg-white border border-gray-200 rounded-xl shadow-lg text-gray-500 hover:text-gray-800 transition-all duration-300 md:hidden flex items-center justify-center"
+          className="fixed left-5 top-24 z-50 rounded-xl transition-all duration-300 md:hidden"
           title="Open Menu"
         >
-          <Menu size={24} />
+          <ChevronRight size={24} />
         </button>
         {/* Toggle Button Inside Content (only visible when sidebar is closed) */}
         {!isSidebarOpen && (
@@ -186,16 +186,17 @@ function ProfileContent() {
           </button>
         )}
 
-        <div className="absolute top-48 right-5 md:right-12 z-50 flex gap-2">
+        {/* Edit Mode Actions - Fixed Bottom Bar */}
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 bg-white/90 backdrop-blur-md px-6 py-3 rounded-full shadow-xl border border-gray-200/50 transition-all duration-300 hover:scale-105">
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+            className="flex flex-col items-center gap-1 group text-gray-600 hover:text-gray-900 transition"
+            title={isEditing ? "Preview" : "Edit Mode"}
             style={{ color: isEditing ? accentColor : undefined }}
           >
-            {isEditing ? <Eye size={16} /> : <Edit2 size={16} />}
-            <span className="hidden sm:inline">
-              {isEditing ? "Preview" : "Edit Mode"}
-            </span>
+            <div className="p-2 rounded-full hover:bg-gray-100 transition">
+              {isEditing ? <Eye size={22} /> : <Edit2 size={22} />}
+            </div>
           </button>
 
           {isEditing && (
@@ -203,20 +204,27 @@ function ProfileContent() {
               <button
                 onClick={handleCancel}
                 disabled={isSaving}
-                className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white text-gray-700 border border-gray-300 rounded-full shadow-lg hover:bg-gray-50 transition"
+                className="flex flex-col items-center gap-1 group text-gray-600 hover:text-red-500 transition"
+                title="Cancel"
               >
-                <X size={18} /> <span className="hidden sm:inline">Cancel</span>
+                <div className="p-2 rounded-full hover:bg-red-50 transition border border-transparent hover:border-red-200">
+                  <X size={22} />
+                </div>
               </button>
+
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 p-3 sm:px-6 sm:py-2 text-white rounded-full shadow-lg hover:opacity-90 transition font-medium"
-                style={{ backgroundColor: accentColor }}
+                className="flex flex-col items-center gap-1 group transition scale-110 hover:scale-125 mx-2"
+                title="Save Changes"
+                style={{ color: accentColor }}
               >
-                <Save size={18} />{" "}
-                <span className="hidden sm:inline">
-                  {isSaving ? "Saving..." : "Save Changes"}
-                </span>
+                <div
+                  className="p-3 rounded-full shadow-lg text-white transition-all duration-300"
+                  style={{ backgroundColor: accentColor }}
+                >
+                  <Save size={24} />
+                </div>
               </button>
             </>
           )}

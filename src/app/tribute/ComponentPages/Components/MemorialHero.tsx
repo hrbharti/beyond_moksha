@@ -105,22 +105,37 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     bannerSrc = banner3;
   }
 
-  // Safe date formatting
-  const formatDate = (dateString?: string) => {
+  // Format for <input type="date"> (YYYY-MM-DD)
+  const toInputDate = (dateString?: string) => {
     if (!dateString) return "";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "";
+    return date.toISOString().split("T")[0];
   };
 
-  const dob = formatDate(tribute?.dateOfBirth);
-  const dod = formatDate(tribute?.dateOfDeath);
+  const dobValue = toInputDate(tribute?.dateOfBirth);
+  const dodValue = toInputDate(tribute?.dateOfDeath);
 
   if (!tribute) return null;
 
   const handleDateChange = (type: "dob" | "dod", value: string) => {
+    if (type === "dod" && tribute.dateOfBirth) {
+      const dobDate = new Date(tribute.dateOfBirth);
+      const dodDate = new Date(value);
+      if (dodDate < dobDate) {
+        toast.error("Date of death cannot be before date of birth");
+        return;
+      }
+    }
+    if (type === "dob" && tribute.dateOfDeath) {
+      const dobDate = new Date(value);
+      const dodDate = new Date(tribute.dateOfDeath);
+      if (dobDate > dodDate) {
+        toast.error("Date of birth cannot be after date of death");
+        return;
+      }
+    }
+
     if (onUpdate) {
       onUpdate(type === "dob" ? "dateOfBirth" : "dateOfDeath", value);
     }
@@ -276,7 +291,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   </label>
                   <input
                     type="date"
-                    value={dob}
+                    value={dobValue}
                     onChange={(e) => handleDateChange("dob", e.target.value)}
                     className="text-sm border rounded px-1 py-0.5"
                   />
@@ -288,7 +303,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   </label>
                   <input
                     type="date"
-                    value={dod}
+                    value={dodValue}
                     onChange={(e) => handleDateChange("dod", e.target.value)}
                     className="text-sm border rounded px-1 py-0.5"
                   />

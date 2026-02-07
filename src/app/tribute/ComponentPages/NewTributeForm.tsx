@@ -41,6 +41,31 @@ export default function NewTributeForm({
   } | null>(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
+  useEffect(() => {
+    // Validate DOB day
+    const maxDobDays = getDaysInMonth(
+      memorialData.dobMonth,
+      memorialData.dobYear,
+    );
+    if (memorialData.dobDay && parseInt(memorialData.dobDay) > maxDobDays) {
+      setMemorialData((prev) => ({ ...prev, dobDay: "" }));
+    }
+
+    // Validate DOP day
+    const maxDopDays = getDaysInMonth(
+      memorialData.dopMonth,
+      memorialData.dopYear,
+    );
+    if (memorialData.dopDay && parseInt(memorialData.dopDay) > maxDopDays) {
+      setMemorialData((prev) => ({ ...prev, dopDay: "" }));
+    }
+  }, [
+    memorialData.dobMonth,
+    memorialData.dobYear,
+    memorialData.dopMonth,
+    memorialData.dopYear,
+  ]);
+
   const months = [
     "January",
     "February",
@@ -56,7 +81,13 @@ export default function NewTributeForm({
     "December",
   ];
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const getDaysInMonth = (month: string, year: string) => {
+    if (!month || !year) return 31;
+    const m = parseInt(month, 10);
+    const y = parseInt(year, 10);
+    return new Date(y, m, 0).getDate();
+  };
+
   const years = Array.from(
     { length: 100 },
     (_, i) => new Date().getFullYear() - i,
@@ -243,7 +274,15 @@ export default function NewTributeForm({
                 required
               >
                 <option value="">Day</option>
-                {days.map((day) => (
+                {Array.from(
+                  {
+                    length: getDaysInMonth(
+                      memorialData.dobMonth,
+                      memorialData.dobYear,
+                    ),
+                  },
+                  (_, i) => i + 1,
+                ).map((day) => (
                   <option key={day} value={day}>
                     {day}
                   </option>
@@ -293,7 +332,15 @@ export default function NewTributeForm({
                 required
               >
                 <option value="">Day</option>
-                {days.map((day) => (
+                {Array.from(
+                  {
+                    length: getDaysInMonth(
+                      memorialData.dopMonth,
+                      memorialData.dopYear,
+                    ),
+                  },
+                  (_, i) => i + 1,
+                ).map((day) => (
                   <option key={day} value={day}>
                     {day}
                   </option>

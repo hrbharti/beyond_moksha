@@ -82,7 +82,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-80 bg-white border-r border-gray-200 shadow-2xl flex flex-col pt-8 z-50
+        className={`fixed left-0 top-0 h-screen w-80 bg-white border-r border-gray-200 shadow-2xl flex flex-col pt-8 z-100
         transition-transform duration-500 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >

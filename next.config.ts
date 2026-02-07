@@ -5,22 +5,27 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 's3.ap-south-1.amazonaws.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "s3.ap-south-1.amazonaws.com",
+        pathname: "/**",
       },
       {
-        protocol: 'https', 
-        hostname: 'www.beyondmoksha.com.s3.amazonaws.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "www.beyondmoksha.com.s3.amazonaws.com",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'www.beyondmoksha.com',
-        pathname: '/**',
-      }
-    ]
-  }
+        protocol: "https",
+        hostname: "www.beyondmoksha.com.s3.ap-south-1.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.beyondmoksha.com",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
