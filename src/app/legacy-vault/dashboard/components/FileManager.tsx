@@ -14,8 +14,8 @@ interface FileMetadata {
 interface FileManagerProps {
   category: string;
   files: FileMetadata[];
-  onUpload: (file: File, category: string) => Promise<void>;
-  onDelete: (inputKey: string) => Promise<void>;
+  onUpload?: (file: File, category: string) => Promise<void>;
+  onDelete?: (inputKey: string) => Promise<void>;
   onDownload: (inputKey: string, fileName: string) => Promise<void>;
   isOpen: boolean;
   onClose: () => void;
@@ -40,7 +40,7 @@ export default function FileManager({
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !onUpload) return;
 
     try {
       setUploading(true);
@@ -57,6 +57,7 @@ export default function FileManager({
   };
 
   const handleDelete = async (key: string) => {
+    if (!onDelete) return;
     if (!confirm("Are you sure you want to delete this file?")) return;
     try {
       setDeleting(key);
@@ -137,21 +138,23 @@ export default function FileManager({
                     >
                       <Download size={18} />
                     </button>
-                    <button
-                      onClick={() => handleDelete(file.key)}
-                      disabled={deleting === file.key}
-                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                      title="Delete"
-                    >
-                      {deleting === file.key ? (
-                        <Loader2
-                          size={18}
-                          className="animate-spin text-red-500"
-                        />
-                      ) : (
-                        <Trash2 size={18} />
-                      )}
-                    </button>
+                    {onDelete && (
+                      <button
+                        onClick={() => handleDelete(file.key)}
+                        disabled={deleting === file.key}
+                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                        title="Delete"
+                      >
+                        {deleting === file.key ? (
+                          <Loader2
+                            size={18}
+                            className="animate-spin text-red-500"
+                          />
+                        ) : (
+                          <Trash2 size={18} />
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -160,31 +163,33 @@ export default function FileManager({
         </div>
 
         {/* Footer / Upload Area */}
-        <div className="p-6 border-t border-gray-100 bg-[#F8FAFC]">
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            onChange={handleFileChange}
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            className="w-full py-3 px-4 bg-[#2471B6] hover:bg-[#1a5c96] text-white rounded-xl font-medium transition-all shadow-lg shadow-[#2471B6]/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed active:scale-[0.99]"
-          >
-            {uploading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                Uploading...
-              </>
-            ) : (
-              <>
-                <Upload size={20} />
-                Upload Document
-              </>
-            )}
-          </button>
-        </div>
+        {onUpload && (
+          <div className="p-6 border-t border-gray-100 bg-[#F8FAFC]">
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full py-3 px-4 bg-[#2471B6] hover:bg-[#1a5c96] text-white rounded-xl font-medium transition-all shadow-lg shadow-[#2471B6]/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed active:scale-[0.99]"
+            >
+              {uploading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload size={20} />
+                  Upload Document
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

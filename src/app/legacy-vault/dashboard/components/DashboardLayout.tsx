@@ -16,6 +16,7 @@ import { useUser } from "@/hooks/useUser";
 export default function DashboardLayout() {
   const [activeTab, setActiveTab] = useState("asset-vault");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [viewingVaultId, setViewingVaultId] = useState<string | null>(null);
   const { user, loading } = useUser();
   const router = useRouter();
 
@@ -38,6 +39,20 @@ export default function DashboardLayout() {
   }
 
   const renderContent = () => {
+    // If viewing shared vault, restrict tabs or pass viewingId
+    if (viewingVaultId) {
+      // Only Asset Vault and Storage available for shared view for now
+      if (activeTab === "asset-vault")
+        return <AssetVaultPage ownerId={viewingVaultId} />;
+      if (activeTab === "storage")
+        return <StoragePage ownerId={viewingVaultId} />;
+      return (
+        <div className="p-8 text-center text-gray-500">
+          This section is not available in shared view.
+        </div>
+      );
+    }
+
     switch (activeTab) {
       case "emotional-will":
         return <EmotionalWillPage />;
@@ -74,10 +89,23 @@ export default function DashboardLayout() {
           setActiveTab(tab);
           setIsSidebarOpen(false);
         }}
+        onVaultSelect={(vaultId) => {
+          setViewingVaultId(vaultId);
+          setIsSidebarOpen(false);
+        }}
+        viewingVaultId={viewingVaultId}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-      <div className="flex-1 w-full overflow-x-hidden">{renderContent()}</div>
+
+      <div className="flex-1 w-full overflow-x-hidden flex flex-col">
+        {viewingVaultId && (
+          <div className="bg-[#D4A043] text-white px-6 py-2 text-center text-sm font-medium">
+            You are viewing a shared vault (Read Only)
+          </div>
+        )}
+        {renderContent()}
+      </div>
     </div>
   );
 }

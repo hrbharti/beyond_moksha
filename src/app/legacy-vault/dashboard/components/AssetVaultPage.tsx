@@ -28,14 +28,20 @@ import api from "@/lib/api/api";
 import axios from "axios";
 import { toast } from "sonner";
 
-export default function AssetVaultPage() {
+interface AssetVaultPageProps {
+  ownerId?: string;
+}
+
+export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
   const [files, setFiles] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isReadOnly = !!ownerId;
 
   const fetchFiles = async () => {
     try {
-      const res = await api.get(`/vault/files`);
+      const url = ownerId ? `/vault/files?ownerId=${ownerId}` : `/vault/files`;
+      const res = await api.get(url);
       setFiles(res.data.files);
     } catch (error) {
       console.error("Failed to fetch files", error);
@@ -44,7 +50,7 @@ export default function AssetVaultPage() {
 
   useEffect(() => {
     fetchFiles();
-  }, []);
+  }, [ownerId]);
 
   const handleAssetClick = (categoryLabel: string) => {
     setSelectedCategory(categoryLabel);
@@ -52,6 +58,7 @@ export default function AssetVaultPage() {
   };
 
   const handleUpload = async (file: File, category: string) => {
+    if (isReadOnly) return;
     try {
       const res = await api.post(`/vault/upload`, {
         fileName: `${category}/${file.name}`,
@@ -77,6 +84,7 @@ export default function AssetVaultPage() {
   };
 
   const handleDelete = async (key: string) => {
+    if (isReadOnly) return;
     try {
       await api.delete(`/vault/files`, {
         data: { key },
@@ -224,11 +232,21 @@ export default function AssetVaultPage() {
         <div className="text-left mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-[#1F3A52] flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              Welcome to your{" "}
-              <span className="text-[#0866FF]">Asset Vault</span>
-              <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
-                Fill the details below to list your assets
-              </p>
+              <span className="text-[#0866FF]">
+                {isReadOnly
+                  ? "Shared Asset Vault"
+                  : "Welcome to your Asset Vault"}
+              </span>
+              {!isReadOnly && (
+                <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
+                  Fill the details below to list your assets
+                </p>
+              )}
+              {isReadOnly && (
+                <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
+                  You have read-only access to this vault.
+                </p>
+              )}
             </div>
             <div className="hidden md:block">
               <Image
@@ -325,8 +343,8 @@ export default function AssetVaultPage() {
           onClose={() => setIsModalOpen(false)}
           category={selectedCategory}
           files={files}
-          onUpload={handleUpload}
-          onDelete={handleDelete}
+          onUpload={isReadOnly ? undefined : handleUpload}
+          onDelete={isReadOnly ? undefined : handleDelete}
           onDownload={handleDownload}
         />
       )}

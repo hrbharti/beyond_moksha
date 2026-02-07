@@ -12,14 +12,22 @@ interface VaultFile {
   etag: string;
 }
 
-export default function StoragePage() {
+interface StoragePageProps {
+  ownerId?: string;
+}
+
+export default function StoragePage({ ownerId }: StoragePageProps) {
   const [files, setFiles] = useState<VaultFile[]>([]);
   const [storageUsed, setStorageUsed] = useState(0);
   const [loading, setLoading] = useState(true);
+  const isReadOnly = !!ownerId;
 
   const fetchStorage = async () => {
     try {
-      const res = await api.get(`/vault/storage`);
+      const url = ownerId
+        ? `/vault/storage?ownerId=${ownerId}`
+        : `/vault/storage`;
+      const res = await api.get(url);
       setStorageUsed(res.data.storageUsed || 0);
     } catch (error) {
       console.error("Failed to fetch storage", error);
@@ -28,7 +36,8 @@ export default function StoragePage() {
 
   const fetchFiles = async () => {
     try {
-      const res = await api.get(`/vault/files`);
+      const url = ownerId ? `/vault/files?ownerId=${ownerId}` : `/vault/files`;
+      const res = await api.get(url);
       // Ensure we have an array
       const fileList = Array.isArray(res.data.files) ? res.data.files : [];
       setFiles(fileList);
@@ -42,7 +51,7 @@ export default function StoragePage() {
   useEffect(() => {
     fetchStorage();
     fetchFiles();
-  }, []);
+  }, [ownerId]);
 
   const handleDownload = async (fileKey: string) => {
     const fileName = fileKey.split("/").pop() || "file";
@@ -66,6 +75,7 @@ export default function StoragePage() {
   };
 
   const handleDelete = async (fileKey: string) => {
+    if (isReadOnly) return;
     if (!confirm("Are you sure you want to delete this file?")) return;
     try {
       await api.delete(`/vault/files`, { data: { key: fileKey } });
@@ -186,13 +196,15 @@ export default function StoragePage() {
                         >
                           <Download size={18} />
                         </button>
-                        <button
-                          onClick={() => handleDelete(file.key)}
-                          className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition"
-                          title="Delete"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        {!isReadOnly && (
+                          <button
+                            onClick={() => handleDelete(file.key)}
+                            className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition"
+                            title="Delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
