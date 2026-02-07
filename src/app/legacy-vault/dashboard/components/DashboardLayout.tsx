@@ -46,6 +46,8 @@ export default function DashboardLayout() {
         return <AssetVaultPage ownerId={viewingVaultId} />;
       if (activeTab === "storage")
         return <StoragePage ownerId={viewingVaultId} />;
+      if (activeTab === "my-contacts")
+        return <MyContactsPage ownerId={viewingVaultId} />;
       return (
         <div className="p-8 text-center text-gray-500">
           This section is not available in shared view.
