@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Logo from "./Logo";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@/hooks/useUser";
 
 export default function Navbar({ isNav }: { isNav?: boolean }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { user, logout } = useUser();
   const navList = ["Products", "Top Performers", "Privacy & Protection"];
 
   return (
@@ -34,12 +36,30 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
                 </span>
               ))}
             </div>
-            <Link
-              href="/legacy-vault/login"
-              className="bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-2 text-white rounded-md hover:opacity-90 transition shadow-md"
-            >
-              Log In
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/legacy-vault/dashboard"
+                  className="flex items-center gap-2 px-4 py-2  bg-white/50 rounded-md"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={logout}
+                  className="bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-2 text-white rounded-md hover:opacity-90 transition shadow-md flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/legacy-vault/login"
+                className="bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-2 text-white rounded-md hover:opacity-90 transition shadow-md"
+              >
+                Log In
+              </Link>
+            )}
           </div>
 
           {/* Mobile Hamburger */}
@@ -87,13 +107,34 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
               ))}
             </div>
 
-            <div className="mt-auto">
-              <Link
-                href="/legacy-vault/login"
-                className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-3 text-white rounded-lg hover:opacity-90 transition shadow-md font-medium"
-              >
-                Log In
-              </Link>
+            <div className="mt-auto flex flex-col gap-3">
+              {user ? (
+                <>
+                  <div className="flex items-center gap-2 px-4 py-3 bg-white/70 rounded-lg">
+                    <User className="w-5 h-5 text-[#1E293B]" />
+                    <span className="text-sm text-[#1E293B] font-medium">
+                      {user.name}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMobileOpen(false);
+                    }}
+                    className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-3 text-white rounded-lg hover:opacity-90 transition shadow-md font-medium flex items-center justify-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/legacy-vault/login"
+                  className="w-full bg-[linear-gradient(90deg,#0866FF,#053D99)] px-6 py-3 text-white rounded-lg hover:opacity-90 transition shadow-md font-medium"
+                >
+                  Log In
+                </Link>
+              )}
             </div>
           </div>
         </div>

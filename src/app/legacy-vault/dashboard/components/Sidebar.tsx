@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
 import { LogOut } from "lucide-react";
 import Logo from "../../component/Logo";
-import { useRouter } from "next/navigation";
-import api from "@/lib/api/api";
-import { toast } from "sonner";
+import { useUser } from "@/hooks/useUser";
 
 interface SidebarProps {
   activeTab?: string;
@@ -16,33 +13,7 @@ export default function Sidebar({
   isOpen = false,
   onClose,
 }: SidebarProps & { isOpen?: boolean; onClose?: () => void }) {
-  const router = useRouter();
-  const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await api.get("/auth/me");
-        setUser(res.data);
-      } catch (error) {
-        console.error("Failed to fetch user", error);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await api.post("/auth/logout");
-      toast.success("Logged out successfully");
-      router.push("/legacy-vault");
-    } catch (error) {
-      console.error("Logout failed", error);
-      toast.error("Logout failed");
-    }
-  };
+  const { user, logout } = useUser();
 
   const menuItems = [
     { id: "emotional-will", label: "Emotional Will" },
@@ -110,7 +81,7 @@ export default function Sidebar({
                 </p>
               </div>
               <button
-                onClick={handleLogout}
+                onClick={logout}
                 className="p-2 hover:bg-white/10 rounded-full transition text-white/70 hover:text-white"
                 title="Logout"
               >
@@ -120,7 +91,7 @@ export default function Sidebar({
           ) : (
             <div className="flex justify-center">
               <button
-                onClick={() => router.push("/legacy-vault")}
+                onClick={() => (window.location.href = "/legacy-vault")}
                 className="text-white/70 hover:text-white text-sm underline"
               >
                 Login
