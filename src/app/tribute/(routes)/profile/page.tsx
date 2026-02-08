@@ -114,24 +114,30 @@ function ProfileContent() {
   const handleShare = async () => {
     if (!tribute) return;
     const shareUrl = `${window.location.origin}/tribute/p/${tribute.username || tribute.id}`;
+    const message = `Check out the tribute for ${tribute.name} on Beyond Moksha`;
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: `Tribute to ${tribute.name}`,
-          text: `Check out the tribute for ${tribute.name}`,
+          text: message,
           url: shareUrl,
         });
       } catch (error) {
-        console.error("Error sharing:", error);
+        // Only log if it's not a user cancelation
+        if ((error as Error).name !== "AbortError") {
+          console.error("Error sharing:", error);
+          toast.error("Failed to share");
+        }
       }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        toast.success("Profile link copied to clipboard!");
-      } catch (error) {
-        toast.error("Failed to copy link");
-      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Profile link copied to clipboard!");
+    } catch (error) {
+      toast.error("Failed to copy link");
     }
   };
 
@@ -230,25 +236,23 @@ function ProfileContent() {
           )}
         </div>
 
-        {!isEditing && (
-          <div className="absolute right-0 p-5 z-50 flex gap-2">
-            <button
-              onClick={handleShare}
-              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-            >
-              <Share2 size={16} />{" "}
-              <span className="hidden sm:inline">Share</span>
-            </button>
-            <Link
-              href={`/tribute/p/${tribute.username || tribute.id}`}
-              target="_blank"
-              className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-            >
-              <Eye size={16} />{" "}
-              <span className="hidden sm:inline">Public Profile</span>
-            </Link>
-          </div>
-        )}
+        {/* Top Right Actions */}
+        <div className="absolute right-0 p-5 z-50 flex gap-2">
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+          >
+            <Share2 size={16} /> <span className="hidden sm:inline">Share</span>
+          </button>
+          <Link
+            href={`/tribute/p/${tribute.username || tribute.id}`}
+            target="_blank"
+            className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+          >
+            <Eye size={16} />{" "}
+            <span className="hidden sm:inline">Public Profile</span>
+          </Link>
+        </div>
 
         {/* Hero Section */}
         <HeroSection

@@ -1,41 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import api from "../../ComponentPages/../../../lib/api/api";
+import { useUser } from "@/hooks/useUser";
 import TributeNavbar from "../../ComponentPages/TributeNavbar";
 import NewTributeForm from "../../ComponentPages/NewTributeForm";
 
 export default function NewTributePage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<{
-    id: string;
-    email: string;
-  } | null>(null);
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await api.get("/tribute/me");
-        if (!response.data.noProfile) {
-          // If they already have a profile, send them to the profile page
-          router.push("/tribute/profile");
-          return;
-        }
-        setUserData({
-          id: response.data.user.id,
-          email: response.data.user.email,
-        });
-      } catch (error) {
-        console.error("Auth check failed", error);
-        router.push("/tribute/login");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, [router]);
+    if (!loading && !user) {
+      router.push("/tribute/login");
+    }
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -48,8 +26,8 @@ export default function NewTributePage() {
   return (
     <>
       <TributeNavbar />
-      {userData && (
-        <NewTributeForm userId={userData.id} userEmail={userData.email} />
+      {user && (
+        <NewTributeForm userId={user.id} />
       )}
     </>
   );

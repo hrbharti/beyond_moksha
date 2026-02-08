@@ -3,7 +3,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import api from "@/lib/api/api";
-import { User, Save, Globe, Mail, Shield, X, Lock } from "lucide-react";
+import { User, Save, Globe, Mail, Shield, X, Lock, Plus } from "lucide-react";
+import Link from "next/link";
 
 interface UserProfile {
   id: string;
@@ -224,19 +225,39 @@ export default function AccountPage() {
 
           {/* Tributes List */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-amber-50 rounded-lg text-amber-600">
-                <Globe size={20} />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-600">
+                  <Globe size={20} />
+                </div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Your Tributes
+                </h2>
               </div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                Your Tributes
-              </h2>
+              <Link
+                href="/tribute/new"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: accentColor }}
+              >
+                <Plus size={16} />
+                Create New Tribute
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {tributes.length === 0 ? (
-                <div className="col-span-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500">
-                  You have not created any tributes yet.
+                <div className="col-span-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                  <p className="text-gray-500 mb-4">
+                    You have not created any tributes yet.
+                  </p>
+                  <Link
+                    href="/tribute/new"
+                    className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white rounded-xl hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: accentColor }}
+                  >
+                    <Plus size={18} />
+                    Create Your First Tribute
+                  </Link>
                 </div>
               ) : (
                 tributes.map((tribute) => (

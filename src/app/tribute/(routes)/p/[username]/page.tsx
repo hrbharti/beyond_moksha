@@ -8,6 +8,8 @@ import Gallery from "../../../ComponentPages/Gallery";
 import MemoryWall from "../../../ComponentPages/MemoryWall";
 import EventsSection from "../../../ComponentPages/EventSection";
 import FamilyTree from "../../../ComponentPages/FamilyTree";
+import { Share2 } from "lucide-react";
+import { toast } from "sonner";
 import bg from "@public/images/grayishBG.jpg";
 
 interface Tribute {
@@ -48,6 +50,35 @@ export default function PublicTributePage({
   const textColor = tribute?.textColor || "#000000";
   const backgroundColor = tribute?.backgroundColor || "#F9FAFB";
   const accentColor = tribute?.accentColor || "#D4A043";
+
+  const handleShare = async () => {
+    if (!tribute) return;
+    const shareUrl = `${window.location.origin}/tribute/p/${username}`;
+    const message = `Check out the tribute for ${tribute.name} on Beyond Moksha`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Tribute to ${tribute.name}`,
+          text: message,
+          url: shareUrl,
+        });
+      } catch (error) {
+        // Only log if it's not a user cancelation
+        if ((error as Error).name !== "AbortError") {
+          console.error("Error sharing:", error);
+          toast.error("Failed to share");
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Profile link copied to clipboard!");
+      } catch (error) {
+        toast.error("Failed to copy link");
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchTribute = async () => {
@@ -113,6 +144,16 @@ export default function PublicTributePage({
           textColor={textColor}
         />
       </Suspense>
+
+      {/* Share Button */}
+      <div className="absolute top-5 right-5 z-50">
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
+        >
+          <Share2 size={16} /> <span className="hidden sm:inline">Share</span>
+        </button>
+      </div>
 
       <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
         <div className="max-w-6xl mx-auto space-y-24">

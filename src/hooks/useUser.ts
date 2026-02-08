@@ -6,6 +6,7 @@ import api from "@/lib/api/api";
 import { toast } from "sonner";
 
 interface User {
+  id: string;
   name: string;
   email: string;
 }
