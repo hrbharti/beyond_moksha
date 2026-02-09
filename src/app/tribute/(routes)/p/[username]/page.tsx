@@ -8,8 +8,7 @@ import Gallery from "../../../ComponentPages/Gallery";
 import MemoryWall from "../../../ComponentPages/MemoryWall";
 import EventsSection from "../../../ComponentPages/EventSection";
 import FamilyTree from "../../../ComponentPages/FamilyTree";
-import PetMemorial from "../../furry-memorial/components/PetMemorial";
-import PetMemorialWall from "../../furry-memorial/components/PetMemorialWall";
+import PetProfileView from "../../../ComponentPages/Components/PetProfileView";
 import { Share2 } from "lucide-react";
 import { toast } from "sonner";
 import bg from "@public/images/grayishBG.jpg";
@@ -158,123 +157,114 @@ export default function PublicTributePage({
       style={{ color: textColor, backgroundColor: backgroundColor }}
     >
       <Suspense fallback={<div>Loading...</div>}>
-        <HeroSection
-          tribute={tribute}
-          accentColor={accentColor}
-          textColor={textColor}
-        />
-      </Suspense>
-
-      {/* Share Button */}
-      <div className="absolute top-5 right-5 z-50">
-        <button
-          onClick={handleShare}
-          className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-        >
-          <Share2 size={16} /> <span className="hidden sm:inline">Share</span>
-        </button>
-      </div>
-
-      <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
-        <div className="max-w-6xl mx-auto space-y-24">
-          {tribute.memorialType && tribute.memorialType !== "Human" ? (
-            <PetMemorial
-              name={tribute.name}
-              bio={tribute.bio}
-              dob={tribute.dateOfBirth}
-              dod={tribute.dateOfDeath}
-              accentColor={accentColor}
-              textColor={textColor}
-            />
-          ) : (
-            <Memorial
-              bio={tribute.bio}
-              accentColor={accentColor}
-              textColor={textColor}
-            />
-          )}
-
-          <TimelineSection
-            items={tribute.timelineEvents || []}
+        {tribute.memorialType && tribute.memorialType !== "Human" ? (
+          <PetProfileView
+            tribute={tribute}
             accentColor={accentColor}
             textColor={textColor}
           />
-
-          <Gallery
-            images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
-            accentColor={accentColor}
-            textColor={textColor}
-          />
-
-          {tribute.memorialType && tribute.memorialType !== "Human" ? (
-            <PetMemorialWall
-              memories={tribute.memories || []}
-              name={tribute.name}
+        ) : (
+          <>
+            <HeroSection
+              tribute={tribute}
               accentColor={accentColor}
               textColor={textColor}
             />
-          ) : (
-            <MemoryWall
-              memories={tribute.memories || []}
-              name={tribute.name}
-              accentColor={accentColor}
-              textColor={textColor}
-            />
-          )}
 
-          <FamilyTree
-            centralPerson={{
-              name: tribute.name,
-              imageUrl: tribute.profileImageUrl,
-            }}
-            groups={tribute.familyMembers || []}
-            accentColor={accentColor}
-            textColor={textColor}
-          />
-
-          <EventsSection
-            events={tribute.events || []}
-            name={tribute.name}
-            accentColor={accentColor}
-            textColor={textColor}
-          />
-
-          {/* Call to Action Section */}
-          <section className="mt-32 pb-20 border-t border-[#1F3A4B]/20 pt-20 text-center">
-            <div
-              className="max-w-2xl mx-auto p-10 rounded-3xl shadow-xl border border-white/20 relative overflow-hidden group"
-              style={{
-                background: `linear-gradient(135deg, ${accentColor}15, #FFFFFF)`,
-              }}
-            >
-              {/* Subtle decorative elements */}
-              <div
-                className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl opacity-20"
-                style={{ backgroundColor: accentColor }}
-              />
-              <div
-                className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-20"
-                style={{ backgroundColor: accentColor }}
-              />
-
-              <h2 className="text-3xl md:text-4xl font-serif text-[#1F3A4B] mb-6">
-                Want a memorial of your own?
-              </h2>
-              <p className="text-[#1F3A4B]/70 mb-10 text-lg">
-                Create a beautiful, lasting tribute for your loved ones with
-                Beyond Moksha.
-              </p>
+            {/* Share Button - only for human hero as pet hero might have its own layout or we keep it here */}
+            <div className="absolute top-5 right-5 z-50">
               <button
-                className="px-10 py-4 text-white rounded-full text-lg font-medium shadow-lg hover:scale-105 transition-transform duration-300"
-                style={{ backgroundColor: accentColor }}
-                onClick={() => (window.location.href = "/tribute")}
+                onClick={handleShare}
+                className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
               >
-                Create a Memorial
+                <Share2 size={16} />{" "}
+                <span className="hidden sm:inline">Share</span>
               </button>
             </div>
-          </section>
-        </div>
-      </div>
+
+            <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
+              <div className="max-w-6xl mx-auto space-y-24">
+                <Memorial
+                  bio={tribute.bio}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                <TimelineSection
+                  items={tribute.timelineEvents || []}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                <Gallery
+                  images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                <MemoryWall
+                  memories={tribute.memories || []}
+                  name={tribute.name}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                <FamilyTree
+                  centralPerson={{
+                    name: tribute.name,
+                    imageUrl: tribute.profileImageUrl,
+                  }}
+                  groups={tribute.familyMembers || []}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                <EventsSection
+                  events={tribute.events || []}
+                  name={tribute.name}
+                  accentColor={accentColor}
+                  textColor={textColor}
+                />
+
+                {/* Call to Action Section */}
+                <section className="mt-32 pb-20 border-t border-[#1F3A4B]/20 pt-20 text-center">
+                  <div
+                    className="max-w-2xl mx-auto p-10 rounded-3xl shadow-xl border border-white/20 relative overflow-hidden group"
+                    style={{
+                      background: `linear-gradient(135deg, ${accentColor}15, #FFFFFF)`,
+                    }}
+                  >
+                    {/* Subtle decorative elements */}
+                    <div
+                      className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl opacity-20"
+                      style={{ backgroundColor: accentColor }}
+                    />
+                    <div
+                      className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-20"
+                      style={{ backgroundColor: accentColor }}
+                    />
+
+                    <h2 className="text-3xl md:text-4xl font-serif text-[#1F3A4B] mb-6">
+                      Want a memorial of your own?
+                    </h2>
+                    <p className="text-[#1F3A4B]/70 mb-10 text-lg">
+                      Create a beautiful, lasting tribute for your loved ones
+                      with Beyond Moksha.
+                    </p>
+                    <button
+                      className="px-10 py-4 text-white rounded-full text-lg font-medium shadow-lg hover:scale-105 transition-transform duration-300"
+                      style={{ backgroundColor: accentColor }}
+                      onClick={() => (window.location.href = "/tribute")}
+                    >
+                      Create a Memorial
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </>
+        )}
+      </Suspense>
     </div>
   );
 }

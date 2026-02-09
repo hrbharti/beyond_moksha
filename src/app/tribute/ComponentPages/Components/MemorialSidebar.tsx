@@ -7,19 +7,21 @@ import Logo from "@/app/components/utils/Logo";
 interface MemorialSidebarProps {
   isOpen?: boolean;
   toggleSidebar?: () => void;
+  isPet?: boolean;
 }
 
 const MemorialSidebar: React.FC<MemorialSidebarProps> = ({
   isOpen = false,
   toggleSidebar,
+  isPet = false,
 }) => {
   const navItems = [
     { name: "Memorial", href: "#memorial" },
-    { name: "Timeline", href: "#timeline" },
+    ...(isPet ? [] : [{ name: "Timeline", href: "#timeline" }]),
     { name: "Gallery", href: "#gallery" },
     { name: "Memory Wall", href: "#memory-wall" },
-    { name: "Family Tree", href: "#family-tree" },
-    { name: "Events", href: "#events" },
+    ...(isPet ? [] : [{ name: "Family Tree", href: "#family-tree" }]),
+    ...(isPet ? [] : [{ name: "Events", href: "#events" }]),
   ];
 
   /* Active Highlight Logic */

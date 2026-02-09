@@ -9,6 +9,7 @@ import Gallery from "../../ComponentPages/Gallery";
 import MemoryWall from "../../ComponentPages/MemoryWall";
 import EventsSection from "../../ComponentPages/EventSection";
 import FamilyTree from "../../ComponentPages/FamilyTree";
+import PetProfileView from "../../ComponentPages/Components/PetProfileView";
 import bg from "@public/images/grayishBG.jpg";
 import { Eye, Edit2, Share2, Save, X, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -278,96 +279,101 @@ function ProfileContent() {
         </div>
 
         {/* Top Right Actions */}
-        <div className="absolute right-0 p-5 z-50 flex gap-2">
+        <div className="absolute right-0 p-5 z-20 flex gap-2">
           <button
             onClick={handleShare}
             className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
           >
             <Share2 size={16} /> <span className="hidden sm:inline">Share</span>
           </button>
-          <Link
-            href={`/tribute/p/${tribute.username || tribute.id}`}
-            target="_blank"
-            className="flex items-center gap-2 p-3 sm:px-4 sm:py-2 bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 rounded-full shadow-sm hover:bg-white transition"
-          >
-            <Eye size={16} />{" "}
-            <span className="hidden sm:inline">Public Profile</span>
-          </Link>
         </div>
 
-        {/* Hero Section */}
-        <HeroSection
-          tribute={tribute}
-          isEditing={isEditing}
-          accentColor={accentColor}
-          textColor={textColor}
-          onUpdate={handleUpdate}
-        />
+        {tribute.memorialType && tribute.memorialType !== "Human" ? (
+          <PetProfileView
+            tribute={tribute}
+            isEditing={isEditing}
+            accentColor={accentColor}
+            textColor={textColor}
+            onUpdate={handleUpdate}
+          />
+        ) : (
+          <>
+            {/* Hero Section */}
+            <HeroSection
+              tribute={tribute}
+              isEditing={isEditing}
+              accentColor={accentColor}
+              textColor={textColor}
+              onUpdate={handleUpdate}
+            />
 
-        <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
-          <Memorial
-            bio={tribute.bio}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onBioUpdate={(val) => handleUpdate("bio", val)}
-          />
+            <div className="flex-1 md:ml-10 px-5 md:px-10 py-10 transition-all duration-300">
+              <Memorial
+                bio={tribute.bio}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onBioUpdate={(val) => handleUpdate("bio", val)}
+              />
 
-          <TimelineSection
-            items={tribute.timelineEvents || []}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onUpdate={(val) => handleUpdate("timelineEvents", val)}
-          />
-          <Gallery
-            images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onUpdate={(val) => handleUpdate("galleryImages", val)}
-          />
-          <MemoryWall
-            memories={tribute.memories || []}
-            name={tribute.name}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onUpdate={(val) => handleUpdate("memories", val)}
-          />
-          <FamilyTree
-            centralPerson={{
-              name: tribute.name,
-              imageUrl: tribute.profileImageUrl,
-            }}
-            groups={tribute.familyMembers || []}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onUpdateGroup={(index, newGroup) => {
-              const currentGroups = Array.isArray(tribute.familyMembers)
-                ? [...tribute.familyMembers]
-                : [];
-              currentGroups[index] = newGroup;
-              handleUpdate("familyMembers", currentGroups);
-            }}
-            onUpdateGroups={(newGroups) => {
-              handleUpdate("familyMembers", newGroups);
-            }}
-            onUpdateCentralPerson={(field, value) => {
-              if (field === "name") handleUpdate("name", value);
-              if (field === "imageUrl") handleUpdate("profileImageUrl", value);
-            }}
-          />
-          <EventsSection
-            events={tribute.events || []}
-            name={tribute.name}
-            isEditing={isEditing}
-            accentColor={accentColor}
-            textColor={textColor}
-            onUpdate={(val) => handleUpdate("events", val)}
-          />
-        </div>
+              <TimelineSection
+                items={tribute.timelineEvents || []}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onUpdate={(val) => handleUpdate("timelineEvents", val)}
+              />
+              <Gallery
+                images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onUpdate={(val) => handleUpdate("galleryImages", val)}
+              />
+              <MemoryWall
+                memories={tribute.memories || []}
+                name={tribute.name}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onUpdate={(val) => handleUpdate("memories", val)}
+              />
+              <FamilyTree
+                centralPerson={{
+                  name: tribute.name,
+                  imageUrl: tribute.profileImageUrl,
+                }}
+                groups={tribute.familyMembers || []}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onUpdateGroup={(index, newGroup) => {
+                  const currentGroups = Array.isArray(tribute.familyMembers)
+                    ? [...tribute.familyMembers]
+                    : [];
+                  currentGroups[index] = newGroup;
+                  handleUpdate("familyMembers", currentGroups);
+                }}
+                onUpdateGroups={(newGroups) => {
+                  handleUpdate("familyMembers", newGroups);
+                }}
+                onUpdateCentralPerson={(field, value) => {
+                  if (field === "name") handleUpdate("name", value);
+                  if (field === "imageUrl")
+                    handleUpdate("profileImageUrl", value);
+                }}
+              />
+              <EventsSection
+                events={tribute.events || []}
+                name={tribute.name}
+                isEditing={isEditing}
+                accentColor={accentColor}
+                textColor={textColor}
+                onUpdate={(val) => handleUpdate("events", val)}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

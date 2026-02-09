@@ -37,13 +37,17 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   activeTributeId,
   onSwitchTribute,
 }) => {
+  const currentTribute = tributes.find((t) => t.id === activeTributeId);
+  const isPet =
+    currentTribute?.memorialType && currentTribute.memorialType !== "Human";
+
   const navItems = [
     { name: "Memorial", href: "#memorial" },
-    { name: "Timeline", href: "#timeline" },
+    ...(isPet ? [] : [{ name: "Timeline", href: "#timeline" }]),
     { name: "Gallery", href: "#gallery" },
     { name: "Memory Wall", href: "#memory-wall" },
-    { name: "Family Tree", href: "#family-tree" },
-    { name: "Events", href: "#events" },
+    ...(isPet ? [] : [{ name: "Family Tree", href: "#family-tree" }]),
+    ...(isPet ? [] : [{ name: "Events", href: "#events" }]),
   ];
 
   /* Active Highlight Logic */
