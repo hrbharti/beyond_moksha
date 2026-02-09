@@ -8,6 +8,8 @@ import Gallery from "../../../ComponentPages/Gallery";
 import MemoryWall from "../../../ComponentPages/MemoryWall";
 import EventsSection from "../../../ComponentPages/EventSection";
 import FamilyTree from "../../../ComponentPages/FamilyTree";
+import PetMemorial from "../../furry-memorial/components/PetMemorial";
+import PetMemorialWall from "../../furry-memorial/components/PetMemorialWall";
 import { Share2 } from "lucide-react";
 import { toast } from "sonner";
 import bg from "@public/images/grayishBG.jpg";
@@ -15,9 +17,9 @@ import bg from "@public/images/grayishBG.jpg";
 interface Tribute {
   id: string;
   name: string;
-  email: string;
-  gender: string;
+  gender?: string;
   dateOfBirth: string;
+  dateOfPassing?: string;
   dateOfDeath?: string;
   location?: string;
   bio?: string;
@@ -33,6 +35,8 @@ interface Tribute {
   textColor?: string;
   backgroundColor?: string;
   accentColor?: string;
+  memorialType?: string;
+  petType?: string;
 }
 
 export default function PublicTributePage({
@@ -83,10 +87,26 @@ export default function PublicTributePage({
   useEffect(() => {
     const fetchTribute = async () => {
       try {
+        // Try human tribute first
         const response = await api.get(`/tribute/${username}`);
         setTribute(response.data);
       } catch (err: any) {
         if (err.response && err.response.status === 404) {
+          try {
+            // Try pet tribute if human not found
+            const petResponse = await api.get(`/pet-tribute/${username}`);
+            const petData = petResponse.data;
+            setTribute({
+              ...petData,
+              dateOfDeath: petData.dateOfPassing, // Normalize for UI
+              memorialType: petData.petType || "Pet", // Normalize for UI
+            });
+          } catch (petErr: any) {
+            if (petErr.response && petErr.response.status === 404) {
+              setError(true);
+            }
+          }
+        } else {
           setError(true);
         }
       } finally {
@@ -157,11 +177,22 @@ export default function PublicTributePage({
 
       <div className="flex-1 px-5 md:px-20 lg:px-32 py-10 transition-all duration-300">
         <div className="max-w-6xl mx-auto space-y-24">
-          <Memorial
-            bio={tribute.bio}
-            accentColor={accentColor}
-            textColor={textColor}
-          />
+          {tribute.memorialType && tribute.memorialType !== "Human" ? (
+            <PetMemorial
+              name={tribute.name}
+              bio={tribute.bio}
+              dob={tribute.dateOfBirth}
+              dod={tribute.dateOfDeath}
+              accentColor={accentColor}
+              textColor={textColor}
+            />
+          ) : (
+            <Memorial
+              bio={tribute.bio}
+              accentColor={accentColor}
+              textColor={textColor}
+            />
+          )}
 
           <TimelineSection
             items={tribute.timelineEvents || []}
@@ -175,12 +206,21 @@ export default function PublicTributePage({
             textColor={textColor}
           />
 
-          <MemoryWall
-            memories={tribute.memories || []}
-            name={tribute.name}
-            accentColor={accentColor}
-            textColor={textColor}
-          />
+          {tribute.memorialType && tribute.memorialType !== "Human" ? (
+            <PetMemorialWall
+              memories={tribute.memories || []}
+              name={tribute.name}
+              accentColor={accentColor}
+              textColor={textColor}
+            />
+          ) : (
+            <MemoryWall
+              memories={tribute.memories || []}
+              name={tribute.name}
+              accentColor={accentColor}
+              textColor={textColor}
+            />
+          )}
 
           <FamilyTree
             centralPerson={{

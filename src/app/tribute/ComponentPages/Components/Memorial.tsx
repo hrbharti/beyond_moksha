@@ -19,8 +19,8 @@ const Memorial: React.FC<MemorialProps> = ({
   return (
     <section className="w-full max-w-5xl px-4 sm:px-0" id="memorial">
       <h1
-        className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
-        style={{ borderColor: accentColor, color: textColor }}
+        className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2 text-black"
+        style={{ borderColor: accentColor }}
       >
         Memorial
       </h1>

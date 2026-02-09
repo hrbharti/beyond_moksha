@@ -59,8 +59,8 @@ const TimelineSection: React.FC<TimelineSectionProps> = ({
     >
       <div className="flex justify-between items-center mb-12">
         <h1
-          className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
-          style={{ borderColor: accentColor, color: textColor }}
+          className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2 text-black"
+          style={{ borderColor: accentColor }}
         >
           Timeline
         </h1>

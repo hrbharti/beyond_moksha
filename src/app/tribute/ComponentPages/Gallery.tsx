@@ -34,8 +34,8 @@ const Gallery: React.FC<GalleryProps> = ({
       {/* Title */}
       <div className="flex justify-between items-center mb-8">
         <h1
-          className="text-2xl sm:text-4xl md:text-5xl font-serif pb-4 inline-block border-b-2"
-          style={{ borderColor: accentColor, color: textColor }}
+          className="text-2xl sm:text-4xl md:text-5xl font-serif pb-4 inline-block border-b-2 text-black"
+          style={{ borderColor: accentColor }}
         >
           Gallery
         </h1>

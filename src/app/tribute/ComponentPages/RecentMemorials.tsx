@@ -16,7 +16,7 @@ interface Memorial {
   id: string;
   name: string;
   profileImageUrl: string | null;
-  username: string;
+  username?: string | null;
 }
 
 const RecentMemorials = () => {
@@ -76,23 +76,22 @@ const RecentMemorials = () => {
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                 >
                   <Link
-                    href={`/tribute/p/${item.username}`}
+                    href={`/tribute/p/${item.username || item.id}`}
                     className="flex flex-col items-center group cursor-pointer"
                   >
                     <div className="w-36 h-36 sm:w-44 sm:h-44 relative overflow-hidden bg-gray-200 shadow-md border-4 border-[#D4A043]/20 rounded-2xl transition-transform group-hover:scale-105 duration-300">
-                      <Image
-                        src={
-                          item.profileImageUrl ||
-                          "/images/jackson.png"
-                        } // Fallback image needed
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/images/placeholder-profile.png"; // Client-side fallback
-                        }}
-                      />
+                      {item.profileImageUrl ? (
+                        <Image
+                          src={item.profileImageUrl || "/images/jackson.png"} // Fallback image needed
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full font-sans text-4xl font-bold">
+                          {item.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
                     </div>
                     <p className="mt-4 text-[#1F3A4B] text-sm sm:text-base font-medium text-center group-hover:text-[#D4A043] transition-colors">
                       {item.name}

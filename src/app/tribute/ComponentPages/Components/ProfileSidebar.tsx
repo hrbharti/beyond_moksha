@@ -16,6 +16,9 @@ interface ProfileSidebarProps {
   language: string;
   setLanguage: (lang: string) => void;
   isEditing: boolean;
+  tributes: any[];
+  activeTributeId: string;
+  onSwitchTribute: (username: string) => void;
 }
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
@@ -30,6 +33,9 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   language,
   setLanguage,
   isEditing,
+  tributes,
+  activeTributeId,
+  onSwitchTribute,
 }) => {
   const navItems = [
     { name: "Memorial", href: "#memorial" },
@@ -108,38 +114,81 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
         <div className="flex-1 overflow-y-auto px-6 space-y-8">
           {/* Navigation Links */}
           {!isEditing && (
-            <nav className="space-y-2">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
-                Menu
-              </h3>
-              {navItems.map((item) => {
-                const isActive = activeSection === item.href;
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={`relative flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group overflow-hidden
-                      ${
-                        isActive
-                          ? "text-white shadow-md shadow-gray-200/50 scale-[1.02]"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            <nav className="space-y-6">
+              {/* Profile Switcher */}
+              <div>
+                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+                  Your Memorials
+                </h3>
+                <div className="space-y-1">
+                  {tributes.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => onSwitchTribute(t.username || t.id)}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        activeTributeId === t.id
+                          ? "bg-gray-100 text-gray-900 border border-gray-200"
+                          : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                       }`}
-                    style={{
-                      backgroundColor: isActive ? accentColor : undefined,
-                    }}
-                  >
-                    {isActive && (
-                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    )}
-                    <span className="font-medium relative z-10">
-                      {item.name}
-                    </span>
-                    {isActive && (
-                      <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    )}
-                  </a>
-                );
-              })}
+                    >
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                        style={{
+                          backgroundColor:
+                            activeTributeId === t.id ? accentColor : "#E5E7EB",
+                        }}
+                      >
+                        {t.profileImageUrl ? (
+                          <img
+                            src={t.profileImageUrl}
+                            alt=""
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        ) : t.memorialType === "Human" ? (
+                          "H"
+                        ) : (
+                          "P"
+                        )}
+                      </div>
+                      <span className="truncate">{t.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+                  Page Sections
+                </h3>
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.href;
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={`relative flex items-center w-full px-4 py-3 rounded-xl transition-all duration-300 group overflow-hidden
+                        ${
+                          isActive
+                            ? "text-white shadow-md shadow-gray-200/50 scale-[1.02]"
+                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        }`}
+                      style={{
+                        backgroundColor: isActive ? accentColor : undefined,
+                      }}
+                    >
+                      {isActive && (
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      )}
+                      <span className="font-medium relative z-10">
+                        {item.name}
+                      </span>
+                      {isActive && (
+                        <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                      )}
+                    </a>
+                  );
+                })}
+              </div>
             </nav>
           )}
 

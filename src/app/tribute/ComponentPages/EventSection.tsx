@@ -80,8 +80,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       style={{ color: textColor }}
     >
       <h1
-        className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
-        style={{ borderColor: accentColor, color: textColor }}
+        className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2 text-black"
+        style={{ borderColor: accentColor }}
       >
         Events
       </h1>
@@ -245,8 +245,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
             {/* RSVP Section */}
             <div className="space-y-6">
               <h1
-                className="text-2xl md:text-3xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
-                style={{ borderColor: accentColor, color: textColor }}
+                className="text-2xl md:text-3xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2 text-black"
+                style={{ borderColor: accentColor }}
               >
                 Confirm Attendance
               </h1>

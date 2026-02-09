@@ -3,7 +3,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import api from "@/lib/api/api";
-import { User, Save, Globe, Mail, Shield, X, Lock, Plus } from "lucide-react";
+import {
+  User,
+  Save,
+  Globe,
+  Mail,
+  Shield,
+  X,
+  Lock,
+  Plus,
+  Edit2,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
 
 interface UserProfile {
@@ -19,10 +30,10 @@ interface TributeSettings {
   username?: string;
   isPublic: boolean;
   email?: string;
+  memorialType?: string;
 }
 
 export default function AccountPage() {
-  const [user, setUser] = useState<UserProfile | null>(null);
   // Tribute state
   const [tributes, setTributes] = useState<TributeSettings[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +51,12 @@ export default function AccountPage() {
   const [passwordError, setPasswordError] = useState("");
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
+  // Delete Tribute State
+  const [deleteConfirmationId, setDeleteConfirmationId] = useState<
+    string | null
+  >(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   // Visual state
   const accentColor = "#D4A043"; // Matching the gold accent
 
@@ -51,7 +68,6 @@ export default function AccountPage() {
       ]);
 
       if (userRes.status === "fulfilled") {
-        setUser(userRes.value.data);
         setName(userRes.value.data.name);
         setEmail(userRes.value.data.email);
       }
@@ -138,14 +154,41 @@ export default function AccountPage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Password update error", error);
-      setPasswordError(
-        error.response?.data?.message || "Failed to update password",
-      );
-      toast.error(error.response?.data?.message || "Failed to update password");
+      const errorMessage =
+        (error as any).response?.data?.message || "Failed to update password";
+      setPasswordError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setUpdatingPassword(false);
+    }
+  };
+
+  const handleDeleteTribute = async () => {
+    if (!deleteConfirmationId) return;
+
+    setIsDeleting(true);
+    try {
+      const tributeToDelete = tributes.find(
+        (t) => t.id === deleteConfirmationId,
+      );
+      const isPet =
+        tributeToDelete?.memorialType &&
+        tributeToDelete.memorialType !== "Human";
+      const endpoint = isPet
+        ? `/pet-tribute/${deleteConfirmationId}`
+        : `/tribute/${deleteConfirmationId}`;
+
+      await api.delete(endpoint);
+      setTributes((prev) => prev.filter((t) => t.id !== deleteConfirmationId));
+      toast.success("Tribute deleted successfully");
+      setDeleteConfirmationId(null);
+    } catch (error) {
+      console.error("Delete error", error);
+      toast.error("Failed to delete tribute");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -282,10 +325,26 @@ export default function AccountPage() {
                             </a>
                           )}
                         </div>
-                        <div
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${tribute.isPublic ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}
-                        >
-                          {tribute.isPublic ? "Public" : "Private"}
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/tribute/profile?username=${tribute.username || tribute.id}`}
+                            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Edit"
+                          >
+                            <Edit2 size={18} />
+                          </Link>
+                          <button
+                            onClick={() => setDeleteConfirmationId(tribute.id)}
+                            className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete"
+                          >
+                            <Trash size={20} />
+                          </button>
+                          <div
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${tribute.isPublic ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}
+                          >
+                            {tribute.isPublic ? "Public" : "Private"}
+                          </div>
                         </div>
                       </div>
 
@@ -454,6 +513,41 @@ export default function AccountPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmationId && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <X size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Delete Tribute?
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Are you sure you want to delete this tribute? This action cannot
+                be undone.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDeleteConfirmationId(null)}
+                  disabled={isDeleting}
+                  className="flex-1 py-3 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition-colors border border-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteTribute}
+                  disabled={isDeleting}
+                  className="flex-1 py-3 text-white font-medium bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-lg shadow-red-100"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

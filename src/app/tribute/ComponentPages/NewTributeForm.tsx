@@ -8,12 +8,13 @@ interface NewTributeFormProps {
   userId: string;
 }
 
-export default function NewTributeForm({
-  userId,
-}: NewTributeFormProps) {
+export default function NewTributeForm({ userId }: NewTributeFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Memorial Type
+  const [memorialType, setMemorialType] = useState<"Human" | "Pet">("Human");
 
   // Memorial Details
   const [memorialData, setMemorialData] = useState({
@@ -22,7 +23,8 @@ export default function NewTributeForm({
     lastName: "",
     dateOfBirth: "",
     dateOfDeath: "",
-    username: ""
+    username: "",
+    petType: "Dog",
   });
 
   // Username Availability State
@@ -51,8 +53,11 @@ export default function NewTributeForm({
         setIsCheckingUsername(true);
         (window as any).usernameCheckTimeout = setTimeout(async () => {
           try {
+            // Check availability in both collections (done in backend)
+            const endpoint =
+              memorialType === "Pet" ? "/pet-tribute" : "/tribute";
             const res = await api.get(
-              `/tribute/check-username/${processedValue}`,
+              `${endpoint}/check-username/${processedValue}`,
             );
             setUsernameAvailability(res.data);
           } catch (err) {
@@ -76,8 +81,15 @@ export default function NewTributeForm({
     setLoading(true);
 
     // Validation
-    if (!memorialData.firstName || !memorialData.lastName) {
-      setError("First name and last name are required");
+    if (
+      !memorialData.firstName ||
+      (memorialType === "Human" && !memorialData.lastName)
+    ) {
+      setError(
+        memorialType === "Human"
+          ? "First name and last name are required"
+          : "Pet's name is required",
+      );
       setLoading(false);
       return;
     }
@@ -103,26 +115,42 @@ export default function NewTributeForm({
     }
 
     try {
-      const tributeName = [
-        memorialData.firstName,
-        memorialData.middleName,
-        memorialData.lastName,
-      ]
-        .filter(Boolean)
-        .join(" ");
+      const tributeName =
+        memorialType === "Human"
+          ? [
+              memorialData.firstName,
+              memorialData.middleName,
+              memorialData.lastName,
+            ]
+              .filter(Boolean)
+              .join(" ")
+          : memorialData.firstName;
 
-      const payload = {
-        userId,
-        name: tributeName,
-        firstName: memorialData.firstName,
-        middleName: memorialData.middleName || null,
-        lastName: memorialData.lastName,
-        dateOfBirth: memorialData.dateOfBirth,
-        dateOfDeath: memorialData.dateOfDeath,
-        username: memorialData.username || null
-      };
+      if (memorialType === "Pet") {
+        const petPayload = {
+          userId,
+          name: tributeName,
+          petType: memorialData.petType,
+          dateOfBirth: memorialData.dateOfBirth,
+          dateOfPassing: memorialData.dateOfDeath,
+          username: memorialData.username || null,
+        };
+        await api.post("/pet-tribute/", petPayload);
+      } else {
+        const payload = {
+          userId,
+          name: tributeName,
+          firstName: memorialData.firstName,
+          middleName: memorialData.middleName || null,
+          lastName: memorialData.lastName,
+          dateOfBirth: memorialData.dateOfBirth,
+          dateOfDeath: memorialData.dateOfDeath,
+          username: memorialData.username || null,
+          memorialType: "Human",
+        };
+        await api.post("/tribute/", payload);
+      }
 
-      await api.post("/tribute/", payload);
       toast.success("Memorial created successfully!");
       router.push("/tribute/profile");
     } catch (err: any) {
@@ -154,48 +182,99 @@ export default function NewTributeForm({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Tribute Type Selector */}
+          <div className="flex justify-center p-1 bg-gray-100 rounded-xl mb-6">
+            <button
+              type="button"
+              onClick={() => setMemorialType("Human")}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+                memorialType === "Human"
+                  ? "bg-white text-[#D4A043] shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Human
+            </button>
+            <button
+              type="button"
+              onClick={() => setMemorialType("Pet")}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+                memorialType === "Pet"
+                  ? "bg-white text-[#D4A043] shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Pet
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
+            <div className={memorialType === "Pet" ? "md:col-span-2" : ""}>
               <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                First Name
+                {memorialType === "Human" ? "First Name" : "Pet's name"}
               </label>
               <input
                 type="text"
                 name="firstName"
                 value={memorialData.firstName}
                 onChange={handleMemorialChange}
-                placeholder="First name"
+                placeholder={
+                  memorialType === "Human" ? "First name" : "Your pet's name"
+                }
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
                 required
               />
             </div>
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                Middle Name
-              </label>
-              <input
-                type="text"
-                name="middleName"
-                value={memorialData.middleName}
-                onChange={handleMemorialChange}
-                placeholder="Middle name"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
-              />
-            </div>
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={memorialData.lastName}
-                onChange={handleMemorialChange}
-                placeholder="Last name"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
-                required
-              />
-            </div>
+            {memorialType === "Human" && (
+              <>
+                <div>
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                    Middle Name
+                  </label>
+                  <input
+                    type="text"
+                    name="middleName"
+                    value={memorialData.middleName}
+                    onChange={handleMemorialChange}
+                    placeholder="Middle name"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={memorialData.lastName}
+                    onChange={handleMemorialChange}
+                    placeholder="Last name"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
+                    required
+                  />
+                </div>
+              </>
+            )}
+            {memorialType === "Pet" && (
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  Pet Type
+                </label>
+                <select
+                  name="petType"
+                  value={memorialData.petType}
+                  onChange={handleMemorialChange}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all cursor-pointer"
+                >
+                  <option value="Dog">Dog</option>
+                  <option value="Cat">Cat</option>
+                  <option value="Bird">Bird</option>
+                  <option value="Rabbit">Rabbit</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -258,7 +337,6 @@ export default function NewTributeForm({
                 : usernameAvailability?.message}
             </div>
           </div>
-
 
           {/* Terms */}
           <label className="flex items-start gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">

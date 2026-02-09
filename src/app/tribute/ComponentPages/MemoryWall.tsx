@@ -69,8 +69,8 @@ const MemoryWall: React.FC<MemoryWallProps> = ({
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10 space-y-6 md:space-y-0">
         <div>
           <h1
-            className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2"
-            style={{ borderColor: accentColor, color: textColor }}
+            className="text-2xl sm:text-4xl md:text-5xl font-serif mb-6 sm:mb-10 pb-4 inline-block border-b-2 text-black"
+            style={{ borderColor: accentColor }}
           >
             Memory Wall
           </h1>

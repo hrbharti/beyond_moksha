@@ -10,16 +10,7 @@ import MemoryWall from "../../ComponentPages/MemoryWall";
 import EventsSection from "../../ComponentPages/EventSection";
 import FamilyTree from "../../ComponentPages/FamilyTree";
 import bg from "@public/images/grayishBG.jpg";
-import {
-  Eye,
-  Edit2,
-  Share2,
-  Save,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-} from "lucide-react";
+import { Eye, Edit2, Share2, Save, X, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import ProfileSidebar from "../../ComponentPages/Components/ProfileSidebar";
@@ -28,9 +19,10 @@ interface Tribute {
   id: string;
   name: string;
   username?: string;
-  email: string;
-  gender: string;
+  email?: string;
+  gender?: string;
   dateOfBirth: string;
+  dateOfPassing?: string;
   dateOfDeath?: string;
   location?: string;
   bio?: string;
@@ -42,15 +34,17 @@ interface Tribute {
   textColor?: string;
   backgroundColor?: string;
   accentColor?: string;
-  familyMembers?: any;
+  familyMembers?: any[];
   timelineEvents?: any[];
   galleryImages?: string[];
   memories?: any[];
   events?: any[];
+  memorialType?: string;
 }
 
 function ProfileContent() {
   const router = useRouter();
+  const [allTributes, setAllTributes] = useState<Tribute[]>([]);
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [originalTribute, setOriginalTribute] = useState<Tribute | null>(null);
   const [loading, setLoading] = useState(true);
@@ -66,14 +60,29 @@ function ProfileContent() {
 
   const fetchProfile = useCallback(async () => {
     try {
-      const response = await api.get("/tribute/me");
-      if (response.data.noProfile) {
-        // Redifect to memorial creation if the authenticated user has no profile (new tribute creation)
+      const response = await api.get("/tribute/all");
+      const tributes: Tribute[] = response.data;
+
+      if (tributes.length === 0) {
+        // Redirect to memorial creation if the authenticated user has no profile
         router.push("/tribute/new");
         return;
       }
-      setTribute(response.data);
-      setOriginalTribute(response.data);
+
+      setAllTributes(tributes);
+
+      // Try to find selected tribute from URL search params
+      const params = new URLSearchParams(window.location.search);
+      const selectedUsername = params.get("username");
+
+      let selectedTribute = tributes[0];
+      if (selectedUsername) {
+        const found = tributes.find((t) => t.username === selectedUsername);
+        if (found) selectedTribute = found;
+      }
+
+      setTribute(selectedTribute);
+      setOriginalTribute(selectedTribute);
     } catch (error) {
       console.error("Failed to fetch profile", error);
       router.push("/tribute/login");
@@ -86,7 +95,25 @@ function ProfileContent() {
     fetchProfile();
   }, [fetchProfile]);
 
-  const handleUpdate = (field: keyof Tribute, value: any) => {
+  const handleSwitchTribute = (username: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("username", username);
+    window.history.pushState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`,
+    );
+
+    const found = allTributes.find(
+      (t) => t.username === username || t.id === username,
+    );
+    if (found) {
+      setTribute(found);
+      setOriginalTribute(found);
+    }
+  };
+
+  const handleUpdate = (field: keyof Tribute | string, value: any) => {
     if (tribute) {
       setTribute({ ...tribute, [field]: value });
     }
@@ -96,9 +123,20 @@ function ProfileContent() {
     if (!tribute) return;
     setIsSaving(true);
     try {
-      await api.put(`/tribute/${tribute.id}`, tribute);
+      const isPet = tribute.memorialType && tribute.memorialType !== "Human";
+      const endpoint = isPet
+        ? `/pet-tribute/${tribute.id}`
+        : `/tribute/${tribute.id}`;
+
+      await api.put(endpoint, tribute);
+
+      // Update local set of all tributes
+      setAllTributes((prev) =>
+        prev.map((t) => (t.id === tribute.id ? tribute : t)),
+      );
       setOriginalTribute(tribute);
       setIsEditing(false);
+      toast.success("Profile saved successfully");
     } catch (error) {
       toast.error("Failed to save profile");
     } finally {
@@ -163,6 +201,9 @@ function ProfileContent() {
         language={language}
         setLanguage={(val) => handleUpdate("language", val)}
         isEditing={isEditing}
+        tributes={allTributes}
+        activeTributeId={tribute.id}
+        onSwitchTribute={handleSwitchTribute}
       />
 
       {/* Main Content Wrapper */}
