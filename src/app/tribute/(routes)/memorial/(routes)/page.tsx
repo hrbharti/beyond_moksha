@@ -15,15 +15,17 @@ import FamilyTree, {
   FamilyGroup,
 } from "@/app/tribute/ComponentPages/FamilyTree";
 import HeroSection from "@/app/tribute/ComponentPages/Components/MemorialHero";
-import { Suspense, useState, useCallback } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api/api";
 import { toast } from "sonner";
 import { Edit2, Eye, Save, X } from "lucide-react";
+import { saveMemorialDraft, getMemorialDraft } from "@/lib/memorialStorage";
 
 import bg from "@public/images/grayishBG.jpg";
 import jackson from "@public/images/jackson.png";
 import banner1 from "@public/images/banner1.png";
+import { useUser } from "@/hooks/useUser";
 
 interface Tribute {
   id: string;
@@ -39,7 +41,7 @@ interface Tribute {
 const initialTributeData: Tribute = {
   id: "1",
   name: "Mrs. Radha Devi Sharma",
-  dateOfBirth: "1973-03-16", // Format as YYYY-MM-DD for consistency
+  dateOfBirth: "1973-03-16",
   dateOfDeath: "2023-09-28",
   location: "Varanasi, Uttar Pradesh",
   profileImageUrl: jackson.src,
@@ -148,7 +150,6 @@ const initialFamilyGroups = [
 export default function Page() {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   const [tribute, setTribute] = useState<Tribute>(initialTributeData);
   const [bio, setBio] = useState<string>(initialBio);
@@ -161,29 +162,77 @@ export default function Page() {
   const [familyGroups, setFamilyGroups] =
     useState<FamilyGroup[]>(initialFamilyGroups);
 
+    const { user } = useUser();
+
+  // Restore draft on mount
+  useEffect(() => {
+    const draft = getMemorialDraft('human');
+    if (draft) {
+      if (draft.tribute) setTribute(draft.tribute);
+      if (draft.bio) setBio(draft.bio);
+      if (draft.timelineData) setTimelineData(draft.timelineData);
+      if (draft.galleryImages) setGalleryImages(draft.galleryImages);
+      if (draft.memoriesData) setMemoriesData(draft.memoriesData);
+      if (draft.eventData) setEventData(draft.eventData);
+      if (draft.familyGroups) setFamilyGroups(draft.familyGroups);
+      setIsEditing(true);
+      toast.info("Restored your unsaved changes");
+    }
+  }, []);
+
+  // Auto-save draft
+  useEffect(() => {
+    if (!isEditing) return;
+
+    const timeoutId = setTimeout(() => {
+      saveMemorialDraft('human', {
+        tribute,
+        bio,
+        timelineData,
+        galleryImages,
+        memoriesData,
+        eventData,
+        familyGroups
+      });
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [tribute, bio, timelineData, galleryImages, memoriesData, eventData, familyGroups, isEditing]);
+
   const handleUpdateTribute = (field: keyof Tribute, value: string) => {
     setTribute((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = async () => {
-    setIsSaving(true);
     try {
       // Check if user is logged in
-      const authRes = await api.get("/tribute/me").catch(() => null);
-
-      if (!authRes || authRes.data.noProfile === undefined) {
+      if (!user) {
         toast.error("Please login to save your changes");
-        // Store changes in local storage or session if needed, but for now redirect
+        // Save draft before redirect
+        saveMemorialDraft('human', {
+          tribute,
+          bio,
+          timelineData,
+          galleryImages,
+          memoriesData,
+          eventData,
+          familyGroups
+        });
+        
+        const currentUrl = new URL(window.location.href);
+        
         router.push(
           "/tribute/login?callbackUrl=" +
-            encodeURIComponent(window.location.href),
+            encodeURIComponent(currentUrl.toString()),
         );
         return;
       }
 
-      // If logged in, save the data
       const payload = {
-        ...tribute,
+        userId: user.id,
+        name: tribute.name,
+        dateOfBirth: tribute.dateOfBirth,
+        dateOfDeath: tribute.dateOfDeath,
         bio,
         timelineEvents: timelineData,
         galleryImages,
@@ -192,14 +241,12 @@ export default function Page() {
         familyMembers: familyGroups,
       };
 
-      await api.put(`/tribute/${tribute.id}`, payload);
+      await api.post(`/tribute/`, payload);
       toast.success("Memorial saved successfully!");
-      setIsEditing(false);
+      router.push(`/tribute/profile`);
     } catch (error: any) {
       console.error("Save failed", error);
       toast.error(error.response?.data?.message || "Failed to save memorial");
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -225,16 +272,9 @@ export default function Page() {
         {isEditing && (
           <button
             onClick={handleSave}
-            disabled={isSaving}
             className="flex items-center gap-2 bg-[#D4A043] text-white px-5 py-2 rounded-full font-medium hover:bg-[#B6761E] transition-all shadow-md disabled:opacity-50"
           >
-            {isSaving ? (
-              <span className="animate-pulse">Saving...</span>
-            ) : (
-              <>
-                <Save size={18} /> <span>Save Changes</span>
-              </>
-            )}
+            <Save size={18} /> <span>Save Changes</span>
           </button>
         )}
 

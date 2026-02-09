@@ -49,9 +49,16 @@ function ProfileContent() {
   const [tribute, setTribute] = useState<Tribute | null>(null);
   const [originalTribute, setOriginalTribute] = useState<Tribute | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(true); // Default to Edit Mode
+  const [isEditing, setIsEditing] = useState(false); // Default to Preview Mode
   const [isSaving, setIsSaving] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default sidebar open
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default sidebar closed (mobile first)
+
+  useEffect(() => {
+    // Open sidebar by default on desktop
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      setIsSidebarOpen(true);
+    }
+  }, []);
 
   // Derived state for personalization to avoid deep nesting access in render
   const textColor = tribute?.textColor || "#000000";
