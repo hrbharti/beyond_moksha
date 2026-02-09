@@ -57,6 +57,20 @@ export default function AccountPage() {
   >(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Username Edit State
+  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
+  const [editingTributeId, setEditingTributeId] = useState<string | null>(null);
+  const [editingTributeType, setEditingTributeType] = useState<string | null>(
+    null,
+  );
+  const [newUsername, setNewUsername] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<{
+    available: boolean | null;
+    message: string;
+  }>({ available: null, message: "" });
+  const [checkingUsername, setCheckingUsername] = useState(false);
+  const [updatingUsername, setUpdatingUsername] = useState(false);
+
   // Visual state
   const accentColor = "#D4A043"; // Matching the gold accent
 
@@ -113,7 +127,15 @@ export default function AccountPage() {
         ),
       );
 
-      await api.put(`/tribute/${tributeId}`, {
+      const tributeToUpdate = tributes.find((t) => t.id === tributeId);
+      const isPet =
+        tributeToUpdate?.memorialType &&
+        tributeToUpdate.memorialType !== "Human";
+      const endpoint = isPet
+        ? `/pet-tribute/${tributeId}`
+        : `/tribute/${tributeId}`;
+
+      await api.put(endpoint, {
         isPublic: newStatus,
       });
       toast.success(`Tribute is now ${newStatus ? "Public" : "Private"}`);
@@ -126,6 +148,91 @@ export default function AccountPage() {
           t.id === tributeId ? { ...t, isPublic: currentStatus } : t,
         ),
       );
+    }
+  };
+
+  // Username handling
+  const checkUsername = useCallback(
+    async (username: string, type: string) => {
+      if (!username || username.length < 3) {
+        setUsernameStatus({ available: null, message: "" });
+        return;
+      }
+
+      setCheckingUsername(true);
+      try {
+        // Use correct endpoint based on type
+        // The check-username endpoints check BOTH tables usually, but let's use the one matching the tribute type
+        const isPet = type !== "Human";
+        const endpoint = isPet
+          ? `/pet-tribute/check-username/${username}`
+          : `/tribute/check-username/${username}`;
+
+        const response = await api.get(endpoint);
+        setUsernameStatus({
+          available: response.data.available,
+          message: response.data.message,
+        });
+      } catch (error) {
+        console.error("Username check error", error);
+        setUsernameStatus({
+          available: false,
+          message: "Error checking username",
+        });
+      } finally {
+        setCheckingUsername(false);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (newUsername && editingTributeType) {
+        checkUsername(newUsername, editingTributeType);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [newUsername, editingTributeType, checkUsername]);
+
+  const openUsernameModal = (tribute: TributeSettings) => {
+    setEditingTributeId(tribute.id);
+    setEditingTributeType(tribute.memorialType || "Human");
+    setNewUsername(tribute.username || "");
+    setUsernameStatus({ available: null, message: "" });
+    setIsUsernameModalOpen(true);
+  };
+
+  const handleUpdateUsername = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTributeId || !usernameStatus.available) return;
+
+    setUpdatingUsername(true);
+    try {
+      const isPet = editingTributeType !== "Human";
+      const endpoint = isPet
+        ? `/pet-tribute/${editingTributeId}`
+        : `/tribute/${editingTributeId}`;
+
+      await api.put(endpoint, { username: newUsername });
+
+      // Update local state
+      setTributes((prev) =>
+        prev.map((t) =>
+          t.id === editingTributeId ? { ...t, username: newUsername } : t,
+        ),
+      );
+
+      toast.success("Username updated successfully");
+      setIsUsernameModalOpen(false);
+    } catch (error: any) {
+      console.error("Update username error", error);
+      toast.error(
+        error.response?.data?.message || "Failed to update username",
+      );
+    } finally {
+      setUpdatingUsername(false);
     }
   };
 
@@ -314,16 +421,29 @@ export default function AccountPage() {
                           <h3 className="text-lg font-semibold text-gray-900">
                             {tribute.name || "Unnamed Tribute"}
                           </h3>
-                          {tribute.username && (
-                            <a
-                              href={`/tribute/p/${tribute.username}`}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-sm text-blue-600 hover:underline flex items-center gap-1 mt-1"
+                          <div className="flex items-center gap-2 mt-1">
+                            {tribute.username ? (
+                              <a
+                                href={`/tribute/p/${tribute.username}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                              >
+                                @{tribute.username} <Globe size={12} />
+                              </a>
+                            ) : (
+                              <span className="text-sm text-gray-400 italic">
+                                No username set
+                              </span>
+                            )}
+                            <button
+                              onClick={() => openUsernameModal(tribute)}
+                              className="p-1 text-gray-400 hover:text-blue-600 rounded transition-colors"
+                              title="Change Username"
                             >
-                              View Tribute <Globe size={12} />
-                            </a>
-                          )}
+                              <Edit2 size={12} />
+                            </button>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Link
@@ -510,6 +630,95 @@ export default function AccountPage() {
                   style={{ backgroundColor: accentColor }}
                 >
                   {updatingPassword ? "Updating..." : "Update Password"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Username Modal */}
+      {isUsernameModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <Globe size={18} className="text-gray-400" />
+                Change Username
+              </h3>
+              <button
+                onClick={() => setIsUsernameModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateUsername} className="p-6 space-y-4">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  New Username
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={newUsername}
+                    onChange={(e) =>
+                      setNewUsername(
+                        e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""),
+                      )
+                    }
+                    className={`w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 transition-all ${
+                      usernameStatus.available === true
+                        ? "border-green-300 focus:ring-green-100 focus:border-green-400"
+                        : usernameStatus.available === false
+                          ? "border-red-300 focus:ring-red-100 focus:border-red-400"
+                          : "border-gray-200 focus:ring-blue-100 focus:border-blue-400"
+                    }`}
+                    placeholder="unique-username"
+                    required
+                    minLength={3}
+                  />
+                  {checkingUsername && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-blue-600"></div>
+                    </div>
+                  )}
+                </div>
+                {usernameStatus.message && (
+                  <p
+                    className={`text-xs mt-1 ${
+                      usernameStatus.available
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {usernameStatus.message}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Only lowercase letters, numbers, hyphens, and underscores.
+                </p>
+              </div>
+
+              <div className="pt-2 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsUsernameModalOpen(false)}
+                  className="flex-1 py-2.5 text-gray-700 font-medium hover:bg-gray-50 rounded-xl transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={
+                    updatingUsername ||
+                    checkingUsername ||
+                    !usernameStatus.available
+                  }
+                  className="flex-1 py-2.5 text-white font-medium bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: accentColor }}
+                >
+                  {updatingUsername ? "Updating..." : "Save Username"}
                 </button>
               </div>
             </form>
