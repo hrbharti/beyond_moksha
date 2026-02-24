@@ -11,7 +11,6 @@ import FamilyTree from "../../../ComponentPages/FamilyTree";
 import PetProfileView from "../../../ComponentPages/Components/PetProfileView";
 import { Share2 } from "lucide-react";
 import { toast } from "sonner";
-import bg from "@public/images/grayishBG.jpg";
 
 interface Tribute {
   id: string;
@@ -197,7 +196,7 @@ export default function PublicTributePage({
                 />
 
                 <Gallery
-                  images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
+                  images={tribute.galleryImages || []}
                   accentColor={accentColor}
                   textColor={textColor}
                 />

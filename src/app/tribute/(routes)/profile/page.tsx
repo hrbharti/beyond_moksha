@@ -331,7 +331,7 @@ function ProfileContent() {
                 onUpdate={(val) => handleUpdate("timelineEvents", val)}
               />
               <Gallery
-                images={[bg.src, bg.src, bg.src, bg.src, bg.src, bg.src]}
+                images={tribute.galleryImages || []}
                 isEditing={isEditing}
                 accentColor={accentColor}
                 textColor={textColor}

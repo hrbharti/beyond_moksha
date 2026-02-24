@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import GalleryImage from "./Components/GalleryImage";
-import { Trash2 } from "lucide-react";
+import { Trash2, Camera, Loader2, Plus } from "lucide-react";
+import api from "@/lib/api/api";
+import { toast } from "sonner";
 
 interface GalleryProps {
   images?: string[];
@@ -20,6 +22,47 @@ const Gallery: React.FC<GalleryProps> = ({
   onUpdate,
 }) => {
   const [viewMode, setViewMode] = useState<"all" | "slideshow">("all");
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size must be less than 10MB");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", "gallery");
+
+    try {
+      setIsUploading(true);
+
+      const response = await api.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { url } = response.data;
+
+      if (onUpdate) {
+        const newImages = [...images, url];
+        onUpdate(newImages);
+      }
+
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      console.error("Upload failed", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
+    }
+  };
 
   const handleRemoveImage = (index: number) => {
     if (!onUpdate) return;
@@ -74,6 +117,15 @@ const Gallery: React.FC<GalleryProps> = ({
         </button>
       </div>
 
+      {/* Hidden file input for gallery upload */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/*"
+        onChange={handleFileSelect}
+      />
+
       {/* Gallery Grid or Slide Show */}
       {viewMode === "all" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -91,6 +143,35 @@ const Gallery: React.FC<GalleryProps> = ({
               )}
             </div>
           ))}
+
+          {/* Upload button - shown when editing */}
+          {isEditing && (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="relative aspect-[4/3] rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-solid hover:bg-gray-50"
+              style={{ borderColor: isUploading ? "#ccc" : accentColor + "80" }}
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 size={32} className="animate-spin" style={{ color: accentColor }} />
+                  <span className="text-sm text-gray-500 font-sans">Uploading...</span>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{ backgroundColor: accentColor + "20" }}
+                  >
+                    <Plus size={28} style={{ color: accentColor }} />
+                  </div>
+                  <span className="text-sm font-medium font-sans" style={{ color: textColor }}>
+                    Add Photo
+                  </span>
+                </>
+              )}
+            </button>
+          )}
         </div>
       ) : (
         <div className="flex justify-center items-center h-[300px] sm:h-[400px] md:h-[500px] bg-gray-100 rounded-lg">

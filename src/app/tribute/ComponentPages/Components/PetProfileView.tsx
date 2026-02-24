@@ -5,7 +5,6 @@ import PetHero from "./PetHero";
 import PetMemorial from "../../(routes)/furry-memorial/components/PetMemorial";
 import Gallery from "../Gallery";
 import PetMemorialWall from "../../(routes)/furry-memorial/components/PetMemorialWall";
-import bg from "@public/images/grayishBG.jpg";
 
 interface PetProfileViewProps {
   tribute: any;
@@ -44,11 +43,7 @@ const PetProfileView: React.FC<PetProfileViewProps> = ({
           />
 
           <Gallery
-            images={
-              tribute.galleryImages?.length > 0
-                ? tribute.galleryImages
-                : [bg.src, bg.src, bg.src]
-            }
+            images={tribute.galleryImages || []}
             isEditing={isEditing}
             accentColor={accentColor}
             textColor={textColor}
