@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AssetCard from "./AssetCard";
-import FileManager from "./FileManager";
+import AssetModal from "./AssetModal";
 import Image from "next/image";
 import {
   Landmark,
@@ -23,97 +23,77 @@ import {
   Building,
   Binary,
   Bitcoin,
+  Trash2,
+  Loader2,
+  Search,
+  Filter,
+  ArrowUpDown,
 } from "lucide-react";
 import api from "@/lib/api/api";
-import axios from "axios";
 import { toast } from "sonner";
 
 interface AssetVaultPageProps {
   ownerId?: string;
 }
 
+interface VaultAsset {
+  id: string;
+  assetType: string;
+  nickname?: string;
+  currency?: string;
+  amount?: number;
+  details?: Record<string, unknown>;
+  notes?: string;
+  attachments?: string[];
+  updatedAt?: string;
+}
+
 export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
-  const [files, setFiles] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"categories" | "my-assets">("categories");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<VaultAsset | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assets, setAssets] = useState<VaultAsset[]>([]);
+  const [loadingAssets, setLoadingAssets] = useState(false);
+
   const isReadOnly = !!ownerId;
 
-  const fetchFiles = async () => {
+  const fetchAssets = async () => {
     try {
-      const url = ownerId ? `/vault/files?ownerId=${ownerId}` : `/vault/files`;
+      setLoadingAssets(true);
+      const url = ownerId ? `/vault/assets?ownerId=${ownerId}` : '/vault/assets';
       const res = await api.get(url);
-      setFiles(res.data.files);
+      setAssets(res.data.assets);
     } catch (error) {
-      console.error("Failed to fetch files", error);
+      console.error("Failed to fetch assets", error);
+      toast.error("Failed to fetch assets");
+    } finally {
+      setLoadingAssets(false);
     }
   };
 
   useEffect(() => {
-    fetchFiles();
-  }, [ownerId]);
+    if (activeTab === "my-assets") {
+      fetchAssets();
+    }
+  }, [activeTab, ownerId]);
+
+  const handleDeleteAsset = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this asset?")) return;
+    try {
+      await api.delete(`/vault/assets/${id}`);
+      toast.success("Asset deleted");
+      fetchAssets();
+    } catch (error) {
+      console.error("Failed to delete asset", error);
+      toast.error("Failed to delete asset");
+    }
+  };
 
   const handleAssetClick = (categoryLabel: string) => {
     setSelectedCategory(categoryLabel);
+    setSelectedAsset(null);
     setIsModalOpen(true);
-  };
-
-  const handleUpload = async (file: File, category: string) => {
-    if (isReadOnly) return;
-    try {
-      const res = await api.post(`/vault/upload`, {
-        fileName: `${category}/${file.name}`,
-        fileType: file.type,
-      });
-
-      const { uploadUrl } = await res.data;
-
-      const uploadRes = await axios.put(uploadUrl, file, {
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
-
-      if (uploadRes.status !== 200) throw new Error("Failed to upload to S3");
-
-      await fetchFiles();
-      alert("File uploaded successfully!");
-    } catch (error) {
-      console.error("Upload Error", error);
-      throw error;
-    }
-  };
-
-  const handleDelete = async (key: string) => {
-    if (isReadOnly) return;
-    try {
-      await api.delete(`/vault/files`, {
-        data: { key },
-      });
-      toast.success("File deleted successfully!");
-      await fetchFiles();
-    } catch (error) {
-      console.error("Delete Error", error);
-      throw error;
-    }
-  };
-
-  const handleDownload = async (key: string, fileName: string) => {
-    try {
-      const res = await api.get(
-        `/vault/download?key=${encodeURIComponent(key)}`,
-      );
-      const { downloadUrl } = await res.data;
-
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Download Error", error);
-      alert("Failed to download file");
-    }
   };
 
   const greenAssets = [
@@ -239,7 +219,7 @@ export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
               </span>
               {!isReadOnly && (
                 <p className="text-gray-600 mt-2 text-base md:text-lg font-normal">
-                  Fill the details below to list your assets
+                  Manage and view your assets securely
                 </p>
               )}
               {isReadOnly && (
@@ -257,70 +237,183 @@ export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
               />
             </div>
           </h1>
-        </div>
 
-        {/* Asset Categories Grid */}
-        <div className="space-y-8">
-          {/* Green Section */}
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
-              {greenAssets.map((asset, idx) => (
-                <AssetCard
-                  key={idx}
-                  onClick={() => handleAssetClick(asset.label)}
-                  icon={asset.icon}
-                  label={asset.label}
-                  color={asset.color}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Pink Section */}
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
-              {pinkAssets.map((asset, idx) => (
-                <AssetCard
-                  key={idx}
-                  onClick={() => handleAssetClick(asset.label)}
-                  icon={asset.icon}
-                  label={asset.label}
-                  color={asset.color}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Purple Section */}
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
-              {purpleAssets.map((asset, idx) => (
-                <AssetCard
-                  key={idx}
-                  onClick={() => handleAssetClick(asset.label)}
-                  icon={asset.icon}
-                  label={asset.label}
-                  color={asset.color}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Beige Section */}
-          <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
-              {beigeAssets.map((asset, idx) => (
-                <AssetCard
-                  key={idx}
-                  onClick={() => handleAssetClick(asset.label)}
-                  icon={asset.icon}
-                  label={asset.label}
-                  color={asset.color}
-                />
-              ))}
-            </div>
+          {/* Tabs */}
+          <div className="flex gap-4 border-b border-gray-200 mt-8">
+            <button
+              onClick={() => setActiveTab("categories")}
+              className={`pb-4 px-2 text-lg font-medium transition-colors relative ${activeTab === "categories"
+                ? "text-[#0866FF]"
+                : "text-gray-500 hover:text-gray-800"
+                }`}
+            >
+              Add New Asset
+              {activeTab === "categories" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#0866FF] rounded-t-full" />
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("my-assets")}
+              className={`pb-4 px-2 text-lg font-medium transition-colors relative ${activeTab === "my-assets"
+                ? "text-[#0866FF]"
+                : "text-gray-500 hover:text-gray-800"
+                }`}
+            >
+              My Assets
+              {activeTab === "my-assets" && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#0866FF] rounded-t-full" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Content Area */}
+        {activeTab === "categories" ? (
+          <div className="space-y-8">
+            {/* Green Section */}
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
+                {greenAssets.map((asset, idx) => (
+                  <AssetCard
+                    key={idx}
+                    onClick={() => handleAssetClick(asset.label)}
+                    icon={asset.icon}
+                    label={asset.label}
+                    color={asset.color}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Pink Section */}
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
+                {pinkAssets.map((asset, idx) => (
+                  <AssetCard
+                    key={idx}
+                    onClick={() => handleAssetClick(asset.label)}
+                    icon={asset.icon}
+                    label={asset.label}
+                    color={asset.color}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Purple Section */}
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
+                {purpleAssets.map((asset, idx) => (
+                  <AssetCard
+                    key={idx}
+                    onClick={() => handleAssetClick(asset.label)}
+                    icon={asset.icon}
+                    label={asset.label}
+                    color={asset.color}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Beige Section */}
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
+                {beigeAssets.map((asset, idx) => (
+                  <AssetCard
+                    key={idx}
+                    onClick={() => handleAssetClick(asset.label)}
+                    icon={asset.icon}
+                    label={asset.label}
+                    color={asset.color}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-[#1F3A52] mb-6">My Assets</h2>
+
+            {loadingAssets ? (
+              <div className="flex justify-center items-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-[#0866FF]" />
+              </div>
+            ) : assets.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {assets.map((asset) => {
+                  let IconComponent = Landmark;
+                  // Try to match icon based on category logic roughly
+                  if (pinkAssets.find(a => a.label === asset.assetType)) IconComponent = Coins;
+                  else if (purpleAssets.find(a => a.label === asset.assetType)) IconComponent = Briefcase;
+                  else if (beigeAssets.find(a => a.label === asset.assetType)) IconComponent = Building;
+
+                  return (
+                    <div
+                      key={asset.id}
+                      className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow relative bg-white group flex flex-col sm:flex-row items-start sm:items-center gap-4 cursor-pointer"
+                      onClick={() => {
+                        setSelectedCategory(asset.assetType);
+                        setSelectedAsset(asset);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      {/* Left: Icon Box */}
+                      <div className="w-16 h-16 rounded-xl border border-gray-100 flex items-center justify-center bg-white shadow-sm shrink-0">
+                        <IconComponent className="w-8 h-8 text-[#4299E1]" />
+                      </div>
+
+                      {/* Middle: Details */}
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-[#1F3A52]">
+                          {(asset.nickname || (asset.details as any)?.accountNickname || asset.assetType || "Unnamed Asset")}
+                        </h3>
+                        <p className="text-sm text-gray-500 font-medium">
+                          {(asset.details as any)?.accountHolderName || (asset.details as any)?.registeredOwnerName || "Unknown"} | Last Edited: {asset.updatedAt ? new Date(asset.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "08 Mar 2026"}
+                        </p>
+                      </div>
+
+                      {/* Right: Actions */}
+                      <div className="flex items-center gap-6 shrink-0 mt-2 sm:mt-0 self-end sm:self-auto">
+                        {!isReadOnly && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteAsset(asset.id);
+                            }}
+                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 absolute bottom-2 sm:bottom-auto right-2 sm:right-16"
+                            title="Delete Asset"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-200">
+                  <Vault className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-700 mb-2">No assets found</h3>
+                <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+                  {isReadOnly
+                    ? "This user hasn't saved any assets yet."
+                    : "You haven't saved any assets to your vault yet. Switch to the Add tab to begin."}
+                </p>
+                {!isReadOnly && (
+                  <button
+                    onClick={() => setActiveTab("categories")}
+                    className="px-6 py-2.5 bg-[#0866FF] text-white rounded-xl hover:bg-[#0756d6] transition-colors font-medium shadow-sm inline-flex items-center gap-2"
+                  >
+                    Add Your First Asset
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Illustration Section */}
@@ -336,16 +429,21 @@ export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
         </div>
       </div>
 
-      {/* File Manager Modal */}
+      {/* Asset Form Modal */}
       {selectedCategory && (
-        <FileManager
+        <AssetModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            if (activeTab === "my-assets") fetchAssets();
+          }}
           category={selectedCategory}
-          files={files}
-          onUpload={isReadOnly ? undefined : handleUpload}
-          onDelete={isReadOnly ? undefined : handleDelete}
-          onDownload={handleDownload}
+          ownerId={ownerId}
+          asset={selectedAsset}
+          onDelete={selectedAsset && !isReadOnly ? () => {
+            handleDeleteAsset(selectedAsset.id);
+            setIsModalOpen(false);
+          } : undefined}
         />
       )}
     </div>

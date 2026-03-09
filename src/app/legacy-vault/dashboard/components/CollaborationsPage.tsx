@@ -157,12 +157,6 @@ export default function CollaborationsPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                      Active
-                    </span>
-                    {/* Add Remove functionality later if needed */}
-                  </div>
                 </div>
               ))}
             </div>
