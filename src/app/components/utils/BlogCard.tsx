@@ -12,7 +12,7 @@ export const BlogCard = ({ id, image, content }: BlogCardProps) => {
   const cardContent = (
     <div className="flex flex-col bg-white border border-gray-300 rounded-md overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group">
       {/* Blog image */}
-      <div className="w-full h-48 overflow-hidden relative">
+      <div className="w-full h-48 sm:h-52 overflow-hidden relative shrink-0">
         {image ? (
           <Image
             src={image}
@@ -29,7 +29,7 @@ export const BlogCard = ({ id, image, content }: BlogCardProps) => {
 
       {/* Blog content */}
       <div className="flex flex-col items-center justify-between text-center p-4 min-h-[130px] flex-grow">
-        <h3 className="text-[15px] font-medium text-[#1F3A52] group-hover:text-[#BC911B] transition-colors duration-300 leading-snug">
+        <h3 className="text-[15px] font-medium text-[#1F3A52] group-hover:text-[#BC911B] transition-colors duration-300 leading-snug line-clamp-2" title={content}>
           {content}
         </h3>
 

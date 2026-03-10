@@ -24,11 +24,9 @@ export const Section = ({ heading, subHeading, content }: SectionProps) => {
           </p>
         </div>
 
-        {/* Content wrapper: responsive horizontal padding so children don't overflow */}
-        <div className="w-full h-auto px-4 sm:px-6 lg:px-32 py-6">
-          <div className="flex h-auto w-full items-center justify-center">
-            {content}
-          </div>
+        {/* Content wrapper */}
+        <div className="w-full h-auto px-4 sm:px-6 lg:px-16 py-6">
+          {content}
         </div>
       </div>
     </section>

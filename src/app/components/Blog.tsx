@@ -94,15 +94,19 @@ export const Blogs = () => {
   }
 
   return (
-    <div className="flex flex-col w-full items-center justify-center gap-10 py-10 relative group">
-      {/* Carousel Container */}
-      <div className="w-full max-w-7xl px-4 sm:px-10 lg:px-16 relative">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex -ml-4">
+    <div className="w-full flex flex-col items-center gap-8 py-4">
+      {/* Carousel — takes full width of whatever Section gives it */}
+      <div className="w-full relative">
+        {/* Embla viewport: must clip the overflowing track */}
+        <div className="overflow-hidden w-full" ref={emblaRef}>
+          {/* Embla track: negative margin compensates for slide padding */}
+          <div className="flex" style={{ marginLeft: "-1rem" }}>
             {blogs.map((blog) => (
               <div
                 key={blog.id}
-                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4"
+                /* 1 col on mobile → 2 on sm → 3 on md → 4 on lg */
+                className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 min-w-0"
+                style={{ paddingLeft: "1rem" }}
               >
                 <BlogCard
                   id={String(blog.id)}
@@ -114,30 +118,32 @@ export const Blogs = () => {
           </div>
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Prev / Next buttons — only shown when there are multiple slides */}
         {blogs.length > 1 && (
           <>
             <button
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[#BC911B] hover:bg-[#BC911B] hover:text-white transition-all duration-300 z-10 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#BC911B] hover:bg-[#BC911B] hover:text-white transition-all duration-300 z-10 disabled:opacity-30 disabled:cursor-not-allowed"
               onClick={scrollPrev}
               disabled={!canScrollPrev}
+              aria-label="Previous blog"
             >
-              <FaChevronLeft size={20} />
+              <FaChevronLeft size={16} />
             </button>
             <button
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[#BC911B] hover:bg-[#BC911B] hover:text-white transition-all duration-300 z-10 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-[#BC911B] hover:bg-[#BC911B] hover:text-white transition-all duration-300 z-10 disabled:opacity-30 disabled:cursor-not-allowed"
               onClick={scrollNext}
               disabled={!canScrollNext}
+              aria-label="Next blog"
             >
-              <FaChevronRight size={20} />
+              <FaChevronRight size={16} />
             </button>
           </>
         )}
       </div>
 
-      {/* View all button */}
+      {/* View all link */}
       <div
-        className="flex items-center justify-center gap-2 text-[#BC911B] font-medium cursor-pointer hover:scale-105 transition-all duration-300"
+        className="flex items-center gap-2 text-[#BC911B] font-medium cursor-pointer hover:scale-105 transition-all duration-300"
         onClick={() => router.push("/blogs")}
       >
         View all
