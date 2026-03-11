@@ -5,6 +5,7 @@ import { Loader2, Upload, X, Trash2, Edit } from "lucide-react";
 import api from "@/lib/api/api";
 import axios from "axios";
 import { toast } from "sonner";
+import { ASSET_SCHEMAS, FieldConfig } from "../utils/assetSchemas";
 
 interface AssetModalProps {
     category: string;
@@ -33,28 +34,48 @@ export default function AssetModal({
 
     const isReadOnly = !!ownerId;
 
+    // Utility to get nested object value (e.g., 'nominee.name')
+    const getNestedValue = (obj: any, path: string) => {
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    };
+
+    // Utility to set nested object value
+    const setNestedValue = (obj: any, path: string, value: any): any => {
+        const parts = path.split('.');
+        if (parts.length === 1) {
+            return { ...obj, [path]: value };
+        }
+        
+        const [head, ...tail] = parts;
+        return {
+            ...obj,
+            [head]: setNestedValue(obj[head] || {}, tail.join('.'), value)
+        };
+    };
+
+    const handleDynamicChange = (fieldPath: string, value: any) => {
+        setFormData((prev: any) => {
+            // Handle special currency fields which expect { currency: "INR", value: "xxx" }
+            if (fieldPath.endsWith('.value')) {
+                const parentPath = fieldPath.replace('.value', '');
+                return setNestedValue(prev, parentPath, { currency: "INR", value });
+            }
+            return setNestedValue(prev, fieldPath, value);
+        });
+    };
+
     useEffect(() => {
         if (isOpen) {
             if (asset) {
-                setFormData({
-                    accountType: asset.details?.accountType || "",
-                    accountNickname: asset.nickname || "",
-                    accountHolderName: asset.details?.accountHolderName || "",
-                    bankName: asset.details?.bankName || "",
-                    bankType: asset.details?.bankType || "",
-                    bankAccountNumber: asset.details?.bankAccountNumber || "",
-                    ifscCode: asset.details?.ifscCode || "",
-                    customerId: asset.details?.customerId || "",
-                    branchNameAndAddress: asset.details?.branchNameAndAddress || "",
-                    remarks: asset.notes || asset.details?.remarks || "",
-                    vehicleType: asset.details?.vehicleType || "",
-                    vehicleNickname: asset.nickname || "",
-                    registrationNumber: asset.details?.registrationNumber || "",
-                    manufacturingBrand: asset.details?.manufacturingBrand || "",
-                    fuelType: asset.details?.fuelType || "",
-                    label: asset.nickname || asset.details?.label || "",
-                    ...asset.details
-                });
+                const initialData = { ...asset.details };
+                
+                
+                // Set notes -> remarks fallback
+                if (!initialData.remarks) {
+                    initialData.remarks = asset.notes || "";
+                }
+                
+                setFormData(initialData);
                 setAttachments(asset.attachments ? asset.attachments.map((a: string) => ({ name: a, key: a })) : []);
             } else {
                 setFormData({});
@@ -65,19 +86,6 @@ export default function AssetModal({
 
     if (!isOpen) return null;
 
-    const handleInputChange = (field: string, value: any) => {
-        setFormData((prev: any) => ({ ...prev, [field]: value }));
-    };
-
-    const handleNestedInputChange = (parent: string, field: string, value: any) => {
-        setFormData((prev: any) => ({
-            ...prev,
-            [parent]: {
-                ...(prev[parent] || {}),
-                [field]: value
-            }
-        }));
-    };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -116,7 +124,6 @@ export default function AssetModal({
             setLoading(true);
             const payload = {
                 assetType: category,
-                nickname: formData.accountNickname || formData.vehicleNickname || formData.label || `${category} Asset`,
                 details: formData,
                 notes: formData.remarks || "",
                 attachments: attachments.map(a => a.key),
@@ -138,112 +145,56 @@ export default function AssetModal({
         }
     };
 
-    // Render form fields based on category
+    // Generic Form Renderer based on ASSET_SCHEMAS
     const renderFormFields = () => {
-        if (category === "Bank Account") {
-            return (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Account Type</label>
-                        <select className="w-full border rounded-lg p-2" value={formData.accountType || ""} onChange={(e) => handleInputChange('accountType', e.target.value)}>
-                            <option value="">Select...</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Current">Current</option>
-                            <option value="NRO">NRO</option>
-                            <option value="NRE">NRE</option>
-                            <option value="PIS">PIS</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Account Nickname</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.accountNickname || ""} onChange={(e) => handleInputChange('accountNickname', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Account Holder Name (As per document)</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.accountHolderName || ""} onChange={(e) => handleInputChange('accountHolderName', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Bank Name</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.bankName || ""} onChange={(e) => handleInputChange('bankName', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Bank Type</label>
-                        <select className="w-full border rounded-lg p-2" value={formData.bankType || ""} onChange={(e) => handleInputChange('bankType', e.target.value)}>
-                            <option value="">Select...</option>
-                            <option value="Public">Public</option>
-                            <option value="Private">Private</option>
-                            <option value="Cooperative">Cooperative</option>
-                            <option value="Foreign">Foreign</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Account Number</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.bankAccountNumber || ""} onChange={(e) => handleInputChange('bankAccountNumber', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">IFSC Code</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.ifscCode || ""} onChange={(e) => handleInputChange('ifscCode', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Customer ID</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.customerId || ""} onChange={(e) => handleInputChange('customerId', e.target.value)} />
-                    </div>
-                    <div className="md:col-span-2">
-                        <label className="block text-sm text-gray-600 mb-1">Branch Name & Address</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.branchNameAndAddress || ""} onChange={(e) => handleInputChange('branchNameAndAddress', e.target.value)} />
-                    </div>
-                    <div className="md:col-span-2">
-                        <label className="block text-sm text-gray-600 mb-1">Remarks</label>
-                        <textarea className="w-full border rounded-lg p-2" value={formData.remarks || ""} onChange={(e) => handleInputChange('remarks', e.target.value)} />
-                    </div>
-                </div>
-            );
-        }
+        const schema = ASSET_SCHEMAS[category] || ASSET_SCHEMAS["Default"];
 
-        if (category === "Vehicles") {
-            return (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Vehicle Type</label>
-                        <input type="text" placeholder="e.g. Car" className="w-full border rounded-lg p-2" value={formData.vehicleType || ""} onChange={(e) => handleInputChange('vehicleType', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Vehicle Nickname</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.vehicleNickname || ""} onChange={(e) => handleInputChange('vehicleNickname', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Registration Number</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.registrationNumber || ""} onChange={(e) => handleInputChange('registrationNumber', e.target.value)} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Brand & Model</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.manufacturingBrand || ""} onChange={(e) => {
-                            handleInputChange('manufacturingBrand', e.target.value);
-                        }} />
-                    </div>
-                    <div>
-                        <label className="block text-sm text-gray-600 mb-1">Fuel Type</label>
-                        <input type="text" className="w-full border rounded-lg p-2" value={formData.fuelType || ""} onChange={(e) => handleInputChange('fuelType', e.target.value)} />
-                    </div>
-                    <div className="md:col-span-2">
-                        <label className="block text-sm text-gray-600 mb-1">Remarks</label>
-                        <textarea className="w-full border rounded-lg p-2" value={formData.remarks || ""} onChange={(e) => handleInputChange('remarks', e.target.value)} />
-                    </div>
-                </div>
-            );
-        }
-
-        // Default Fallback Form
         return (
-            <div className="grid grid-cols-1 gap-4">
-                <div>
-                    <label className="block text-sm text-gray-600 mb-1">Label / Nickname</label>
-                    <input type="text" className="w-full border rounded-lg p-2" value={formData.label || formData.nickname || ""} onChange={(e) => handleInputChange('label', e.target.value)} required />
-                </div>
-                <div>
-                    <label className="block text-sm text-gray-600 mb-1">Remarks / Notes</label>
-                    <textarea className="w-full border rounded-lg p-2" value={formData.remarks || ""} onChange={(e) => handleInputChange('remarks', e.target.value)} />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {schema.fields.map((field: FieldConfig) => {
+                    // Extract value, specially handling currency .value paths
+                    let value = getNestedValue(formData, field.name);
+                    if (value === undefined || value === null) value = "";
+                    
+                    const isFullWidth = field.colSpan === 2 || field.type === "textarea";
+
+                    return (
+                        <div key={field.name} className={isFullWidth ? "md:col-span-2" : ""}>
+                            <label className="block text-sm text-gray-600 mb-1">{field.label}</label>
+                            
+                            {field.type === "textarea" ? (
+                                <textarea 
+                                    className="w-full border rounded-lg p-2 min-h-[100px]" 
+                                    value={value} 
+                                    onChange={(e) => handleDynamicChange(field.name, e.target.value)}
+                                    placeholder={field.placeholder}
+                                    required={field.required}
+                                />
+                            ) : field.type === "select" ? (
+                                <select 
+                                    className="w-full border rounded-lg p-2" 
+                                    value={value} 
+                                    onChange={(e) => handleDynamicChange(field.name, e.target.value)}
+                                    required={field.required}
+                                >
+                                    <option value="">Select...</option>
+                                    {field.options?.map(opt => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input 
+                                    type={field.type}
+                                    className="w-full border rounded-lg p-2" 
+                                    value={value} 
+                                    onChange={(e) => handleDynamicChange(field.name, e.target.value)}
+                                    placeholder={field.placeholder}
+                                    required={field.required}
+                                />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         );
     };

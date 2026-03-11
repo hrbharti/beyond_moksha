@@ -24,12 +24,10 @@ import {
   Binary,
   Bitcoin,
   Trash2,
-  Loader2,
-  Search,
-  Filter,
-  ArrowUpDown,
+  Loader2
 } from "lucide-react";
 import api from "@/lib/api/api";
+import { ASSET_SCHEMAS } from "../utils/assetSchemas";
 import { toast } from "sonner";
 
 interface AssetVaultPageProps {
@@ -39,9 +37,6 @@ interface AssetVaultPageProps {
 interface VaultAsset {
   id: string;
   assetType: string;
-  nickname?: string;
-  currency?: string;
-  amount?: number;
   details?: Record<string, unknown>;
   notes?: string;
   attachments?: string[];
@@ -365,10 +360,10 @@ export default function AssetVaultPage({ ownerId }: AssetVaultPageProps) {
                       {/* Middle: Details */}
                       <div className="flex-1">
                         <h3 className="text-lg font-bold text-[#1F3A52]">
-                          {(asset.nickname || (asset.details as any)?.accountNickname || asset.assetType || "Unnamed Asset")}
+                          {((asset.details as any)?.nickname || (asset.details as any)?.accountNickname || (asset.details as any)?.vehicleNickname || asset.assetType || "Unnamed Asset")}
                         </h3>
                         <p className="text-sm text-gray-500 font-medium">
-                          {(asset.details as any)?.accountHolderName || (asset.details as any)?.registeredOwnerName || "Unknown"} | Last Edited: {asset.updatedAt ? new Date(asset.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "08 Mar 2026"}
+                          {`Last Edited: ${asset.updatedAt ? new Date(asset.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : "08 Mar 2026"}`}
                         </p>
                       </div>
 
