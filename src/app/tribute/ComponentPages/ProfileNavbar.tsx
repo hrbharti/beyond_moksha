@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import api from "@/lib/api/api";
 import Link from "next/link";
 import { Menu, X, User, LogOut, Eye } from "lucide-react";
-import Logo from "@/app/components/utils/Logo";
 
 export default function ProfileNavbar() {
   const router = useRouter();
@@ -42,11 +41,7 @@ export default function ProfileNavbar() {
   return (
     <div className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center">
-            <Logo isNav={true} routeTo="/tribute/profile" />
-          </div>
+        <div className="flex justify-end items-center h-20">
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">

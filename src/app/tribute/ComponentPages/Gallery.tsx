@@ -15,7 +15,7 @@ interface GalleryProps {
 }
 
 const Gallery: React.FC<GalleryProps> = ({
-  images = [],
+  images: initialImages = [],
   isEditing = false,
   accentColor = "#D4A043",
   textColor = "#1F3A4B",
@@ -24,6 +24,9 @@ const Gallery: React.FC<GalleryProps> = ({
   const [viewMode, setViewMode] = useState<"all" | "slideshow">("all");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Ensure images is always an array
+  const images = Array.isArray(initialImages) ? initialImages : [];
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,7 +73,8 @@ const Gallery: React.FC<GalleryProps> = ({
     onUpdate(newImages);
   };
 
-  if (!isEditing && (!images || images.length === 0)) return null;
+  // Remove the early return null to ensure the section always renders
+  // if (!isEditing && (!images || images.length === 0)) return null;
 
   return (
     <div id="gallery" className="w-full max-w-6xl mt-24">
@@ -88,9 +92,8 @@ const Gallery: React.FC<GalleryProps> = ({
       <div className="flex space-x-4 mb-8">
         <button
           onClick={() => setViewMode("all")}
-          className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${
-            viewMode === "all" ? "text-white" : "hover:bg-[#1F3A4B]/10"
-          }`}
+          className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${viewMode === "all" ? "text-white" : "hover:bg-[#1F3A4B]/10"
+            }`}
           style={{
             borderColor: viewMode === "all" ? accentColor : textColor + "66",
             color: viewMode === "all" ? "white" : textColor,
@@ -102,9 +105,8 @@ const Gallery: React.FC<GalleryProps> = ({
 
         <button
           onClick={() => setViewMode("slideshow")}
-          className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${
-            viewMode === "slideshow" ? "text-white" : "hover:bg-[#1F3A4B]/10"
-          }`}
+          className={`px-6 py-2 border rounded-md text-sm md:text-base transition-all duration-300 ${viewMode === "slideshow" ? "text-white" : "hover:bg-[#1F3A4B]/10"
+            }`}
           style={{
             borderColor:
               viewMode === "slideshow" ? accentColor : textColor + "66",
@@ -144,12 +146,22 @@ const Gallery: React.FC<GalleryProps> = ({
             </div>
           ))}
 
+          {/* Empty state when not editing and no images */}
+          {!isEditing && images.length === 0 && (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+              <Camera size={48} className="text-gray-300 mb-4" />
+              <p className="text-gray-500 italic font-sans text-center px-4">
+                No photos added yet. Share your beautiful memories here.
+              </p>
+            </div>
+          )}
+
           {/* Upload button - shown when editing */}
           {isEditing && (
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="relative aspect-[4/3] rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-solid hover:bg-gray-50"
+              className="relative aspect-[3/4] rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-solid hover:bg-gray-50"
               style={{ borderColor: isUploading ? "#ccc" : accentColor + "80" }}
             >
               {isUploading ? (

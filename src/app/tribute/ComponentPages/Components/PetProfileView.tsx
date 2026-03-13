@@ -37,7 +37,7 @@ const PetProfileView: React.FC<PetProfileViewProps> = ({
             name={tribute.name}
             bio={tribute.bio}
             dob={tribute.dateOfBirth}
-            dod={tribute.dateOfDeath}
+            dod={tribute.dateOfPassing}
             accentColor={accentColor}
             textColor={textColor}
           />

@@ -24,6 +24,19 @@ const TimelineSection: React.FC<TimelineSectionProps> = ({
   textColor = "#1F3A4B",
   onUpdate,
 }) => {
+  // Ensure at least one milestone exists by default when editing
+  React.useEffect(() => {
+    if (isEditing && items.length === 0 && onUpdate) {
+      const newItem: TimelineItem = {
+        year: new Date().getFullYear().toString(),
+        date: "",
+        title: "New Milestone",
+        description: "",
+        location: "",
+      };
+      onUpdate([newItem]);
+    }
+  }, [isEditing, items.length, onUpdate]);
   const handleAddItem = () => {
     if (!onUpdate) return;
     const newItem: TimelineItem = {

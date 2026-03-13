@@ -148,7 +148,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     >
       {/* Banner & Profile Photo Wrapper */}
       <div className="relative w-full">
-        <div className="relative w-full h-64 sm:h-72 md:h-96 overflow-hidden">
+        <div className="relative w-full h-64 sm:h-72 md:h-96 overflow-hidden group">
           {tribute.bannerUrl ? (
             <img
               src={tribute.bannerUrl}
@@ -165,22 +165,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             />
           )}
 
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10">
-            <button
+          {isEditing && (
+            <div
               onClick={() => bannerInputRef.current?.click()}
-              disabled={isUploadingBanner}
-              className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition"
+              className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-30"
             >
-              {isUploadingBanner ? (
-                <Loader2 size={32} className="animate-spin" />
-              ) : (
-                <Camera size={32} />
-              )}
-              <span className="text-sm font-sans mt-1">
-                {isUploadingBanner ? "Uploading..." : "Change Banner"}
-              </span>
-            </button>
-          </div>
+              <div className="flex flex-col items-center gap-2 text-white">
+                {isUploadingBanner ? (
+                  <Loader2 className="w-10 h-10 animate-spin" />
+                ) : (
+                  <>
+                    <Camera className="w-10 h-10" />
+                    <span className="text-lg font-medium">Change Banner</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
           <input
             type="file"
             ref={bannerInputRef}
@@ -197,8 +198,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             sm:right-8 md:right-16 lg:right-20 
             -bottom-12 sm:-bottom-20 md:-bottom-28 
             w-28 h-28 sm:w-40 sm:h-40 md:w-64 md:h-64 
-            border-[3px] rounded-[2rem] sm:rounded-[2.5rem] 
-            overflow-hidden bg-white shadow-xl z-20
+            border-[3px] rounded-full 
+            overflow-hidden bg-white shadow-xl z-40
           "
           style={{ borderColor: accentColor }}
         >
@@ -215,7 +216,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           )}
 
           {isEditing && (
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer rounded-[2rem] sm:rounded-[2.5rem]">
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer rounded-full">
               <button
                 onClick={() => profileInputRef.current?.click()}
                 disabled={isUploadingProfile}
@@ -237,30 +238,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             onChange={(e) => handleFileSelect(e, "avatar")}
           />
         </div>
-
-        {isEditing && (
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10 pointer-events-none">
-            {/* This overlay seems redundant with the one above, but if it was intended to catch clicks outside the inner div, we should handle it carefully. 
-                 Given the previous structure, I'll make it trigger the same banner input but ensure it doesn't block the profile photo.
-                 Actually, simpler to remove the redundancy or just hook it up. I'll hook it up.
-                 Adding pointer-events-none to the container to let clicks pass through to profile, BUT buttons need pointer-events-auto.
-             */}
-            <button
-              onClick={() => bannerInputRef.current?.click()}
-              disabled={isUploadingBanner}
-              className="flex flex-col items-center text-white bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-black/70 transition pointer-events-auto"
-            >
-              {isUploadingBanner ? (
-                <Loader2 size={32} className="animate-spin" />
-              ) : (
-                <Camera size={32} />
-              )}
-              <span className="text-sm font-sans mt-1">
-                {isUploadingBanner ? "Uploading..." : "Change Banner"}
-              </span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Info Section */}

@@ -88,28 +88,41 @@ const PetHero: React.FC<PetHeroProps> = ({
   return (
     <section className="relative w-full flex flex-col items-center">
       {/* Banner Section */}
-      <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
-        <Image
-          src={tribute.bannerUrl || banner1}
-          alt="Banner"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/20" />
+      <div className="relative w-full h-64 md:h-80 overflow-hidden group">
+        {tribute.bannerUrl ? (
+          <Image
+            src={tribute.bannerUrl}
+            alt="Pet Memorial Banner"
+            fill
+            className="object-cover"
+            priority
+          />
+        ) : (
+          <Image
+            src={banner1}
+            alt="Pet Memorial Banner"
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
 
         {isEditing && (
-          <button
+          <div
             onClick={() => bannerInputRef.current?.click()}
-            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white transition-all z-30"
-            disabled={isUploadingBanner}
+            className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-30"
           >
-            {isUploadingBanner ? (
-              <Loader2 className="w-5 h-5 animate-spin text-gray-600" />
-            ) : (
-              <Camera className="w-5 h-5 text-gray-600" />
-            )}
-          </button>
+            <div className="flex flex-col items-center gap-2 text-white">
+              {isUploadingBanner ? (
+                <Loader2 className="w-10 h-10 animate-spin" />
+              ) : (
+                <>
+                  <Camera className="w-10 h-10" />
+                  <span className="text-lg font-medium">Change Banner</span>
+                </>
+              )}
+            </div>
+          </div>
         )}
         <input
           type="file"
@@ -121,7 +134,7 @@ const PetHero: React.FC<PetHeroProps> = ({
       </div>
 
       {/* Profile & Info Section */}
-      <div className="relative -mt-24 md:-mt-32 w-full max-w-4xl px-4 flex flex-col items-center z-20">
+      <div className="relative -mt-24 md:-mt-32 w-full max-w-4xl px-4 flex flex-col items-center z-40">
         {/* Circular Profile Image */}
         <div
           className="relative w-48 h-48 md:w-64 md:h-64 rounded-full border-[8px] border-white shadow-2xl overflow-hidden bg-white"
@@ -189,8 +202,8 @@ const PetHero: React.FC<PetHeroProps> = ({
                   value={
                     tribute.dateOfBirth
                       ? new Date(tribute.dateOfBirth)
-                          .toISOString()
-                          .split("T")[0]
+                        .toISOString()
+                        .split("T")[0]
                       : ""
                   }
                   onChange={(e) => onUpdate?.("dateOfBirth", e.target.value)}
@@ -202,8 +215,8 @@ const PetHero: React.FC<PetHeroProps> = ({
                   value={
                     tribute.dateOfDeath
                       ? new Date(tribute.dateOfDeath)
-                          .toISOString()
-                          .split("T")[0]
+                        .toISOString()
+                        .split("T")[0]
                       : ""
                   }
                   onChange={(e) => onUpdate?.("dateOfDeath", e.target.value)}
