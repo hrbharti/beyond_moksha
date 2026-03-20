@@ -5,7 +5,10 @@ import StepCard from "./Components/StepCard";
 import WorkItem from "./Components/WorkItem";
 
 // Example placeholder images (replace with your actual ones)
-import white from "@public/images/whiteBg.jpg";
+import designImg from "@public/images/tribute/design.png";
+import detailsImg from "@public/images/tribute/details.png";
+import customAddressImg from "@public/images/tribute/custom-address.png";
+import privateImg from "@public/images/tribute/private.png";
 
 const HowItWorks: React.FC = () => {
   return (
@@ -25,22 +28,22 @@ const HowItWorks: React.FC = () => {
         {/* Work Items */}
         <div className="flex flex-col gap-16 md:gap-20">
           <WorkItem
-            imageSrc={white}
+            imageSrc={designImg}
             title="Pick a design"
             description="Choose amongst dozens of personal themes: elegant, modern, classic, floral, landscapes... and more. We have a beautiful design for every Memorial."
           />
           <WorkItem
-            imageSrc={white}
+            imageSrc={detailsImg}
             title="Fill your loved one's details"
             description="Add his/her name, date of birth and passing, location. Upload a photo, write a funeral obituary, geotag the final resting place."
           />
           <WorkItem
-            imageSrc={white}
+            imageSrc={customAddressImg}
             title="Choose your custom address"
             description="Create a custom address for your Tribute page like: www.online-tribute.com/John-Smith"
           />
           <WorkItem
-            imageSrc={white}
+            imageSrc={privateImg}
             title="Make your page private"
             description="You can add a password to your Memorial site to protect it, or leave it open to everybody. Show your page on Search Engines like Google, or keep it hidden."
           />
