@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { Camera, Loader2, Volume2, VolumeX } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import api from "@/lib/api/api";
 import banner1 from "@public/images/banner1.png";
@@ -83,6 +83,29 @@ const PetHero: React.FC<PetHeroProps> = ({
       else setIsUploadingProfile(false);
       e.target.value = "";
     }
+  };
+
+  const handleDateChange = (type: "dob" | "dod", value: string) => {
+    if (type === "dod" && tribute.dateOfBirth) {
+      if (new Date(value) < new Date(tribute.dateOfBirth)) {
+        toast.error("Date of passing cannot be before date of birth");
+        return;
+      }
+    }
+    if (type === "dob" && tribute.dateOfDeath) {
+      if (new Date(value) > new Date(tribute.dateOfDeath)) {
+        toast.error("Date of birth cannot be after date of passing");
+        return;
+      }
+    }
+    onUpdate?.(type === "dob" ? "dateOfBirth" : "dateOfDeath", value);
+  };
+
+  const toInputDate = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "";
+    return date.toISOString().split("T")[0];
   };
 
   return (
@@ -199,27 +222,15 @@ const PetHero: React.FC<PetHeroProps> = ({
               <div className="flex gap-2 items-center">
                 <input
                   type="date"
-                  value={
-                    tribute.dateOfBirth
-                      ? new Date(tribute.dateOfBirth)
-                        .toISOString()
-                        .split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) => onUpdate?.("dateOfBirth", e.target.value)}
+                  value={toInputDate(tribute.dateOfBirth)}
+                  onChange={(e) => handleDateChange("dob", e.target.value)}
                   className="text-sm border rounded px-1"
                 />
                 <span>—</span>
                 <input
                   type="date"
-                  value={
-                    tribute.dateOfDeath
-                      ? new Date(tribute.dateOfDeath)
-                        .toISOString()
-                        .split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) => onUpdate?.("dateOfDeath", e.target.value)}
+                  value={toInputDate(tribute.dateOfDeath)}
+                  onChange={(e) => handleDateChange("dod", e.target.value)}
                   className="text-sm border rounded px-1"
                 />
               </div>

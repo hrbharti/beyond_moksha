@@ -9,7 +9,11 @@ import { useUser } from "@/hooks/useUser";
 export default function Navbar({ isNav }: { isNav?: boolean }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useUser();
-  const navList = ["Products", "Top Performers", "Privacy & Protection"];
+  const navItems = [
+    { name: "Products", id: "products" },
+    { name: "Why Choose Us", id: "why-choose" },
+    { name: "Security", id: "security" },
+  ];
 
   return (
     <>
@@ -20,20 +24,21 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
             <Logo
               isNav={isNav}
               className="text-xl md:text-2xl"
-              routeTo="/legacy-vault"
+              routeTo="/"
             />
           </div>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex gap-2 px-16 items-center">
             <div className="flex items-center ml-20 text-[#1E293B] text-lg">
-              {navList.map((item) => (
-                <span
-                  key={item}
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/legacy-vault#${item.id}`}
                   className="mx-4 cursor-pointer hover:text-[#0866FF] transition"
                 >
-                  {item}
-                </span>
+                  {item.name}
+                </Link>
               ))}
             </div>
             {user ? (
@@ -96,14 +101,15 @@ export default function Navbar({ isNav }: { isNav?: boolean }) {
             </div>
 
             <div className="flex flex-col gap-6">
-              {navList.map((item) => (
-                <span
-                  key={item}
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/legacy-vault#${item.id}`}
                   className="text-lg text-[#1E293B] font-medium hover:text-[#0866FF] transition cursor-pointer"
                   onClick={() => setIsMobileOpen(false)}
                 >
-                  {item}
-                </span>
+                  {item.name}
+                </Link>
               ))}
             </div>
 

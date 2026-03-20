@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import api from "../../../lib/api/api";
 
 export default function RegisterForm() {
@@ -12,12 +13,8 @@ export default function RegisterForm() {
     firstName: "",
     middleName: "",
     lastName: "",
-    dobDay: "",
-    dobMonth: "",
-    dobYear: "",
-    dopDay: "",
-    dopMonth: "",
-    dopYear: "",
+    dateOfBirth: "",
+    dateOfDeath: "",
   });
 
   // Step 2: User Details
@@ -50,26 +47,6 @@ export default function RegisterForm() {
   } | null>(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const years = Array.from(
-    { length: 100 },
-    (_, i) => new Date().getFullYear() - i,
-  );
 
   const handleMemorialChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -176,20 +153,20 @@ export default function RegisterForm() {
       setError("First name and last name are required");
       return;
     }
-    if (
-      !memorialData.dobDay ||
-      !memorialData.dobMonth ||
-      !memorialData.dobYear
-    ) {
+    if (!memorialData.dateOfBirth) {
       setError("Date of birth is required");
       return;
     }
-    if (
-      !memorialData.dopDay ||
-      !memorialData.dopMonth ||
-      !memorialData.dopYear
-    ) {
+    if (!memorialData.dateOfDeath) {
       setError("Date of passing is required");
+      return;
+    }
+
+    const dob = new Date(memorialData.dateOfBirth);
+    const dod = new Date(memorialData.dateOfDeath);
+
+    if (dod < dob) {
+      setError("Date of passing cannot be before date of birth");
       return;
     }
 
@@ -219,9 +196,9 @@ export default function RegisterForm() {
     }
 
     try {
-      // Format dates
-      const dateOfBirth = `${memorialData.dobDay.padStart(2, "0")}-${memorialData.dobMonth.padStart(2, "0")}-${memorialData.dobYear}`;
-      const dateOfDeath = `${memorialData.dopDay.padStart(2, "0")}-${memorialData.dopMonth.padStart(2, "0")}-${memorialData.dopYear}`;
+      // Format dates (Standard YYYY-MM-DD format)
+      const dateOfBirth = memorialData.dateOfBirth;
+      const dateOfDeath = memorialData.dateOfDeath;
 
       // Combine first, middle, last name
       const tributeName = [
@@ -363,105 +340,34 @@ export default function RegisterForm() {
               </div>
             </div>
 
-            {/* Date of Birth */}
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                Date of Birth
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                <select
-                  name="dobDay"
-                  value={memorialData.dobDay}
+            {/* Date of Birth and Passing */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={memorialData.dateOfBirth}
                   onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
                   required
-                >
-                  <option value="">Day</option>
-                  {days.map((day) => (
-                    <option key={day} value={day}>
-                      {day}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="dobMonth"
-                  value={memorialData.dobMonth}
-                  onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
-                  required
-                >
-                  <option value="">Month</option>
-                  {months.map((month, idx) => (
-                    <option key={idx} value={idx + 1}>
-                      {month}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="dobYear"
-                  value={memorialData.dobYear}
-                  onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
-                  required
-                >
-                  <option value="">Year</option>
-                  {years.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
-            </div>
 
-            {/* Date of Passing */}
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
-                Date of Passing
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                <select
-                  name="dopDay"
-                  value={memorialData.dopDay}
+              <div>
+                <label className="block text-xs uppercase tracking-wide font-semibold text-[#1F3A4B]/70 mb-2">
+                  Date of Passing
+                </label>
+                <input
+                  type="date"
+                  name="dateOfDeath"
+                  value={memorialData.dateOfDeath}
                   onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
                   required
-                >
-                  <option value="">Day</option>
-                  {days.map((day) => (
-                    <option key={day} value={day}>
-                      {day}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="dopMonth"
-                  value={memorialData.dopMonth}
-                  onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
-                  required
-                >
-                  <option value="">Month</option>
-                  {months.map((month, idx) => (
-                    <option key={idx} value={idx + 1}>
-                      {month}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="dopYear"
-                  value={memorialData.dopYear}
-                  onChange={handleMemorialChange}
-                  className="px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] bg-white transition-all appearance-none cursor-pointer"
-                  required
-                >
-                  <option value="">Year</option>
-                  {years.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
@@ -597,7 +503,7 @@ export default function RegisterForm() {
                 Custom Address{" "}
                 <span className="text-gray-400 font-normal">(Optional)</span>
               </label>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 <span className="text-sm text-[#1F3A4B]/70 font-medium">
                   beyondmoksha.com/tribute/p/
                 </span>
@@ -607,12 +513,12 @@ export default function RegisterForm() {
                   value={userData.username}
                   onChange={handleUserChange}
                   placeholder="your-username"
-                  className={`flex-1 px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all lowercase ${
+                  className={`w-full sm:flex-1 px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all lowercase ${
                     usernameAvailability?.available === true
-                      ? "border-green-200 focus:ring-green-500/50 focus:border-green-500"
+                      ? "border-green-200 focus:ring-green-500/50"
                       : usernameAvailability?.available === false
-                        ? "border-red-200 focus:ring-red-500/50 focus:border-red-500"
-                        : "border-gray-200 focus:ring-[#D4A043]/50 focus:border-[#D4A043]"
+                        ? "border-red-200 focus:ring-red-500/50"
+                        : "border-gray-200 focus:ring-[#D4A043]/50"
                   }`}
                 />
               </div>
@@ -641,15 +547,24 @@ export default function RegisterForm() {
               <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
                 Password
               </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={userData.password}
-                onChange={handleUserChange}
-                placeholder="password"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={userData.password}
+                  onChange={handleUserChange}
+                  placeholder="password"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             {/* Confirm Password */}
@@ -657,15 +572,24 @@ export default function RegisterForm() {
               <label className="block text-sm font-medium text-[#1F3A4B] mb-2">
                 Confirm Password
               </label>
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={userData.confirmPassword}
-                onChange={handleUserChange}
-                placeholder="Confirm Password"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={userData.confirmPassword}
+                  onChange={handleUserChange}
+                  placeholder="Confirm Password"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A043]/50 focus:border-[#D4A043] transition-all pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             {/* Terms */}

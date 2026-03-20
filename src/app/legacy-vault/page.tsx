@@ -14,13 +14,15 @@ export default function page() {
     <div className="bg-[#F1F8FC]">
       <Navbar isNav={true} />
       <Hero />
-      <ProductsHeading />
-      <EmotionalWill />
-      <Page />
-      <CreateWill />
-      <AssetVaultSection />
-      <WhyChooseLegacyVault />
-      <SecureSection />
+      <div id="products" className="scroll-mt-24 md:scroll-mt-40">
+        <ProductsHeading />
+        <EmotionalWill />
+        <Page />
+        <CreateWill />
+        <AssetVaultSection />
+      </div>
+      <div id="why-choose" className="scroll-mt-24 md:scroll-mt-40"><WhyChooseLegacyVault /></div>
+      <div id="security" className="scroll-mt-24 md:scroll-mt-40"><SecureSection /></div>
       <Footer />
     </div>
   );
