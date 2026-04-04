@@ -7,11 +7,9 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { BsInstagram } from "react-icons/bs";
 import { ImLinkedin } from "react-icons/im";
 import { IoLogoYoutube } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Footer() {
-  const router = useRouter();
-
   return (
     <div className="flex flex-col justify-end items-center text-white">
       <div className="w-full bg-[#1F3A52] flex flex-col justify-between items-center gap-10 p-4 py-6">
@@ -26,37 +24,28 @@ export default function Footer() {
             text-center
           "
         >
-          <div className="cursor-pointer" onClick={() => router.push("/")}>
+          <Link href="/" className="cursor-pointer">
             Home
-          </div>
-          <div
-            className="cursor-pointer"
-            onClick={() => router.push("/tribute")}
-          >
+          </Link>
+          <Link href="/tribute" className="cursor-pointer">
             Tribute
-          </div>
-          <div
-            className="cursor-pointer"
-            onClick={() => router.push("/legacy-vault")}
-          >
+          </Link>
+          <Link href="/legacy-vault" className="cursor-pointer">
             Legacy Vault
-          </div>
-          <div
-            className="cursor-pointer"
-            onClick={() => router.push("/aboutus")}
-          >
+          </Link>
+          <Link href="/aboutus" className="cursor-pointer">
             About us
-          </div>
-          <div className="cursor-pointer" onClick={() => router.push("/blogs")}>
+          </Link>
+          <Link href="/blogs" className="cursor-pointer">
             Blogs
-          </div>
+          </Link>
         </div>
 
         {/* Social Icons */}
         <div className="flex gap-4 justify-center items-center flex-wrap">
           <Icon
             icon={FaFacebook}
-            onClick={() => window.open("https://facebook.com", "_blank")}
+            onClick={() => window.open("https://www.facebook.com/beyondmoksha360", "_blank")}
           />
           <Icon
             icon={RiTwitterXLine}

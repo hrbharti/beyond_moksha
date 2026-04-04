@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; // <-- replace this with your logo path
+import { FaXTwitter } from "react-icons/fa6";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -13,23 +13,33 @@ export default function Footer() {
           <a href="#products" className="hover:text-gray-300 transition">
             Products
           </a>
-          <a href="#top-performers" className="hover:text-gray-300 transition">
-            Top Performers
+          <a href="#why-choose" className="hover:text-gray-300 transition">
+            Why Choose Us
           </a>
           <a
-            href="#privacy-protection"
+            href="#security"
             className="hover:text-gray-300 transition"
           >
-            Privacy & Protection
+            Security
           </a>
         </div>
 
         <div className="flex items-center gap-4 text-xl">
-          <FaFacebook className="hover:text-gray-300 cursor-pointer transition" />
-          <FaXTwitter className="hover:text-gray-300 cursor-pointer transition" />
-          <FaInstagram className="hover:text-gray-300 cursor-pointer transition" />
-          <FaYoutube className="hover:text-gray-300 cursor-pointer transition" />
-          <FaLinkedin className="hover:text-gray-300 cursor-pointer transition" />
+          <a href="https://www.facebook.com/beyondmoksha360" target="_blank" rel="noopener noreferrer" className="text-inherit">
+            <FaFacebook className="hover:text-gray-300 cursor-pointer transition" />
+          </a>
+          <a href="https://x.com/beyondmoksha360" target="_blank" rel="noopener noreferrer" className="text-inherit">
+            <FaXTwitter className="hover:text-gray-300 cursor-pointer transition" />
+          </a>
+          <a href="https://www.instagram.com/beyondmoksha360" target="_blank" rel="noopener noreferrer" className="text-inherit">
+            <FaInstagram className="hover:text-gray-300 cursor-pointer transition" />
+          </a>
+          <a href="https://youtube.com/@beyondmoksha360" target="_blank" rel="noopener noreferrer" className="text-inherit">
+            <FaYoutube className="hover:text-gray-300 cursor-pointer transition" />
+          </a>
+          <a href="https://www.linkedin.com/company/beyondmoksha360/" target="_blank" rel="noopener noreferrer" className="text-inherit">
+            <FaLinkedin className="hover:text-gray-300 cursor-pointer transition" />
+          </a>
         </div>
       </div>
     </footer>
